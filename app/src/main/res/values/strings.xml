@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TM-4</string>
+
+    <string name="objects">Объекты</string>
+    <string name="measurements">Измерения</string>
+    <string name="report">Отчет</string>
+
+    <!-- Menu -->
+    <string name="main_menu_new">Создать</string>
+    <string name="main_menu_load_local">Найти на утройстве</string>
+    <string name="main_menu_load_server">Найти на сервере</string>
+    <string name="main_menu_save_local">Сохранить на устройство</string>
+    <string name="main_menu_save_server">Сохранить на сервере</string>
+    <string name="main_menu_preferences">Настройки</string>
+    <string name="main_menu_sync">Синхронизировать</string>
+    <string name="main_menu_quit">Выйти</string>
+</resources>

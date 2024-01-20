@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/sites_nav_graph">
+
+    <fragment
+        android:id="@+id/sites_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.sites.ui.NavSitesLocalFragment"
+        tools:layout="@layout/fragment_nav_sites" >
+
+        <!--<action
+            android:id="@+id/action_navigation_objects_to_nav_construction"
+            app:destination="@id/nav_construction" />-->
+        <!--<argument
+            android:name="constructions"
+            app:argType="com.kuzmin.tm_3.domain.model.ConstructionSimple[]" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/measurements_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.measurements.ui.NavMeasurementsFragment"
+        tools:layout="@layout/fragment_nav_measurements" >
+        <!--<action
+            android:id="@+id/action_navigation_chat_to_single_chat"
+            app:destination="@id/single_chat"
+            app:popUpTo="@id/navigation_chat" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/report_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.report.ui.NavReportFragment"
+        tools:layout="@layout/fragment_nav_report" >
+        <!--<action
+            android:id="@+id/action_navigation_chat_to_single_chat"
+            app:destination="@id/single_chat"
+            app:popUpTo="@id/navigation_chat" />-->
+    </fragment>
+    <!--<fragment
+        android:id="@+id/nav_construction"
+        android:name="com.kuzmin.tm_3.ui.nav_constructions.ConstructionFragment"
+        android:label="fragment_construction"
+        tools:layout="@layout/fragment_construction" >
+        <argument
+            android:name="building_id"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.kuzmin.tm_3.ui.login.LoginFragment"
+        tools:layout="@layout/fragment_login"
+        >
+        <argument
+            android:name="is_auth_user_data_changed"
+            app:argType="boolean" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_sites_remote"
+        android:label="Загрузка с сервера"
+        android:name="com.kuzmin.tm_3.ui.nav_sites_remote.NavSitesRemoteFragment"
+        tools:layout="@layout/fragment_sites_remote">
+        <argument
+            android:name="token"
+            app:argType="string" />
+
+    </fragment>-->
+
+</navigation>

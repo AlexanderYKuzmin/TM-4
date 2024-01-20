@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TmBarsTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorControlNormal">@color/color_on_primary</item>
+        <item name="itemTextColor">@color/color_on_surface</item>
+        <item name="editTextColor">@color/color_on_surface</item>
+        <item name="android:dividerHeight">2dp</item>
+        <item name="android:divider">@color/black</item>
+    </style>
+
+    <style name="TmToolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
+        <item name="titleTextColor">@color/color_on_primary</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="android:fontFamily">@font/gost_clan_gradient</item>
+    </style>
+
+    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <!--<item name="android:backgroundTint">?attr/colorOnPrimary</item>-->
+        <item name="itemBackground">@color/color_container</item>
+        <item name="itemIconTint">@color/tint_color</item>
+        <item name="itemTextColor">@color/tint_color</item>
+        <item name="android:backgroundTint">@color/tint_color</item>
+
+    </style>
+</resources>
