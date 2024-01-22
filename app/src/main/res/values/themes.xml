@@ -1,10 +1,32 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <!--<style name="Base.Theme.TM4" parent="Theme.Material3.DayNight.NoActionBar">
-        &lt;!&ndash; Customize your light theme here. &ndash;&gt;
-        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;
-    </style>-->
-    <style name="Base.Theme.TM4" parent="Theme.Material3.Dark"/>
+    <style name="Base.Theme.TM4." parent="Theme.MaterialComponents.Light">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_dark</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/color_accent</item>
+        <item name="colorSecondaryVariant">@color/color_accent_dark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- surface color -->
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorOnSurface">@color/color_on_surface</item>
 
-    <style name="Theme.TM4" parent="Base.Theme.TM4" />
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/design_default_color_primary_variant</item>
+
+        <!--also menu-->
+        <item name="android:textColor">@color/color_title</item>
+        <item name="editTextColor">@color/color_on_surface</item>
+        <item name="android:textColorHighlight">@color/color_on_surface</item>
+
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
+
+        <!--item name="android:itemTextAppearance">@style/CustomTextItems</item-->
+    </style>
 </resources>

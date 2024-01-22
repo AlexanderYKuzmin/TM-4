@@ -1,4 +1,4 @@
-package com.kuzmin.tm_4
+package com.kuzmin.tm_4.ui
 
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -20,9 +20,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kuzmin.tm_4.R
 import com.kuzmin.tm_4.common.R.*
 import com.kuzmin.tm_4.common.extension.dpToIntPx
 import com.kuzmin.tm_4.databinding.ActivityMainBinding
+import com.kuzmin.tm_4.feature.login.util.LoginConstants.TOKEN
 import com.kuzmin.tm_4.model.AppState
 import com.kuzmin.tm_4.model.ScreenMode
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +44,10 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        window.statusBarColor = ContextCompat.getColor(this, color.color_primary_dark)
+        setupToolbar()
+        setMainMenu()
+
         val navView: BottomNavigationView = binding.navView
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -54,12 +60,13 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        setupToolbar()
         //val startFragmentBundle = Bundle()
 
         //val startFragmentBundle = bundleOf(BUILDING_LIST to viewModel.getConstructionList())
         val startFragmentBundle = bundleOf()
         navController.setGraph(navController.graph, startFragmentBundle)
+
+        //viewModel.checkAuthUser(this, ::launchAuthFragment)
     }
 
     private fun setMainMenu() {
@@ -199,6 +206,19 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
         val title = binding.toolbar.getChildAt(titleChildNumber) as TextView
         title.typeface = Typeface.createFromAsset(assets, "fonts/gost_clan_gradient.ttf")
         //title.text = viewModel.appState.value?.title //TODO
+    }
+
+    private fun launchAuthFragment(username: String) {
+        navController.navigate(R.id.login_nav_graph,
+            bundleOf(
+                getString(R.string.is_auth_data_changed) to false,
+                getString(R.string.username) to username
+            )
+        )
+    }
+
+    private fun launchSitesRemoteFragment(token: String) {
+        navController.navigate(R.id.sites_nav_graph, bundleOf(TOKEN to token))
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package com.kuzmin.tm_3.data.network.model
+package com.kuzmin.tm_4.core.network.model
 
 import com.google.gson.annotations.SerializedName
 

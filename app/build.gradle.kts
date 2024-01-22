@@ -42,10 +42,12 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":data:remote"))
 
     implementation(project(":feature:sites"))
     implementation(project(":feature:measurements"))
     implementation(project(":feature:report"))
+    implementation(project(":feature:login"))
 
     implementation(Deps.core)
     implementation(Deps.appCompat)

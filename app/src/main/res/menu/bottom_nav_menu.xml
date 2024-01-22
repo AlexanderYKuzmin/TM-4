@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/sites_nav_graph"
-        android:icon="@drawable/ic_baseline_cell_tower_24"
+        android:id="@id/sites_nav_graph"
+        android:icon="@drawable/cell_tower"
         android:title="@string/objects"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/measurements_nav_graph"
-        android:icon="@drawable/ic_baseline_cell_tower_24"
+        android:id="@id/measurements_nav_graph"
+        android:icon="@drawable/cell_tower"
         android:title="@string/measurements"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/report_nav_graph"
-        android:icon="@drawable/ic_baseline_art_track_24"
+        android:id="@id/report_nav_graph"
+        android:icon="@drawable/report"
         android:title="@string/report"
         app:showAsAction="ifRoom" />
 </menu>

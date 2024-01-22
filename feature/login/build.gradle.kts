@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
 
@@ -38,10 +39,22 @@ android {
 
 dependencies {
 
+    //implementation(project(":data:remote"))
+    implementation(project(":common"))
+
     implementation(Deps.core)
     implementation(Deps.appCompat)
     implementation(Deps.material)
     implementation(Deps.constraintLayout)
+    implementation(Deps.activity)
+    implementation(Deps.fragment)
+
+    implementation(LifeCycle.liveData)
+    implementation(LifeCycle.viewModel)
+    implementation(LifeCycle.service)
+
+    implementation(Navigation.nav_fragment)
+    implementation(Navigation.nav_ui_ktx)
 
     implementation(DaggerHilt.hilt)
     kapt(DaggerHilt.hilt_compiler)

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Navigation Bottom menu-->
+    <item name="login_nav_graph" type="id"/>
+    <item name="sites_nav_graph" type="id"/>
+    <item name="measurements_nav_graph" type="id"/>
+    <item name="report_nav_graph" type="id"/>
+
+    <!--Main menu-->
+
+</resources>

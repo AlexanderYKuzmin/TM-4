@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="is_auth_data_changed">is_auth_changed</string>
+    <string name="username">username</string>
+</resources>

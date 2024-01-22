@@ -1,5 +1,5 @@
 object Version {
-    const val hilt_version = "2.44"
+    const val hilt_version = "2.48"
     const val core_version = "1.12.0"
     const val appCompat_version = "1.6.1"
     const val material_version = "1.11.0"
@@ -9,6 +9,11 @@ object Version {
 
     const val retrofit2_version = "2.9.0"
     const val gson_version = "2.9.0"
+
+    const val lifecycle_version = "2.6.1"
+
+    const val fragment_version = "1.6.2"
+    const val activity_version = "1.8.2"
 }
 
 object Deps {
@@ -16,6 +21,15 @@ object Deps {
     const val appCompat = "androidx.appcompat:appcompat:${Version.appCompat_version}"
     const val material = "com.google.android.material:material:${Version.material_version}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Version.costraintlayout_version}"
+
+    const val fragment = "androidx.fragment:fragment-ktx:${Version.fragment_version}"
+    const val activity = "androidx.activity:activity-ktx:${Version.activity_version}"
+}
+
+object LifeCycle {
+    const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Version.lifecycle_version}"
+    const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Version.lifecycle_version}"
+    const val service = "androidx.lifecycle:lifecycle-service:2.5.1${Version.lifecycle_version}"
 }
 
 object DaggerHilt {
@@ -27,7 +41,7 @@ object Navigation {
     const val nav_fragment = "androidx.navigation:navigation-fragment:${Version.nav_version}"
     const val nav_ui_ktx = "androidx.navigation:navigation-ui-ktx:${Version.nav_version}"
     // Feature module Support
-    //implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+    const val nav_features = "androidx.navigation:navigation-dynamic-features-fragment:${Version.nav_version}"
 }
 
 object Retrofit {

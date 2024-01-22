@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_username">Недопустимое имя пользователя</string>
+    <string name="invalid_password">Пароль должен содержать не менее 6 символов</string>
+</resources>

@@ -6,7 +6,7 @@
     app:startDestination="@id/sites_nav_graph">
 
     <fragment
-        android:id="@+id/sites_nav_graph"
+        android:id="@id/sites_nav_graph"
         android:name="com.kuzmin.tm_4.feature.sites.ui.NavSitesLocalFragment"
         tools:layout="@layout/fragment_nav_sites" >
 
@@ -19,7 +19,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/measurements_nav_graph"
+        android:id="@id/measurements_nav_graph"
         android:name="com.kuzmin.tm_4.feature.measurements.ui.NavMeasurementsFragment"
         tools:layout="@layout/fragment_nav_measurements" >
         <!--<action
@@ -29,7 +29,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/report_nav_graph"
+        android:id="@id/report_nav_graph"
         android:name="com.kuzmin.tm_4.feature.report.ui.NavReportFragment"
         tools:layout="@layout/fragment_nav_report" >
         <!--<action
@@ -37,6 +37,22 @@
             app:destination="@id/single_chat"
             app:popUpTo="@id/navigation_chat" />-->
     </fragment>
+
+    <fragment
+        android:id="@id/login_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.login.ui.LoginFragment"
+        tools:layout="@layout/fragment_login"
+        >
+        <argument
+            android:name="@string/is_auth_data_changed"
+            app:argType="boolean" />
+        <argument
+            android:name="@string/username"
+            app:argType="string" />
+
+    </fragment>
+
+
     <!--<fragment
         android:id="@+id/nav_construction"
         android:name="com.kuzmin.tm_3.ui.nav_constructions.ConstructionFragment"
@@ -46,22 +62,10 @@
             android:name="building_id"
             app:argType="long"
             android:defaultValue="-1L" />
-    </fragment>
+    </fragment>-->
 
-    <fragment
-        android:id="@+id/navigation_login"
-        android:name="com.kuzmin.tm_3.ui.login.LoginFragment"
-        tools:layout="@layout/fragment_login"
-        >
-        <argument
-            android:name="is_auth_user_data_changed"
-            app:argType="boolean" />
-        <argument
-            android:name="username"
-            app:argType="string" />
 
-    </fragment>
-    <fragment
+    <!--<fragment
         android:id="@+id/navigation_sites_remote"
         android:label="Загрузка с сервера"
         android:name="com.kuzmin.tm_3.ui.nav_sites_remote.NavSitesRemoteFragment"

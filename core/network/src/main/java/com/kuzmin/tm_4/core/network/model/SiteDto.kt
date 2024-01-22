@@ -1,9 +1,6 @@
 package com.kuzmin.tm_4.core.network.model
 
 import com.google.gson.annotations.SerializedName
-import com.kuzmin.tm_3.data.network.model.MeasurementConstructionDto
-import com.kuzmin.tm_3.data.network.model.SiteEquipmentDto
-import com.kuzmin.tm_3.data.network.model.TenantDto
 
 data class SiteDto(
     @SerializedName("site_id")
