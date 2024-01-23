@@ -2,12 +2,16 @@ package com.kuzmin.tm_4.feature.login.domain.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.kuzmin.tm_4.feature.login.util.LoginConstants
+import com.kuzmin.tm_4.feature.login.util.LoginConstants.DEVIATION_TOKEN_LIFE_TIME
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_DATE
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_ID
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_NAME
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_PASSWORD
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_TOKEN
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_USER
+import com.kuzmin.tm_4.feature.login.util.LoginConstants.TOKEN_LIFE_TIME
+import java.util.Date
 
 data class AuthUser (
     val username: String,
@@ -51,5 +55,22 @@ data class AuthUser (
         override fun newArray(size: Int): Array<AuthUser?> {
             return arrayOfNulls(size)
         }
+    }
+
+    fun isValid(): Boolean {
+        with(this) {
+            return if (token != NO_TOKEN && dateToken != NO_DATE) {
+                isTokenValid(token, dateToken)
+            } else false
+        }
+        return false
+    }
+
+    private fun isTokenValid(token: String, tokenDate: Long) : Boolean {
+        return if (token.trim().length > 10) {
+            val currentTime = Date().time
+            val tokenExpirationTime = tokenDate + TOKEN_LIFE_TIME - DEVIATION_TOKEN_LIFE_TIME
+            currentTime < tokenExpirationTime
+        } else false
     }
 }

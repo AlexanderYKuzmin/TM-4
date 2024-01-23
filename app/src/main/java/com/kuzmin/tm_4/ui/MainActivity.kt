@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -32,6 +33,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
     private lateinit var binding: ActivityMainBinding
+
+    private val viewModel: MainActivityViewModel by viewModels()
 
     private val navController: NavController by lazy {
         findNavController(R.id.nav_host_fragment_activity_main)
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
         val startFragmentBundle = bundleOf()
         navController.setGraph(navController.graph, startFragmentBundle)
 
-        //viewModel.checkAuthUser(this, ::launchAuthFragment)
+        viewModel.checkAuthUser(this, ::launchAuthFragment)
     }
 
     private fun setMainMenu() {

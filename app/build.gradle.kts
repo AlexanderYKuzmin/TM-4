@@ -43,6 +43,7 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":data:remote"))
+    implementation(project(":data:local"))
 
     implementation(project(":feature:sites"))
     implementation(project(":feature:measurements"))

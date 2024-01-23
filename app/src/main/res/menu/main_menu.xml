@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/mm_new"
-        android:icon="@drawable/ic_baseline_domain_add_24"
+        android:icon="@drawable/add_site"
         app:showAsAction="never"
         android:title="@string/main_menu_new"/>
 
@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/mm_load_server"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_launcher"
         android:title="@string/main_menu_load_server"
         app:showAsAction="never|collapseActionView"
         app:actionLayout="@layout/layout_search" />

@@ -14,6 +14,9 @@ object Version {
 
     const val fragment_version = "1.6.2"
     const val activity_version = "1.8.2"
+
+    const val datastore_preferences_version = "1.0.0"
+    const val datastore_annotations_version = "1.6.0"
 }
 
 object Deps {
@@ -51,4 +54,9 @@ object Retrofit {
 
 object Gson {
     const val gson = "com.google.code.gson:gson:${Version.gson_version}"
+}
+
+object DataStore {
+    const val datastore_preferences = "androidx.datastore:datastore-preferences:1.0.0"
+    const val datastore_annotations = "androidx.annotation:annotation:1.6.0"
 }

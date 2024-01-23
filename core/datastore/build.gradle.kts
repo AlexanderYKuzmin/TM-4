@@ -1,12 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.kuzmin.tm_4.feature.login"
+    namespace = "com.kuzmin.tm_4.core.datastore"
     compileSdk = 34
 
     defaultConfig {
@@ -32,35 +31,19 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
 
-    //implementation(project(":data:remote"))
-    implementation(project(":common"))
-
-    implementation(Deps.core)
-    implementation(Deps.appCompat)
-    implementation(Deps.material)
-    implementation(Deps.constraintLayout)
-    implementation(Deps.activity)
-    implementation(Deps.fragment)
-
-    implementation(LifeCycle.liveData)
-    implementation(LifeCycle.viewModel)
-    implementation(LifeCycle.service)
-
-    implementation(Navigation.nav_fragment)
-    implementation(Navigation.nav_ui_ktx)
-
-    implementation(DaggerHilt.hilt)
-    kapt(DaggerHilt.hilt_compiler)
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
 
     implementation(DataStore.datastore_preferences)
     implementation(DataStore.datastore_annotations)
+
+    implementation(DaggerHilt.hilt)
+    kapt(DaggerHilt.hilt_compiler)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

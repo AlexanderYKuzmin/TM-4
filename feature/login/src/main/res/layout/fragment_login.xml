@@ -34,17 +34,17 @@ android:background="@drawable/login_background"
                 android:textSize="24dp"
                 android:textStyle="bold"
                 android:fontFamily="@font/calculator"
-                android:text="Авторизация"/>
+                android:text="@string/autorization"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="?attr/textInputOutlinedStyle"
                 android:id="@+id/til_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:hint="Имя пользователя"
+
                 android:textColorHint="@color/color_gray">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -53,11 +53,13 @@ android:background="@drawable/login_background"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
                     android:fontFamily="@font/calculator"
+                    android:textSize="22dp"
+                    android:hint="@string/username_hint"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="?attr/textInputOutlinedStyle"
                 android:id="@+id/til_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,14 +68,14 @@ android:background="@drawable/login_background"
                 android:layout_marginTop="24dp"
                 android:textColorHint="@color/color_gray"
                 >
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
+                    android:textSize="22dp"
                     android:fontFamily="@font/calculator"
-                    android:hint="Пароль"
+                    android:hint="@string/password_hint"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +94,7 @@ android:background="@drawable/login_background"
                     android:layout_weight="1"
                     android:layout_marginTop="36dp"
                     android:textSize="16dp"
-                    android:text="Вход"
+                    android:text="@string/sign_in_button"
                     />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_login_cancel"
@@ -101,15 +103,13 @@ android:background="@drawable/login_background"
                     android:layout_weight="1"
                     android:layout_marginTop="36dp"
                     android:textSize="16dp"
-                    android:text="Отмена"
+                    android:text="@string/cancel_button"
                     />
             </LinearLayout>
-
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--android:hint="Имя пользователя"-->
+
+    <!--style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"-->

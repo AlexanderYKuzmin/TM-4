@@ -14,4 +14,6 @@
     <string name="main_menu_preferences">Настройки</string>
     <string name="main_menu_sync">Синхронизировать</string>
     <string name="main_menu_quit">Выйти</string>
+
+    <string name="user_authorized">Пользователь авторизован</string>
 </resources>

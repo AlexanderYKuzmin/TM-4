@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.kuzmin.tm_4.feature.login.databinding.FragmentLoginBinding
 import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +47,6 @@ class LoginFragment : Fragment(), OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -54,10 +54,10 @@ class LoginFragment : Fragment(), OnClickListener {
         /*savedStateHandle = findNavController().previousBackStackEntry!!.savedStateHandle
         savedStateHandle[IS_AUTH_USER_DATA_CHANGED] = false*/
 
-
+        Log.d("ViewModel", "On view created Fragment")
         //loginComponent.inject(this)
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        //(requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         with(binding) {
             btnLogin.setOnClickListener(this@LoginFragment)
