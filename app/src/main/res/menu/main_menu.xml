@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/mm_authorization"
+        app:showAsAction="never"
+        android:title="@string/authorization"/>
+
+    <item
         android:id="@+id/mm_new"
         android:icon="@drawable/add_site"
         app:showAsAction="never"

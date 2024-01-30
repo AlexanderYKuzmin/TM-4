@@ -1,9 +1,10 @@
 package com.kuzmin.tm_4.data.remote.di
 
-import com.kuzmin.tm_4.core.network.ApiService
+import com.kuzmin.tm_4.core.network.UserApiService
+import com.kuzmin.tm_4.data.remote.mapper.SitesDtoToModelMapper
+import com.kuzmin.tm_4.data.remote.mapper.SitesSamplesDtoToModelMapper
 import com.kuzmin.tm_4.data.remote.repository.AuthRepositoryImpl
 import com.kuzmin.tm_4.feature.login.data.AuthRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +17,17 @@ class RemoteDataModule {
     fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository*/
 
     @Provides
-    fun provideAuthRepository(apiService: ApiService): AuthRepository {
-        return AuthRepositoryImpl(apiService)
+    fun provideAuthRepository(userApiService: UserApiService): AuthRepository {
+        return AuthRepositoryImpl(userApiService)
+    }
+
+    @Provides
+    fun provideSitesSamplesDtoToModelMapper(): SitesSamplesDtoToModelMapper {
+        return SitesSamplesDtoToModelMapper()
+    }
+
+    @Provides
+    fun provideSitesDtoToModelMapper(): SitesDtoToModelMapper {
+        return SitesDtoToModelMapper()
     }
 }

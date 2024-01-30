@@ -5,5 +5,5 @@ data class AppState(
     //val isAppbarLogoVisible: Boolean = true,
     val mode: ScreenMode = ScreenMode.HOME,
     val title: String,
-    val searchQuery: String
+    val searchQuery: String = ""
 )

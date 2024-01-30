@@ -11,7 +11,7 @@
 
     <item
         android:id="@id/measurements_nav_graph"
-        android:icon="@drawable/cell_tower"
+        android:icon="@drawable/theo"
         android:title="@string/measurements"
         app:showAsAction="ifRoom"/>
 

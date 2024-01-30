@@ -20,19 +20,20 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kuzmin.tm_4.R
 import com.kuzmin.tm_4.common.R.*
 import com.kuzmin.tm_4.common.extension.dpToIntPx
 import com.kuzmin.tm_4.databinding.ActivityMainBinding
+import com.kuzmin.tm_4.feature.login.ui.LoginFragment
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.TOKEN
 import com.kuzmin.tm_4.model.AppState
 import com.kuzmin.tm_4.model.ScreenMode
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
-    private lateinit var binding: ActivityMainBinding
+class MainActivity
+    : AppCompatActivity(), MenuItem.OnActionExpandListener, LoginFragment.LoginListener {
+    private lateinit var _binding: ActivityMainBinding
 
     private val viewModel: MainActivityViewModel by viewModels()
 
@@ -42,16 +43,19 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
 
     private lateinit var menuItemLoadRemote: MenuItem
 
+    private var isUserAuthorized = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(_binding.root)
 
         window.statusBarColor = ContextCompat.getColor(this, color.color_primary_dark)
         setupToolbar()
         setMainMenu()
 
-        val navView: BottomNavigationView = binding.navView
+        val navView = _binding.navView
+        navView.isActivated = false
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.sites_nav_graph,
@@ -69,7 +73,10 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
         val startFragmentBundle = bundleOf()
         navController.setGraph(navController.graph, startFragmentBundle)
 
-        viewModel.checkAuthUser(this, ::launchAuthFragment)
+        viewModel.observeState(this, ::renderUi)
+
+        viewModel.initAppState(this)
+        viewModel.checkAuthUser(this)
     }
 
     private fun setMainMenu() {
@@ -84,6 +91,9 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
                         Log.d("Navigation", "Home pressed in menu")
                         navController.popBackStack()
                         //viewModel.handleScreenMode(HOME)
+                    }
+                    R.id.mm_authorization -> {
+                        viewModel.checkAuthUser(this@MainActivity)
                     }
                     R.id.mm_new -> {
                         //supportFragmentManager.popBackStack()
@@ -144,39 +154,39 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
         when (appState.mode) {
             ScreenMode.AUTHORIZATION -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
-                renderToolbarDefault(appState)
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                switchBottombarState(false)
+                //renderToolbarDefault(appState)
+                launchAuthFragment()
             }
             ScreenMode.HOME -> {
                 Log.d("navigation", "mode = ${appState.mode.name}")
-                renderToolbarDefault(appState)
-                binding.navView.visibility = View.VISIBLE
+                //renderToolbarDefault(appState)
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                switchBottombarState(true)
+                //binding.navView.visibility = View.VISIBLE
             }
             ScreenMode.SEARCH_ON_SERVER -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 supportActionBar?.setDisplayShowHomeEnabled(true)
-                binding.navView.visibility = View.GONE
+                _binding.navView.visibility = View.GONE
             }
             else -> {
-                supportActionBar?.setDisplayShowHomeEnabled(true)
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                //supportActionBar?.setDisplayShowHomeEnabled(true)
+                //supportActionBar?.setDisplayHomeAsUpEnabled(false)
             }
-
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
-        /*binding.toolbar.setOnClickListener {
-
-        }*/
+        setSupportActionBar(_binding.toolbar)
 
         val logo =
-            if (binding.toolbar.childCount > 1) binding.toolbar.getChildAt(1) as ImageView
+            if (_binding.toolbar.childCount > 1) _binding.toolbar.getChildAt(1) as ImageView
             else null
+
         logo?.scaleType = ImageView.ScaleType.CENTER_CROP
 
         val lp = logo?.layoutParams as? Toolbar.LayoutParams
@@ -189,39 +199,57 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
 
         //supportActionBar?.setLogo(R.drawable.cell_tower_icon_3_round)
 
-        val title = binding.toolbar.getChildAt(0) as TextView
+        val title = _binding.toolbar.getChildAt(0) as TextView
         val titleTypeFace: Typeface = Typeface.createFromAsset(assets, "fonts/gost_clan_gradient.ttf")
-        title.typeface = titleTypeFace
-        title.textSize = 24f
-        title.setTextColor(ContextCompat.getColor(this, color.color_title))
+
+        with(title) {
+            typeface = titleTypeFace
+            textSize = 24f
+            setTextColor(ContextCompat.getColor(this@MainActivity, color.color_title))
+        }
+
     }
 
     private fun renderToolbarDefault(appState: AppState) {
         Log.d("MainActivity", "set default toolbar properties")
         supportActionBar?.setLogo(R.drawable.cell_tower_icon_3_round)
-        Log.d("Navigation", "class child 0: ${binding.toolbar.getChildAt(0)}")
-        Log.d("Navigation", "class child 1: ${binding.toolbar.getChildAt(1)}")
-        Log.d("Navigation", "class child 2: ${binding.toolbar.getChildAt(2)}")
 
-        var titleChildNumber = 0
-        if (binding.toolbar.childCount > 2) titleChildNumber = 1
+        val titleChildNumber =
+        checkChildConsistent(androidx.appcompat.widget.AppCompatTextView::class.java)
 
-        val title = binding.toolbar.getChildAt(titleChildNumber) as TextView
+
+        Log.d("Navigation", "titleChildNumber: $titleChildNumber,  titleChild: ${_binding.toolbar.getChildAt(titleChildNumber)}")
+        val title = _binding.toolbar.getChildAt(titleChildNumber) as TextView
         title.typeface = Typeface.createFromAsset(assets, "fonts/gost_clan_gradient.ttf")
         //title.text = viewModel.appState.value?.title //TODO
     }
 
-    private fun launchAuthFragment(username: String) {
-        navController.navigate(R.id.login_nav_graph,
-            bundleOf(
-                getString(R.string.is_auth_data_changed) to false,
-                getString(R.string.username) to username
-            )
-        )
+    private fun launchAuthFragment() {
+        navController.navigate(R.id.login_nav_graph)
     }
 
     private fun launchSitesRemoteFragment(token: String) {
         navController.navigate(R.id.sites_nav_graph, bundleOf(TOKEN to token))
+    }
+
+    private fun switchBottombarState(isActive: Boolean) {
+        _binding.navView.menu.setGroupEnabled(0, isActive)
+    }
+
+    private fun checkChildConsistent(clazz: Class<out View>): Int {
+        Log.d(TAG, "checkChild: $clazz")
+        var titleChildNumber = 0
+        while (titleChildNumber <= _binding.toolbar.childCount) {
+            Log.d(TAG, "title number: $titleChildNumber, ${_binding.toolbar.getChildAt(titleChildNumber)}")
+            if (_binding.toolbar.getChildAt(titleChildNumber).javaClass != clazz) {
+                titleChildNumber++
+            } else return titleChildNumber
+        }
+       throw RuntimeException("Wrong child number!")
+    }
+
+    override fun onAutorizationFinished(isClosed: Boolean) {
+        switchBottombarState(true)
     }
 
     companion object {

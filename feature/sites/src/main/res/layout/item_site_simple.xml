@@ -61,8 +61,9 @@
         app:layout_constraintTop_toBottomOf="@id/tv_address_building"
         app:layout_constraintStart_toEndOf="@id/iv_building"
         app:layout_constraintEnd_toStartOf="@id/tv_building_height"
-        android:textColor="#BF5C12"
+        android:textColor="@color/color_on_item_building"
         android:textSize="12dp"
+        android:textFontWeight="800"
         tools:text="Башня: "
         />
 
@@ -74,11 +75,12 @@
         app:layout_constraintTop_toBottomOf="@id/tv_address_building"
         app:layout_constraintStart_toEndOf="@id/tv_building_type"
         android:textColor="#C51162"
+        android:textFontWeight="800"
         android:textSize="12dp"
         tools:text="72.5м"
         />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/tv_employee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,13 +88,34 @@
         app:layout_constraintStart_toEndOf="@id/iv_building"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Карасев М"
-        />
+        />-->
+    <TextView
+        android:id="@+id/tv_measures_done_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:textSize="12dp"
+        app:layout_constraintTop_toTopOf="@id/iv_checked"
+        app:layout_constraintEnd_toStartOf="@id/iv_checked"
+        android:text="@string/measures_done_text"/>
+
+    <TextView
+        android:id="@+id/tv_measures_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_checked"
+        app:layout_constraintEnd_toStartOf="@id/iv_checked"
+        app:layout_constraintTop_toBottomOf="@id/tv_measures_done_text"
+        tools:text="30.12.2023"/>
 
     <ImageView
+        android:id="@+id/iv_checked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_address_building"
+        app:layout_constraintTop_toBottomOf="@id/tv_building_height"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/checkmark_svgrepo_com"
         />

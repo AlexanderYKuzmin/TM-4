@@ -3,10 +3,13 @@
     <string name="invalid_username">Недопустимое имя пользователя</string>
     <string name="invalid_password">Пароль должен содержать не менее 6 символов</string>
 
-    <string name="autorization">Авторизация</string>
+    <string name="authorization_success">Авторизация прошла успешно.</string>
+    <string name="authorization_canceled">Авторизация отменена.</string>
+    <string name="authorization_error">Ошибка авторизации.</string>
+
+    <string name="authorization">Авторизация</string>
     <string name="username_hint">Пользователь</string>
     <string name="password_hint">Пароль</string>
     <string name="sign_in_button">Вход</string>
     <string name="cancel_button">Отмена</string>
-
 </resources>

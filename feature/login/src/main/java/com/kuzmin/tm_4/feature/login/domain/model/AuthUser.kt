@@ -2,6 +2,8 @@ package com.kuzmin.tm_4.feature.login.domain.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.kuzmin.tm_4.common.extension.isNameConsistent
+import com.kuzmin.tm_4.common.extension.isPasswordConsistent
 import com.kuzmin.tm_4.feature.login.util.LoginConstants
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.DEVIATION_TOKEN_LIFE_TIME
 import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_DATE
@@ -63,7 +65,6 @@ data class AuthUser (
                 isTokenValid(token, dateToken)
             } else false
         }
-        return false
     }
 
     private fun isTokenValid(token: String, tokenDate: Long) : Boolean {
@@ -72,5 +73,13 @@ data class AuthUser (
             val tokenExpirationTime = tokenDate + TOKEN_LIFE_TIME - DEVIATION_TOKEN_LIFE_TIME
             currentTime < tokenExpirationTime
         } else false
+    }
+
+    fun isPasswordConsistent(): Boolean {
+        return password.isPasswordConsistent()
+    }
+
+    fun isNameConsistent(): Boolean {
+        return username.isNameConsistent()
     }
 }

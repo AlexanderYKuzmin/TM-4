@@ -1,20 +1,19 @@
 package com.kuzmin.tm_4.core.network
 
-import com.kuzmin.tm_4.core.network.model.SiteListDto
-import com.kuzmin.tm_4.core.network.model.SitePreviewListDto
-import com.kuzmin.tm_4.core.network.model.UserDto
-import com.kuzmin.tm_4.core.network.model.UserSignInDto
+import com.kuzmin.tm_4.core.network.model.site.SiteListDto
+import com.kuzmin.tm_4.core.network.model.preview.SitePreviewListDto
+import com.kuzmin.tm_4.core.network.model.site.SiteDto
+import com.kuzmin.tm_4.core.network.model.user.UserDto
+import com.kuzmin.tm_4.core.network.model.user.UserSignInDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ApiService {
-    @POST("auth/obtain-token")
-    suspend fun getUser(@Body userSignInDto: UserSignInDto): UserDto
+
 
     // http://127.0.0.1:8000/api/v1/sites/search?region_code=22,50&site_name=U
     //http://127.0.0.1:8000/api/v1/sites/search_address/search_string=Bee
@@ -26,26 +25,11 @@ interface ApiService {
         @Query(QUERY_PARAM_REGION_CODE) regionCode: String,
         @Query(QUERY_PARAM_SITE_NAME) siteName: String
     ): SitePreviewListDto*/
+//@Header("Authorization") auth: String
 
     @Headers("Content-Type: application/json")
     @GET("sites/get_sites")
-    suspend fun getSitesSimpleAll(
-        @Header("Authorization") auth: String
-    ): SitePreviewListDto
-
-    @Headers("Content-Type: application/json")
-    @GET("sites/search")
-    suspend fun getSitesSimpleByNames(
-        @Header(HEADER_PARAM_AUTHORIZATION) token: String,
-        @Query(QUERY_PARAM_NAMES) names: String
-    ): SitePreviewListDto
-
-    @Headers("Content-Type: application/json")
-    @GET("sites/search_address/search_string={text}")
-    suspend fun getSitesSimpleByText(
-        @Header(HEADER_PARAM_AUTHORIZATION) token: String,
-        @Path(QUERY_PARAM_TEXT) text: String
-    ): SitePreviewListDto
+    suspend fun getAllSites(): List<SiteDto>
 
     @Headers("Content-Type: application/json")
     @GET("sites/get_site/site_id={ids}")
@@ -53,6 +37,22 @@ interface ApiService {
         @Header(HEADER_PARAM_AUTHORIZATION) token: String,
         @Path(QUERY_PARAM_TEXT) ids: String
     ): SiteListDto
+
+    @Headers("Content-Type: application/json")
+    @GET("sites/search={name}")
+    suspend fun getSitesByNames(
+        @Header(HEADER_PARAM_AUTHORIZATION) token: String,
+        @Path(QUERY_PARAM_NAMES) name: String
+    ): SitePreviewListDto
+
+    @Headers("Content-Type: application/json")
+    @GET("sites/search_address/search_string={text}")
+    suspend fun getSitesByText(
+        @Header(HEADER_PARAM_AUTHORIZATION) token: String,
+        @Path(QUERY_PARAM_TEXT) text: String
+    ): SitePreviewListDto
+
+
 
     /*@GET("top/totalvolfull")
     suspend fun getTopCoinsInfo(

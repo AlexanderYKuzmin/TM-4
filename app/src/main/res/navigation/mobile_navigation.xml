@@ -16,6 +16,15 @@
         <!--<argument
             android:name="constructions"
             app:argType="com.kuzmin.tm_3.domain.model.ConstructionSimple[]" />-->
+        <action
+            android:id="@+id/action_sites_nav_graph_to_login_nav_graph"
+            app:destination="@id/login_nav_graph" />
+        <action
+            android:id="@+id/action_sites_nav_graph_to_measurements_nav_graph"
+            app:destination="@id/measurements_nav_graph" />
+        <action
+            android:id="@+id/action_sites_nav_graph_to_report_nav_graph"
+            app:destination="@id/report_nav_graph" />
     </fragment>
 
     <fragment
@@ -26,6 +35,9 @@
             android:id="@+id/action_navigation_chat_to_single_chat"
             app:destination="@id/single_chat"
             app:popUpTo="@id/navigation_chat" />-->
+        <action
+            android:id="@+id/action_measurements_nav_graph_to_report_nav_graph"
+            app:destination="@id/report_nav_graph" />
     </fragment>
 
     <fragment
