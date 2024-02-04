@@ -1,35 +1,42 @@
 package com.kuzmin.tm_4.feature.sites.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentNavSitesBinding
-import com.kuzmin.tm_4.feature.sites.domain.model.samples.SiteSample
+import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Error
+import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Loading
+import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Success
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class NavSitesLocalFragment : Fragment() {
 
     private var _binding: FragmentNavSitesBinding? = null
     private val binding get() = _binding!!
 
+    /*@Inject
+    lateinit var navController: NavController*/
+
     @Inject
-    lateinit var navController: NavController
+    @ApplicationContext
+    lateinit var appContext: Context
 
-    val buildingList: List<SiteSample> = mutableListOf()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        /*buildingList = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelableArrayList(BUILDING_LIST, ConstructionSimple::class.java) ?:
-            listOf()
-        } else {
-            arguments?.getParcelableArrayList(BUILDING_LIST) ?: listOf()
-        }*/
+    private val navController by lazy {
+        findNavController()
     }
+
+    private val sitesViewModel: SitesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,21 +50,39 @@ class NavSitesLocalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = SitesAdapter()
+        val adapter = SitesAdapter(appContext)
         binding.rvNavSitesLocal.adapter = adapter
 
-        setOnItemBuildingClickListener(adapter)
+        setOnAdapterItemClickActions(adapter)
 
-        adapter.submitList(buildingList)
+        sitesViewModel.observeQuery(viewLifecycleOwner)
+        sitesViewModel.siteResult.observe(viewLifecycleOwner) {
+            when(it) {
+                is Success -> adapter.submitList(it.sites)
+                is Error -> {
+                    Toast.makeText(
+                        appContext,
+                    getString(R.string.error_site_loading) + " " + it.throwable.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                Log.d("SitesFragment", "error: ${it.throwable}")}
+                is Loading -> showProgress()
+            }
+        }
     }
 
-    fun setOnItemBuildingClickListener(adapter: SitesAdapter) {
-        /*adapter.onItemSiteClickListener = {
+    private fun showProgress() {
+        Log.d("MainActivity", "Progress ON")
+    }
+
+    fun setOnAdapterItemClickActions(adapter: SitesAdapter) {
+        adapter.onItemClickListener = {
             //findNavController().navigate(R.id.nav_construction, bundleOf(BUILDING_ID to it))
-        }*/
-    }
+            Log.d("MainActivity", "On item click! ID: $it")
+        }
 
-    companion object {
-        const val BUILDING_LIST = "buildings"
+        /*adapter.onItemLongClickListener = {
+
+        }*/
     }
 }

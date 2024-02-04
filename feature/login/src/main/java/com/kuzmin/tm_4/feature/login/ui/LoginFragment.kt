@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import com.kuzmin.tm_4.common.extension.isNameConsistent
-import com.kuzmin.tm_4.common.extension.isPasswordConsistent
+import androidx.navigation.fragment.findNavController
 import com.kuzmin.tm_4.feature.login.R
 import com.kuzmin.tm_4.feature.login.databinding.FragmentLoginBinding
 import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
 import com.kuzmin.tm_4.feature.login.domain.model.AuthUserState.*
+import com.kuzmin.tm_4.feature.login.domain.model.User
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -29,9 +28,11 @@ class LoginFragment : Fragment(), OnClickListener {
     @Inject
     @ApplicationContext
     lateinit var appContext: Context
-
+/*
     @Inject
-    lateinit var navController: NavController
+    lateinit var navController: NavController*/
+
+
 
     private var loginListener: LoginListener? = null
 
@@ -43,6 +44,10 @@ class LoginFragment : Fragment(), OnClickListener {
     private val loginViewModel: LoginViewModel by viewModels()
 
     //private lateinit var savedStateHandle: SavedStateHandle
+
+    private val navController by lazy {
+        findNavController()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +75,7 @@ class LoginFragment : Fragment(), OnClickListener {
                     is Success<*> -> {
                         Toast.makeText(appContext, getString(R.string.authorization_success), Toast.LENGTH_SHORT).show()
                         close()
-                        //TODO MESSENGER
+                        //TODO MESSENGER OR NOTIFICATION
                     }
                     is Error<*> -> {
                         Toast.makeText(
@@ -99,9 +104,10 @@ class LoginFragment : Fragment(), OnClickListener {
 
 
     override fun onClick(v: View) {
+        Log.d("MainActivity", "Login Fragment onClick")
         with(binding) {
             when(v) {
-                btnLogin -> sendLoginData()
+                btnLogin -> authenticate()
                 btnLoginCancel -> {
                     Toast.makeText(appContext, getString(R.string.authorization_canceled), Toast.LENGTH_SHORT).show()
                     close()
@@ -142,15 +148,14 @@ class LoginFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun sendLoginData() {
+    private fun authenticate() {
+        Log.d("MainActivity", "Login Fragment authenticate()")
         with(binding) {
-            val username = etUsername.text.toString()
-            val password = etPassword.text.toString()
-            with(loginViewModel) {
-                if (!username.isNameConsistent()) etUsername.error = getString(R.string.invalid_username)
-                else if (!password.isPasswordConsistent()) etPassword.error = getString(R.string.invalid_password)
-                else getAuthUserRemote(username, password)
-            }
+            //val username = etUsername.text.toString()
+            //val password = etPassword.text.toString()
+                //if (!username.isNameConsistent()) etUsername.error = getString(R.string.invalid_username)
+                //else if (!password.isPasswordConsistent()) etPassword.error = getString(R.string.invalid_password)
+            loginViewModel.getAuthUser(User(etUsername.text.toString(), etPassword.text.toString()))
         }
     }
 
@@ -166,7 +171,7 @@ class LoginFragment : Fragment(), OnClickListener {
     }*/
 
     private fun close() {
-        loginListener?.onAutorizationFinished(true)
+        loginListener?.onAuthorizationCompleted(true)
         popBackStack()
     }
 
@@ -183,6 +188,6 @@ class LoginFragment : Fragment(), OnClickListener {
     }
 
     interface LoginListener {
-        fun onAutorizationFinished(isClosed: Boolean)
+        fun onAuthorizationCompleted(isClosed: Boolean)
     }
 }

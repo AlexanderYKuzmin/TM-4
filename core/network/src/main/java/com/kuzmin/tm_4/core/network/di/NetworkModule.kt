@@ -2,6 +2,7 @@ package com.kuzmin.tm_4.core.network.di
 
 import com.kuzmin.tm_4.core.network.ApiService
 import com.kuzmin.tm_4.core.network.RequestInterceptor
+import com.kuzmin.tm_4.core.network.TokenContainer
 import com.kuzmin.tm_4.core.network.UserApiService
 import com.kuzmin.tm_4.core.network.di.qualifiers.SiteQualifier
 import com.kuzmin.tm_4.core.network.di.qualifiers.UserQualifier
@@ -12,6 +13,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 private const val BASE_URL = "http://176.119.159.44/api/v1/"
 @Module
@@ -20,10 +22,10 @@ class NetworkModule {
 
     @Provides
     @SiteQualifier
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(requestInterceptor: RequestInterceptor): OkHttpClient {
         return OkHttpClient()
             .newBuilder()
-            .addInterceptor(RequestInterceptor)
+            .addInterceptor(requestInterceptor)
             .build()
     }
 
@@ -50,4 +52,10 @@ class NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(UserApiService::class.java)
     }
+
+    /*@Singleton
+    @Provides
+    fun provideAppToken(): String {
+        return TokenContainer.appToken
+    }*/
 }

@@ -14,4 +14,11 @@ data class AddressSample(
     val subRegion: String,
 
     val postalCode: String,
-)
+) {
+    override fun toString(): String {
+        return String.format(
+            "%S, %S, %S, %S, %S, %S",
+            country, region, subRegion, city, street, building
+        )
+    }
+}

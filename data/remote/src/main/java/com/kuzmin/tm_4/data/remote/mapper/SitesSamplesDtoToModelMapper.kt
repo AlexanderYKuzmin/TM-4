@@ -15,6 +15,7 @@ class SitesSamplesDtoToModelMapper {
 
     private fun mapSiteSampleDtoToSiteSample(siteSampleDto: SiteSampleDto): SiteSample {
         return SiteSample(
+            remoteId = siteSampleDto.id,
             uuid = siteSampleDto.uuid,
             name = siteSampleDto.name,
             type = siteSampleDto.type,
@@ -44,8 +45,9 @@ class SitesSamplesDtoToModelMapper {
             constructionSampleDto.constructionType,
             constructionSampleDto.config,
             constructionSampleDto.heightMm,
-            constructionSampleDto.creationDate.toDate(),
-            constructionSampleDto.completedDate.toDate()
+            constructionSampleDto.creationDate?.toDate(),
+            constructionSampleDto.completedDate?.toDate(),
+            constructionSampleDto.isCompleted
         )
     }
 

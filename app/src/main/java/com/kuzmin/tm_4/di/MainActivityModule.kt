@@ -15,8 +15,8 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(ActivityComponent::class)
 class MainActivityModule {
 
-    @Provides
+    /*@Provides
     fun provideNavController(activity: Activity): NavController {
         return activity.findNavController(R.id.nav_host_fragment_activity_main)
-    }
+    }*/
 }

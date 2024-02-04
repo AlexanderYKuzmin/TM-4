@@ -5,15 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="4dp"
-    android:background="@drawable/item_building_background"
+    android:background="@drawable/item_site_background"
     >
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_building"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
         android:layout_margin="8dp"
         android:src="@drawable/placeholder"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,12 +43,13 @@
         />
     <TextView
         android:id="@+id/tv_address_building"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginEnd="36dp"
         app:layout_constraintTop_toBottomOf="@id/tv_building_name"
         app:layout_constraintStart_toEndOf="@id/iv_building"
+        app:layout_constraintEnd_toEndOf="parent"
         android:textSize="12dp"
         android:textColor="@color/color_on_item_building"
         tools:text="респ. Коми, п. Верхние Зубки, ул. Пономарева, 45"
@@ -62,7 +64,7 @@
         app:layout_constraintStart_toEndOf="@id/iv_building"
         app:layout_constraintEnd_toStartOf="@id/tv_building_height"
         android:textColor="@color/color_on_item_building"
-        android:textSize="12dp"
+        android:textSize="16dp"
         android:textFontWeight="800"
         tools:text="Башня: "
         />
@@ -72,11 +74,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_address_building"
+        app:layout_constraintTop_toTopOf="@id/tv_building_type"
+        app:layout_constraintBottom_toBottomOf="@id/tv_building_type"
         app:layout_constraintStart_toEndOf="@id/tv_building_type"
         android:textColor="#C51162"
         android:textFontWeight="800"
-        android:textSize="12dp"
+        android:textSize="16dp"
         tools:text="72.5м"
         />
 
@@ -95,8 +98,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:textSize="12dp"
-        app:layout_constraintTop_toTopOf="@id/iv_checked"
-        app:layout_constraintEnd_toStartOf="@id/iv_checked"
+        app:layout_constraintTop_toTopOf="@id/tv_measures_date"
+        app:layout_constraintBottom_toBottomOf="@id/tv_measures_date"
+        app:layout_constraintEnd_toStartOf="@id/tv_measures_date"
         android:text="@string/measures_done_text"/>
 
     <TextView
@@ -104,13 +108,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_checked"
-        app:layout_constraintEnd_toStartOf="@id/iv_checked"
-        app:layout_constraintTop_toBottomOf="@id/tv_measures_done_text"
-        tools:text="30.12.2023"/>
+        android:textColor="@color/color_well_done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_building_type"
+        tools:text="25.12.2023"/>
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/iv_checked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,5 +125,5 @@
         app:layout_constraintTop_toBottomOf="@id/tv_building_height"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/checkmark_svgrepo_com"
-        />
+        />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

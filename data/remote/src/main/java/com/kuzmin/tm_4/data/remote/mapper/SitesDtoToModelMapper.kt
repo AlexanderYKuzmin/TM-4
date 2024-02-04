@@ -58,6 +58,7 @@ class SitesDtoToModelMapper {
 
     private fun mapSiteParamsDtoToSiteParams(siteParamsDto: SiteParamsDto): SiteParams {
         return SiteParams(
+            remoteId = siteParamsDto.id,
             name = siteParamsDto.name,
             siteUuid = siteParamsDto.siteUuid,
             description = siteParamsDto.description,

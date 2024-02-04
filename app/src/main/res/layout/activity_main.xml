@@ -25,12 +25,18 @@
             app:title="@string/app_name"
             app:menu="@menu/main_menu"
             app:popupTheme="@style/MainMenuStyle"
-            android:elevation="4dp"
-            />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:elevation="4dp">
 
-    <!--android:theme="@style/TmBarsTheme"-->
-    <!--style="@style/TmToolbar"-->
+            <ImageView
+                android:id="@+id/iv_auth_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="end"
+                android:background="@drawable/light_bulb_off"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -67,5 +73,3 @@
         app:navGraph="@navigation/mobile_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!---->

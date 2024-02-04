@@ -3,6 +3,7 @@ package com.kuzmin.tm_4.feature.sites.domain.model.samples
 import com.kuzmin.tm_4.feature.sites.domain.model.Tenant
 
 data class SiteSample(
+    val remoteId: Long,
 
     val uuid: String,
 
@@ -30,4 +31,10 @@ data class SiteSample(
     //val employee: String,
     //val completed: Boolean,
     //val approved: Boolean,
-)
+) {
+    var isChosen = false
+
+    fun switch() {
+        isChosen = !isChosen
+    }
+}

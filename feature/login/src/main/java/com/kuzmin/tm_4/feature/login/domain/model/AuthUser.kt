@@ -4,15 +4,15 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.kuzmin.tm_4.common.extension.isNameConsistent
 import com.kuzmin.tm_4.common.extension.isPasswordConsistent
-import com.kuzmin.tm_4.feature.login.util.LoginConstants
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.DEVIATION_TOKEN_LIFE_TIME
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_DATE
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_ID
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_NAME
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_PASSWORD
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_TOKEN
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.NO_USER
-import com.kuzmin.tm_4.feature.login.util.LoginConstants.TOKEN_LIFE_TIME
+import com.kuzmin.tm_4.common.util.CommonConstants.DEVIATION_TOKEN_LIFE_TIME
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_DATE
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_ID
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_NAME
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_PASSWORD
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_TOKEN
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_USERNAME
+import com.kuzmin.tm_4.common.util.CommonConstants.TOKEN_LIFE_TIME
+
 import java.util.Date
 
 data class AuthUser (
@@ -25,7 +25,7 @@ data class AuthUser (
     val lastName: String = NO_NAME
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString() ?: NO_USER,
+        parcel.readString() ?: NO_USERNAME,
         parcel.readString() ?: NO_PASSWORD,
         parcel.readString() ?: NO_TOKEN,
         parcel.readLong(),
@@ -34,6 +34,8 @@ data class AuthUser (
         parcel.readString() ?: NO_NAME,
     ) {
     }
+
+    val authToken: String get() = "Bearer $token"
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(username)
@@ -57,29 +59,5 @@ data class AuthUser (
         override fun newArray(size: Int): Array<AuthUser?> {
             return arrayOfNulls(size)
         }
-    }
-
-    fun isValid(): Boolean {
-        with(this) {
-            return if (token != NO_TOKEN && dateToken != NO_DATE) {
-                isTokenValid(token, dateToken)
-            } else false
-        }
-    }
-
-    private fun isTokenValid(token: String, tokenDate: Long) : Boolean {
-        return if (token.trim().length > 10) {
-            val currentTime = Date().time
-            val tokenExpirationTime = tokenDate + TOKEN_LIFE_TIME - DEVIATION_TOKEN_LIFE_TIME
-            currentTime < tokenExpirationTime
-        } else false
-    }
-
-    fun isPasswordConsistent(): Boolean {
-        return password.isPasswordConsistent()
-    }
-
-    fun isNameConsistent(): Boolean {
-        return username.isNameConsistent()
     }
 }

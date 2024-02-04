@@ -5,7 +5,7 @@ import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
 import java.util.*
 
 object AuthValidation {
-    fun isAuthUserValid(authUser: AuthUser?): Boolean {
+    /*fun isAuthUserValid(authUser: AuthUser?): Boolean {
         authUser?.let {
             with(it) {
                 return if (token != LoginConstants.NO_TOKEN && dateToken != LoginConstants.NO_DATE) {
@@ -30,5 +30,5 @@ object AuthValidation {
 
     fun isNameConsistent(name: String): Boolean {
         return name.trim().length > 2
-    }
+    }*/
 }

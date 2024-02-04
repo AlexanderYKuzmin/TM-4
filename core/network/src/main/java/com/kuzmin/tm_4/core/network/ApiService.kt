@@ -2,6 +2,8 @@ package com.kuzmin.tm_4.core.network
 
 import com.kuzmin.tm_4.core.network.model.site.SiteListDto
 import com.kuzmin.tm_4.core.network.model.preview.SitePreviewListDto
+import com.kuzmin.tm_4.core.network.model.preview.SiteSampleDto
+import com.kuzmin.tm_4.core.network.model.preview.SitesSampleDtoObj
 import com.kuzmin.tm_4.core.network.model.site.SiteDto
 import com.kuzmin.tm_4.core.network.model.user.UserDto
 import com.kuzmin.tm_4.core.network.model.user.UserSignInDto
@@ -29,28 +31,29 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @GET("sites/get_sites")
-    suspend fun getAllSites(): List<SiteDto>
+    suspend fun getAllSites(
+        @Header(HEADER_PARAM_AUTHORIZATION) token: String
+    ): SitesSampleDtoObj
 
     @Headers("Content-Type: application/json")
     @GET("sites/get_site/site_id={ids}")
     suspend fun getSitesById(
-        @Header(HEADER_PARAM_AUTHORIZATION) token: String,
         @Path(QUERY_PARAM_TEXT) ids: String
-    ): SiteListDto
+    ): List<SiteDto>
 
     @Headers("Content-Type: application/json")
     @GET("sites/search={name}")
-    suspend fun getSitesByNames(
+    suspend fun getSitesByName(
         @Header(HEADER_PARAM_AUTHORIZATION) token: String,
         @Path(QUERY_PARAM_NAMES) name: String
-    ): SitePreviewListDto
+    ): SitesSampleDtoObj
 
     @Headers("Content-Type: application/json")
     @GET("sites/search_address/search_string={text}")
-    suspend fun getSitesByText(
+    suspend fun getSitesByAddress(
         @Header(HEADER_PARAM_AUTHORIZATION) token: String,
-        @Path(QUERY_PARAM_TEXT) text: String
-    ): SitePreviewListDto
+        @Path(QUERY_PARAM_TEXT) address: String
+    ): List<SiteDto>
 
 
 

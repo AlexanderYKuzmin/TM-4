@@ -1,6 +1,7 @@
 package com.kuzmin.tm_4.feature.sites.domain.model.sites
 
 data class SiteParams(
+    val remoteId: Long,
 
     val name: String,
 

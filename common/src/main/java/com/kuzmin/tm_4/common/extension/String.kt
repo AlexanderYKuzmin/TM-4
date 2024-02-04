@@ -14,6 +14,11 @@ fun String.isPasswordConsistent(): Boolean {
     return trim().length > 7
 }
 
+fun String.isConsistentQuery(): Boolean {
+    //TODO check it out
+    return true
+}
+
 fun String.toSqlDate(): Date? {
     return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this)?.let {
         Date(

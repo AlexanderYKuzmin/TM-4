@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -58,6 +59,8 @@ dependencies {
 
     implementation(DaggerHilt.hilt)
     kapt(DaggerHilt.hilt_compiler)
+
+    implementation(Picasso.picasso)
 
 
     testImplementation("junit:junit:4.13.2")

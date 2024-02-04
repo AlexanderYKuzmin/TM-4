@@ -55,12 +55,6 @@
         android:name="com.kuzmin.tm_4.feature.login.ui.LoginFragment"
         tools:layout="@layout/fragment_login"
         >
-        <argument
-            android:name="@string/is_auth_data_changed"
-            app:argType="boolean" />
-        <argument
-            android:name="@string/username"
-            app:argType="string" />
 
     </fragment>
 

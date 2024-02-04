@@ -10,6 +10,8 @@ object Version {
     const val retrofit2_version = "2.9.0"
     const val gson_version = "2.9.0"
 
+    const val okHttp_version = "4.12.0"
+
     const val lifecycle_version = "2.6.1"
 
     const val fragment_version = "1.6.2"
@@ -17,6 +19,8 @@ object Version {
 
     const val datastore_preferences_version = "1.0.0"
     const val datastore_annotations_version = "1.6.0"
+
+    const val picasso_version = "2.71828"
 }
 
 object Deps {
@@ -52,6 +56,11 @@ object Retrofit {
     const val retrofit_converter_gson = "com.squareup.retrofit2:converter-gson:${Version.retrofit2_version}"
 }
 
+object OkHttp {
+    const val okHttp = "com.squareup.okhttp3:okhttp:${Version.okHttp_version}"
+    const val logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${Version.okHttp_version}"
+}
+
 object Gson {
     const val gson = "com.google.code.gson:gson:${Version.gson_version}"
 }
@@ -59,4 +68,8 @@ object Gson {
 object DataStore {
     const val datastore_preferences = "androidx.datastore:datastore-preferences:1.0.0"
     const val datastore_annotations = "androidx.annotation:annotation:1.6.0"
+}
+
+object Picasso {
+    const val picasso = "com.squareup.picasso:picasso:${Version.picasso_version}"
 }

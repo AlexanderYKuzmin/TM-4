@@ -43,6 +43,9 @@ dependencies {
     implementation(Retrofit.retrofit_converter_gson)
     implementation(Gson.gson)
 
+    implementation(OkHttp.okHttp)
+    implementation(OkHttp.logging_interceptor)
+
     implementation(DaggerHilt.hilt)
     kapt(DaggerHilt.hilt_compiler)
 

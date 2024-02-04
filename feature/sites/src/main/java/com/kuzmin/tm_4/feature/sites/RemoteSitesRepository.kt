@@ -6,7 +6,7 @@ import com.kuzmin.tm_4.feature.sites.domain.model.samples.SiteSample
 interface RemoteSitesRepository {
     suspend fun getAllSites(): List<SiteSample>
 
-    suspend fun getSiteById(id: String): List<Site>
+    suspend fun getSitesById(id: String): List<Site>
 
-    suspend fun getSiteByName(name: String): List<Site>
+    suspend fun getSitesByName(name: String): List<SiteSample>
 }

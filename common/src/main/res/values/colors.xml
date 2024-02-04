@@ -25,10 +25,11 @@
     <color name="color_item_building">#9F97F5</color>
     <color name="color_shadow">#D9000000</color>
     <color name="color_on_item_building">#372F85</color>
+    <color name="color_well_done">#2E7D32</color>
+    <color name="color_danger">#FF1744</color>
 
     <!--Item site remote background-->
     <color name="color_item_site_remote">#D1D0C9</color>
-
 
     <!--title color-->
     <color name="color_title">#5C3904</color>

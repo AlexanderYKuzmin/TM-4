@@ -39,7 +39,6 @@ android {
 
 dependencies {
 
-    //implementation(project(":data:remote"))
     implementation(project(":common"))
 
     implementation(Deps.core)

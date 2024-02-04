@@ -6,4 +6,5 @@ import javax.inject.Inject
 class GetAllSitesUseCase @Inject constructor(
     private val remoteSitesRepository: RemoteSitesRepository
 ) {
+    suspend operator fun invoke() = remoteSitesRepository.getAllSites()
 }

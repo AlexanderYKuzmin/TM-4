@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="measures_done_text">Измерения проведены:</string>
+    <string name="measures_none">Нет</string>
+
+    <string name="error_site_loading">Ошибка загрузки с сервера</string>
+
+<!--
+    <string name="tower">Башня</string>
+    <string name="mast">Мачта</string>
+    <string name="pole">Столб</string>-->
 </resources>

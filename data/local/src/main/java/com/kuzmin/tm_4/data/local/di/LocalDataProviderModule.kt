@@ -2,8 +2,7 @@ package com.kuzmin.tm_4.data.local.di
 
 import android.content.Context
 import com.kuzmin.tm_4.data.local.datastore.PrefManagerImpl
-import com.kuzmin.tm_4.feature.login.data.PrefManager
-import dagger.Binds
+import com.kuzmin.tm_4.feature.login.api.PrefManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +19,6 @@ class LocalDataProviderModule {
     }
     /*@Binds
     fun bindPrefManager(prefManagerImpl: PrefManagerImpl): PrefManager*/
+
+
 }

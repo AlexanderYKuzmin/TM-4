@@ -12,8 +12,11 @@ data class ConstructionSampleDto(
     val heightMm: Int,
 
     @SerializedName("creation_date")
-    val creationDate: String,        //yyyy-MM-dd
+    val creationDate: String = "2023-12-25",        //yyyy-MM-dd
 
     @SerializedName("completed_date")
-    val completedDate: String       //yyyy-MM-dd
+    val completedDate: String? = null,       //yyyy-MM-dd
+
+    @SerializedName("is_completed")
+    val isCompleted: Boolean = false
 )
