@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_margin="8dp">
+
+    <TableRow>
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/construction_version"
+            />
+        <TextView
+            android:id="@+id/tv_constr_version"
+            style="@style/ConstructionParamsTextViewValues"
+            android:layout_span="3"
+            tools:text="2"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/construction_description"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_desc"
+            style="@style/ConstructionParamsTextViewValues"
+            android:layout_span="3"
+            tools:text="Башня возле дороги 90м"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/construction_type"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_type"
+            style="@style/ConstructionParamsTextViewValues"
+            tools:text="Башня"
+            />
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/construction_config"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_config"
+            style="@style/ConstructionParamsTextViewValues"
+            android:gravity="center"
+            tools:text="4"
+            />
+
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/construction_height"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_height"
+            style="@style/ConstructionParamsTextViewValues"
+            tools:text="60м"
+            />
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/construction_sections"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_sections"
+            style="@style/ConstructionParamsTextViewValues"
+            android:gravity="center"
+            tools:text="4"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/measure_employee_name"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_employee"
+            style="@style/ConstructionParamsTextViewValues"
+            tools:text="Петров"
+            />
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/measure_date"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_measure_date"
+            style="@style/ConstructionParamsTextViewValues"
+            tools:text="2023-12-25"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            style="@style/ConstructionParamsTextView"
+            android:text="@string/measure_conclusion"
+            />
+        <TextView
+            android:id="@+id/tv_site_constr_conclusion"
+            style="@style/ConstructionParamsTextViewValues"
+            android:layout_span="2"
+            android:textColor="@color/color_danger"
+            tools:text="@string/measure_satisfied_no"
+
+            />
+    </TableRow>
+</TableLayout>

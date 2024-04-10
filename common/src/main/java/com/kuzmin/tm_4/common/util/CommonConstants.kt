@@ -20,6 +20,14 @@ object CommonConstants {
     const val SEARCH_ALL = ""
 
     const val TOKEN = "token"
-    const val TOKEN_LIFE_TIME = 86400000L
-    const val DEVIATION_TOKEN_LIFE_TIME = 20000L
+    const val TOKEN_LIFE_TIME = 86_400_000L
+    const val DEVIATION_TOKEN_LIFE_TIME = 20_000L
+
+
+    /*//Fragment arguments keys
+    const val SITE_ID = "site_id"
+    const val STORAGE_POS_FLAG = "storage_position"*/
+
+    const val STORAGE_LOCAL = 5000
+    const val STORAGE_SERVER = 5001
 }

@@ -42,6 +42,8 @@ dependencies {
     implementation(Deps.core)
     //implementation("androidx.appcompat:appcompat:1.6.1")
     //implementation("com.google.android.material:material:1.11.0")
+    implementation(OkHttp.okHttp)
+    implementation(OkHttp.logging_interceptor)
 
     implementation(DaggerHilt.hilt)
     kapt(DaggerHilt.hilt_compiler)

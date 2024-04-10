@@ -1,5 +1,6 @@
 package com.kuzmin.tm_4.data.remote.repository
 
+import android.util.Log
 import com.kuzmin.tm_4.common.util.CommonConstants.NO_PASSWORD
 import com.kuzmin.tm_4.core.network.UserApiService
 import com.kuzmin.tm_4.core.network.model.user.UserSignInDto
@@ -15,6 +16,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun authenticate(user: User): AuthUser {
         try {
             val tempUser = userApiService.getUser(UserSignInDto(user.username, user.password))
+            Log.d("Auth", "tempUser = $tempUser")
             with(tempUser) {
                 return AuthUser(
                     username = username,
@@ -27,7 +29,7 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             }
         } catch (e: Exception) {
-            TODO("Not yet implemented")
+            throw RuntimeException("ERROR: ${e.stackTrace}")
         }
     }
 }

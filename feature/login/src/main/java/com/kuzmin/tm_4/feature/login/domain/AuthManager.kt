@@ -1,6 +1,8 @@
 package com.kuzmin.tm_4.feature.login.domain
 
+import android.util.Log
 import com.kuzmin.tm_4.common.util.CommonConstants
+import com.kuzmin.tm_4.feature.login.api.PrefManager
 import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
 import com.kuzmin.tm_4.feature.login.domain.model.User
 import com.kuzmin.tm_4.feature.login.domain.usecases.GetAuthUserRemoteUseCase
@@ -10,36 +12,45 @@ import java.util.Date
 import javax.inject.Inject
 
 class AuthManager @Inject constructor(
-    private val readAuthUserDatastoreUseCase: ReadAuthUserDatastoreUseCase,
-    private val writeAuthUserDatastoreUseCase: WriteAuthUserDatastoreUseCase,
-    private val getAuthUserRemoteUseCase: GetAuthUserRemoteUseCase
+    private val prefManager: PrefManager,
+    private val authorizeUseCase: GetAuthUserRemoteUseCase
 ) {
 
-    suspend fun getAuthUser(user: User): AuthUser { // TODO переделать чтобы рефреш был а не просто вернуть auth
-        var auth = readAuthUserDatastoreUseCase()
-        if (isAuthUserValid(auth)) return auth
+    suspend fun saveAuthUser(authUser: AuthUser) {
+        prefManager.writeData(authUser)
+    }
 
-        auth = getAuthUserRemoteUseCase(user)
-        if (isAuthUserValid(auth)) {
-            writeAuthUserDatastoreUseCase(auth)
-            return auth
-        }
-        throw RuntimeException()
+    suspend fun getAuthUser(): AuthUser? {
+        val auth = prefManager.readData()
+        return if (isAuthUserValid(auth)) auth else null
+    }
+
+    suspend fun getUser(): User {
+        return prefManager.readUserData()
     }
 
     suspend fun getToken(): String {
-        return readAuthUserDatastoreUseCase().authToken
+        return prefManager.readData().authToken
+    }
+
+    suspend fun authorize(user: User): AuthUser {
+        val auth = authorizeUseCase(user)
+        return if (isAuthUserValid(auth)) {
+            prefManager.writeData(auth)
+            auth
+        } else throw RuntimeException("Authorization attempt error!")
+    }
+
+    suspend fun cancelAuthorization() {
+        prefManager.clearAuthData()
     }
 
     suspend fun isUserAuthorized(): Boolean {
-        return isAuthUserValid(readAuthUserDatastoreUseCase())
+        return isAuthUserValid(prefManager.readData())
     }
 
-    /*suspend fun obtainToken(): String {
-        return ""
-    }*/
-
     private fun isAuthUserValid(authUser: AuthUser): Boolean {
+        Log.d("MainActivity", "isAuthUser valid authUser: $authUser")
         with(this) {
             return if (authUser.token != CommonConstants.NO_TOKEN && authUser.dateToken != CommonConstants.NO_DATE) {
                 isTokenValid(authUser.token, authUser.dateToken)
@@ -51,6 +62,7 @@ class AuthManager @Inject constructor(
         return if (token.trim().length > 10) {
             val currentTime = Date().time
             val tokenExpirationTime = tokenDate + CommonConstants.TOKEN_LIFE_TIME - CommonConstants.DEVIATION_TOKEN_LIFE_TIME
+            Log.d("MainActivity", "${currentTime - tokenExpirationTime}")
             currentTime < tokenExpirationTime
         } else false
     }

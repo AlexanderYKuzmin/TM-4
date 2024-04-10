@@ -8,7 +8,7 @@ data class Photo (
 
     val name: String,
 
-    val date: Date?,
+    val date: Date, //nullable or not need to be resolved
 
     val url: String,
 

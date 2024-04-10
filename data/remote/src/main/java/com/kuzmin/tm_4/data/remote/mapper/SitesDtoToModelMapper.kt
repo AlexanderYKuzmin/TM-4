@@ -1,8 +1,10 @@
 package com.kuzmin.tm_4.data.remote.mapper
 
+import android.util.Log
 import com.kuzmin.tm_4.common.extension.getX
 import com.kuzmin.tm_4.common.extension.getY
 import com.kuzmin.tm_4.common.extension.toDate
+import com.kuzmin.tm_4.common.extension.toMmInt
 import com.kuzmin.tm_4.core.network.model.site.AddressDto
 import com.kuzmin.tm_4.core.network.model.site.ConstructionDto
 import com.kuzmin.tm_4.core.network.model.site.GroupDto
@@ -33,8 +35,8 @@ import java.util.Date
 
 class SitesDtoToModelMapper {
 
-    fun mapSitesDtoToSites(sitesDto: List<SiteDto>): List<Site> {
-        return sitesDto.map {
+    fun mapSitesDtoToSites(sitesDto: List<SiteDto>?): List<Site>? {
+        return sitesDto?.map {
             mapSiteDtoToSite(it)
         }
     }
@@ -50,7 +52,7 @@ class SitesDtoToModelMapper {
             constructionsLevels = mapConstructionsLevelsDtoToConstructionsLevels(siteDto.constructionsLevelsDto),
             constructionsSections = mapConstructionsSectionsDtoToConstructionsSections(siteDto.constructionsSectionsDto),
             measurementsConstructions = mapMeasurementConstructionsDtoToMeasurementConstructions(siteDto.measurementsConstructionsDto),
-            measurementsGroupsDto = mapMeasurementGroupsDtoToMeasurementGroups(siteDto.measurementsGroupsDto),
+            measurementsGroups = mapMeasurementGroupsDtoToMeasurementGroups(siteDto.measurementsGroupsDto),
             measurements = mapMeasurementsDtoToMeasurements(siteDto.measurementsDto),
             results = mapResultsDtoToResults(siteDto.resultsDto)
         )
@@ -58,7 +60,7 @@ class SitesDtoToModelMapper {
 
     private fun mapSiteParamsDtoToSiteParams(siteParamsDto: SiteParamsDto): SiteParams {
         return SiteParams(
-            remoteId = siteParamsDto.id,
+            //remoteId = siteParamsDto.id,
             name = siteParamsDto.name,
             siteUuid = siteParamsDto.siteUuid,
             description = siteParamsDto.description,
@@ -90,8 +92,8 @@ class SitesDtoToModelMapper {
         )
     }
 
-    private fun mapConstructionsLevelsDtoToConstructionsLevels(constructionsLevelsDto: List<LevelDto>): List<Level> {
-        return if (constructionsLevelsDto.isEmpty()) {
+    private fun mapConstructionsLevelsDtoToConstructionsLevels(constructionsLevelsDto: List<LevelDto>?): List<Level> {
+        return if (constructionsLevelsDto.isNullOrEmpty()) {
             emptyList()
         } else {
             constructionsLevelsDto.map { mapConstructionLevelDtoToConstructionLevel(it) }
@@ -153,6 +155,7 @@ class SitesDtoToModelMapper {
         return if (measurementConstructionsDto.isEmpty()) {
             emptyList()
         } else {
+            Log.d("Site", "MC dto length ${measurementConstructionsDto.size}")
             measurementConstructionsDto.map {
                 mapMeasurementConstructionDtoToMeasurementConstruction(it)
             }
@@ -236,8 +239,8 @@ class SitesDtoToModelMapper {
             shiftDeg = resultDto.shiftDeg,
             shiftMm = resultDto.shiftMm,
             tanAlpha = resultDto.tanAlpha,
-            distToMeasureLevel = resultDto.distToMeasureLevel,
-            distDelta = resultDto.distDelta,
+            distToMeasureLevel = resultDto.distToMeasureLevel.toMmInt(),
+            distDelta = resultDto.distDelta.toMmInt(),
             betaAverageLeft = resultDto.betaAverageLeft,
             betaAverageRight = resultDto.betaAverageRight,
             betI = resultDto.betI,
@@ -259,7 +262,7 @@ class SitesDtoToModelMapper {
         return Photo(
             uuid = photoDto.uuid,
             name = photoDto.name,
-            date = photoDto.date.toDate(),
+            date = photoDto.date.toDate() ?: Date(),
             url = photoDto.url,
             urlThumbnail = photoDto.urlThumbnail,
             employeeId = photoDto.employeeId,

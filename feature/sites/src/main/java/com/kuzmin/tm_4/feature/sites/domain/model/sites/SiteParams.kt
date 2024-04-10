@@ -1,11 +1,14 @@
 package com.kuzmin.tm_4.feature.sites.domain.model.sites
 
-data class SiteParams(
-    val remoteId: Long,
+import com.kuzmin.tm_4.common.util.DegreeConverter
+import java.util.UUID
 
-    val name: String,
+data class SiteParams(
+    //val uuid: String = UUID.randomUUID().toString(),
 
     val siteUuid: String,
+
+    val name: String,
 
     val description: String = "",
 
@@ -16,4 +19,6 @@ data class SiteParams(
     val siteType: Int = 0,
 
     val siteTypeDescription: String = ""
-)
+) {
+    val coordinates: String get() = DegreeConverter.doublesPairToDegreeString(latitude, longitude)
+}

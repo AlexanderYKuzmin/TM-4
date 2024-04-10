@@ -5,6 +5,37 @@
 
     <string name="error_site_loading">Ошибка загрузки с сервера</string>
 
+    <!--Arguments-->
+    <!--<string name="site_id">site_id</string>
+    <string name="storage_posi"-->
+
+
+    <!--Site Fragment-->
+    <string name="site_address">Адрес:</string>
+    <string name="site_position">Координаты:</string>
+    <string name="site_type">Тип сайта:</string>
+    <string name="site_description">Описание:</string>
+
+    <string name="site_owner">Владелец:</string> <!--Сюда же логотип-->
+
+    <string name="construction_version">Версия:</string>
+    <string name="construction_description">Конструкция:</string>
+    <string name="construction_type">Тип:</string>
+    <string name="construction_config">Конфигурация:</string>
+    <string name="construction_height">Высота:</string>
+    <string name="construction_sections">Кол-во секций:</string>
+
+    <string name="measure_employee_name">Исполнитель:</string>
+    <string name="measure_date">Дата:</string>
+    <string name="measure_conclusion">Состояние:</string>  <!--Удовлетворительное или нет-->
+    <string name="measure_satisfied_yes">Удовлетворительно</string>
+    <string name="measure_satisfied_no">Неудовлетворительно</string>
+
+<!--status-->
+    <string name="unsatisfactory">Аварийное</string>
+    <string name="satisfactory">Удовлетворительно</string>
+    <string name="none">Измерения не проводились</string>
+
 <!--
     <string name="tower">Башня</string>
     <string name="mast">Мачта</string>

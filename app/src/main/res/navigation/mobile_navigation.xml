@@ -5,26 +5,50 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/sites_nav_graph">
 
+    <!--<include app:graph="@navigation/sites_navigation" />-->
     <fragment
         android:id="@id/sites_nav_graph"
-        android:name="com.kuzmin.tm_4.feature.sites.ui.NavSitesLocalFragment"
+        android:name="com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment"
         tools:layout="@layout/fragment_nav_sites" >
-
-        <!--<action
-            android:id="@+id/action_navigation_objects_to_nav_construction"
-            app:destination="@id/nav_construction" />-->
-        <!--<argument
-            android:name="constructions"
-            app:argType="com.kuzmin.tm_3.domain.model.ConstructionSimple[]" />-->
         <action
-            android:id="@+id/action_sites_nav_graph_to_login_nav_graph"
+            android:id="@id/action_sites_nav_graph_to_login_nav_graph"
             app:destination="@id/login_nav_graph" />
         <action
-            android:id="@+id/action_sites_nav_graph_to_measurements_nav_graph"
+            android:id="@id/action_sites_nav_graph_to_measurements_nav_graph"
             app:destination="@id/measurements_nav_graph" />
         <action
-            android:id="@+id/action_sites_nav_graph_to_report_nav_graph"
+            android:id="@id/action_sites_nav_graph_to_report_nav_graph"
             app:destination="@id/report_nav_graph" />
+        <action
+            android:id="@id/action_sites_nav_graph_to_site_nav_graph"
+            app:destination="@id/site_nav_graph" />
+    </fragment>
+
+    <fragment
+        android:id="@id/site_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.sites.ui.SiteNavGraphFragment"
+        tools:layout="@layout/fragment_site"
+        android:label="{title}"
+        >
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="site_id"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="storage"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+        <!--<action
+            android:id="@id/action_site_nav_graph_to_measurements_nav_graph"
+            app:destination="@id/measurements_nav_graph" />
+        <action
+            android:id="@id/action_site_nav_graph_to_report_nav_graph"
+            app:destination="@id/report_nav_graph" />-->
     </fragment>
 
     <fragment
@@ -36,7 +60,7 @@
             app:destination="@id/single_chat"
             app:popUpTo="@id/navigation_chat" />-->
         <action
-            android:id="@+id/action_measurements_nav_graph_to_report_nav_graph"
+            android:id="@id/action_measurements_nav_graph_to_report_nav_graph"
             app:destination="@id/report_nav_graph" />
     </fragment>
 
@@ -53,8 +77,7 @@
     <fragment
         android:id="@id/login_nav_graph"
         android:name="com.kuzmin.tm_4.feature.login.ui.LoginFragment"
-        tools:layout="@layout/fragment_login"
-        >
+        tools:layout="@layout/fragment_login">
 
     </fragment>
 

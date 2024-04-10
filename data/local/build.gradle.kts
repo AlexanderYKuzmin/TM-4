@@ -35,6 +35,8 @@ android {
 
 dependencies {
     implementation(project(":feature:login"))
+    implementation(project(":feature:sites"))
+    implementation(project(":core:database"))
     implementation(project(":common"))
 
     implementation("androidx.core:core-ktx:1.12.0")

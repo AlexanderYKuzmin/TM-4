@@ -19,18 +19,29 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kuzmin.tm_4.R
-import com.kuzmin.tm_4.common.R.color
+import com.kuzmin.tm_4.common.R.*
+import com.kuzmin.tm_4.common.R.id.*
 import com.kuzmin.tm_4.common.extension.dpToIntPx
+import com.kuzmin.tm_4.common.extension.hideKeyboard
 import com.kuzmin.tm_4.databinding.ActivityMainBinding
 import com.kuzmin.tm_4.feature.login.ui.LoginFragment
+import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment
+import com.kuzmin.tm_4.feature.sites.ui.SitesFragment
 import com.kuzmin.tm_4.model.AppState
+import com.kuzmin.tm_4.model.AuthState
 import com.kuzmin.tm_4.model.ScreenMode
+import com.kuzmin.tm_4.model.ScreenMode.*
 import com.kuzmin.tm_4.model.ToolbarState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
+class MainActivity :
+    AppCompatActivity(),
+    LoginFragment.LoginListener,
+   SitesFragment.OnSitesAdapterClickListener
+{
     private lateinit var _binding: ActivityMainBinding
 
     private val viewModel: MainActivityViewModel by viewModels()
@@ -57,9 +68,9 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
         //navView.isActivated = false
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.sites_nav_graph,
-                R.id.measurements_nav_graph,
-                R.id.report_nav_graph
+                sites_nav_graph,
+                measurements_nav_graph,
+                report_nav_graph
             )
         )
 
@@ -84,6 +95,7 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, "OnQueryTextSubmitted")
                 viewModel.handleSearchQuery(query)
+                hideKeyboard(_binding.root)
                 return true
             }
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -162,32 +174,39 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
             }
             else ContextCompat.getDrawable(this, R.drawable.light_bulb_off)
         )
+
+        //_binding.toolbar.title = getString(R.string)
     }
 
     private fun renderUi(appState: AppState) {
         Log.d("MainActivity", "RENDER UI")
 
         when (appState.mode) {
-            ScreenMode.AUTHORIZATION -> {
+            AUTHORIZATION -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 switchBottombarState(false)
                 launchAuthFragment()
             }
-            ScreenMode.HOME -> {
+            HOME -> {
                 Log.d("navigation", "mode = ${appState.mode.name}")
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 switchBottombarState(true)
                 //binding.navView.visibility = View.VISIBLE
             }
-            ScreenMode.SEARCH_ON_SERVER -> {
+            SEARCH_ON_SERVER -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 supportActionBar?.setDisplayShowHomeEnabled(true)
             }
+            SITE_SELECTED -> {
+                Log.d("Navigation", "mode = ${appState.mode.name}")
+                //searchView.visibility = View.GONE
+                _binding.toolbar.collapseActionView()
+            }
             else -> {
                 //supportActionBar?.setDisplayShowHomeEnabled(true)
-                //supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
             }
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
@@ -217,11 +236,28 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
             textSize = 24f
             setTextColor(ContextCompat.getColor(this@MainActivity, color.color_title))
         }
+    }
 
+    private fun setBottomNavListeners(navView: BottomNavigationView) {
+        navView.setOnItemSelectedListener {
+            when(it.itemId) {
+                sites_nav_graph -> {
+                    navController.popBackStack(sites_nav_graph, false)
+
+                }
+                measurements_nav_graph -> {
+                    TODO()
+                }
+                report_nav_graph -> {
+                    TODO()
+                }
+                else -> throw RuntimeException("Wrong MenuItem's Id!")
+            }
+        }
     }
 
     private fun launchAuthFragment() {
-        navController.navigate(R.id.login_nav_graph)
+        navController.navigate(login_nav_graph)
     }
 
     private fun launchSitesRemoteFragment(token: String) {
@@ -246,7 +282,13 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
 
     override fun onAuthorizationCompleted(isClosed: Boolean) {
         switchBottombarState(true)
-        viewModel.handleAuthResult(isClosed)
+        viewModel.handleAuthResult(
+            if (isClosed) AuthState.AUTHORIZED else AuthState.CANCELED
+        )
+    }
+
+    override fun onItemSiteClick(name: String) {
+        viewModel.handleSiteSelected(name)
     }
 
     companion object {

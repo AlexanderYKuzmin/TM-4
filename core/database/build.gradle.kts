@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -12,6 +13,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        /*javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }*/
     }
 
     buildTypes {
@@ -34,9 +41,19 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation(Deps.core)
+    implementation(Deps.appCompat)
+    implementation(Deps.material)
+
+    implementation(DataBase.room)
+    implementation(DataBase.room_commmon)
+    kapt(DataBase.room_kapt_compiler)
+    implementation(DataBase.room_paging)
+    implementation(DataBase.room_ktx)
+
+    implementation(DaggerHilt.hilt)
+    kapt(DaggerHilt.hilt_compiler)
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

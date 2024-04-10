@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.kuzmin.tm_4.feature.login.R
 import com.kuzmin.tm_4.feature.login.databinding.FragmentLoginBinding
 import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUserState.*
+import com.kuzmin.tm_4.feature.login.domain.model.AuthUserResult.*
 import com.kuzmin.tm_4.feature.login.domain.model.User
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -45,9 +45,7 @@ class LoginFragment : Fragment(), OnClickListener {
 
     //private lateinit var savedStateHandle: SavedStateHandle
 
-    private val navController by lazy {
-        findNavController()
-    }
+    private val navController by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,12 +67,16 @@ class LoginFragment : Fragment(), OnClickListener {
             btnLoginCancel.setOnClickListener(this@LoginFragment)
         }
 
+        loginViewModel.userdata.observe(viewLifecycleOwner) {
+            showAuthUserForm(it)
+        }
+
         with(loginViewModel) {
-            authUserState.observe(viewLifecycleOwner) {
+            authUserResult.observe(viewLifecycleOwner) {
                 when(it) {
                     is Success<*> -> {
                         Toast.makeText(appContext, getString(R.string.authorization_success), Toast.LENGTH_SHORT).show()
-                        close()
+                        close(true)
                         //TODO MESSENGER OR NOTIFICATION
                     }
                     is Error<*> -> {
@@ -83,10 +85,12 @@ class LoginFragment : Fragment(), OnClickListener {
                             getString(R.string.authorization_error) + " " + it.throwable.toString(),
                             Toast.LENGTH_SHORT).show()
                         Log.d("LoginFragment", "error: ${it.throwable.toString()}")
+                        showAuthUserForm(it.user)
                     }
-                    is Default<*> -> {
-                        showAuthUserForm(it.authUser as AuthUser)
-                    }
+                    /*is Default<*> -> {
+                        showAuthUserForm(it)
+                    }*/
+                    else -> throw RuntimeException("Unexpected statement.")
                 }
             }
         }
@@ -102,7 +106,6 @@ class LoginFragment : Fragment(), OnClickListener {
         }
     }
 
-
     override fun onClick(v: View) {
         Log.d("MainActivity", "Login Fragment onClick")
         with(binding) {
@@ -110,76 +113,33 @@ class LoginFragment : Fragment(), OnClickListener {
                 btnLogin -> authenticate()
                 btnLoginCancel -> {
                     Toast.makeText(appContext, getString(R.string.authorization_canceled), Toast.LENGTH_SHORT).show()
-                    close()
+                    loginViewModel.cancelAuthentication()
+                    close(false)
                 }
-
                 else -> {throw RuntimeException("Unknown case")}
             }
         }
     }
 
-    /*private fun setTextChangeListeners() {
-        binding.etUsername.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (AuthValidation.isNameConsistent(s.toString())) {
-                    //TODO set galochka
-                } else binding.etUsername.error = INVALID_USERNAME
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        binding.etPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (AuthValidation.isPasswordConsistent(s.toString())) {
-                    //TODO set galochka
-                } else binding.etPassword.error = INVALID_PASSWORD
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-    }*/
-
-    private fun showAuthUserForm(authUser: AuthUser) {
+    private fun showAuthUserForm(user: User) {
         Log.d("Login", "auth is not succeed")
         with(binding) {
-            etUsername.setText(username)
-            etPassword.setText("h98dGDJx") //TODO change in release
+            etUsername.setText(user.username)
+            etPassword.setText(user.password) // "h98dGDJx"
         }
     }
 
     private fun authenticate() {
         Log.d("MainActivity", "Login Fragment authenticate()")
         with(binding) {
-            //val username = etUsername.text.toString()
-            //val password = etPassword.text.toString()
-                //if (!username.isNameConsistent()) etUsername.error = getString(R.string.invalid_username)
-                //else if (!password.isPasswordConsistent()) etPassword.error = getString(R.string.invalid_password)
-            loginViewModel.getAuthUser(User(etUsername.text.toString(), etPassword.text.toString()))
+            //loginViewModel.authenticate(User(etUsername.text.toString(), etPassword.text.toString()))
+            loginViewModel.authenticate(User(etUsername.text.toString(), "h98dGDJx"))
         }
     }
 
-    /*private fun cancelLogin() {
-        requireActivity().toast(getString(R.string.login_cancel))
-        popBackStack()
-    }
-
-    private fun loginSucceed() {
-        requireActivity().toast(getString(R.string.login_succeed))
-        loginFragmentViewModel.handleLoginSucceed()
-        popBackStack()
-    }*/
-
-    private fun close() {
-        loginListener?.onAuthorizationCompleted(true)
-        popBackStack()
-    }
-
-
-    private fun popBackStack() {
-        //requireActivity().findNavController(R.id.nav_host_fragment_activity_main).popBackStack()
+    private fun close(isOk: Boolean) {
+        loginListener?.onAuthorizationCompleted(isOk)
         navController.popBackStack()
-
     }
 
     override fun onDestroyView() {
@@ -188,6 +148,6 @@ class LoginFragment : Fragment(), OnClickListener {
     }
 
     interface LoginListener {
-        fun onAuthorizationCompleted(isClosed: Boolean)
+        fun onAuthorizationCompleted(isOk: Boolean)
     }
 }

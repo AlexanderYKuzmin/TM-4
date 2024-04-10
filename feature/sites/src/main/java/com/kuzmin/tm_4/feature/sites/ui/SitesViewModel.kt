@@ -17,12 +17,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SitesViewModel @Inject constructor(
     private val getAllSitesUseCase: GetAllSitesUseCase,
-    private val getSitesByIdUseCase: GetSitesByIdUseCase,
     private val getSitesByNameUseCase: GetSitesByNameUseCase,
     private val searchQuerySharedContainer: SearchQuerySharedContainer
 ) : ViewModel(){
@@ -31,7 +31,7 @@ class SitesViewModel @Inject constructor(
     val siteResult: LiveData<SiteResult> get() = _siteResult
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _siteResult.value = Error(throwable)
+        _siteResult.postValue(Error(throwable))
     }
 
     fun observeQuery(context: LifecycleOwner) {
@@ -47,23 +47,24 @@ class SitesViewModel @Inject constructor(
         }
     }
 
-
-
     private fun getAll() {
         Log.d("MainActivity", "GET ALL")
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             //_siteResult.value = Loading
-            _siteResult.value = Success(getAllSitesUseCase())
+            val sites = getAllSitesUseCase()
+            withContext(Dispatchers.Main) {
+                _siteResult.value = Success(sites)
+            }
         }
-
-
     }
 
     private fun getSitesByName(name: String) {
         Log.d("MainActivity", "GET SITES BY NAMES")
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            _siteResult.postValue(Success(getSitesByNameUseCase(name)))
+            val sites = getSitesByNameUseCase(name)
+            withContext(Dispatchers.Main) {
+                _siteResult.value = Success(sites)
+            }
         }
     }
-
 }

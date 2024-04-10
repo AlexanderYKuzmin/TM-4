@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.feature.login.domain.AuthManager
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUserState
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUserState.Error
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUserState.Success
+import com.kuzmin.tm_4.feature.login.domain.model.AuthUserResult
+import com.kuzmin.tm_4.feature.login.domain.model.AuthUserResult.Error
+import com.kuzmin.tm_4.feature.login.domain.model.AuthUserResult.Success
 import com.kuzmin.tm_4.feature.login.domain.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,37 +24,39 @@ class LoginViewModel @Inject constructor(
     private val authManager: AuthManager
 ) : ViewModel() {
 
-    private val _authUserState = MutableLiveData<AuthUserState>()
-    val authUserState: LiveData<AuthUserState> get() = _authUserState
+    private val _authUserResult = MutableLiveData<AuthUserResult>()
+    val authUserResult: LiveData<AuthUserResult> get() = _authUserResult
+
+    private val _userData = MutableLiveData<User>()
+    val userdata: LiveData<User> get() = _userData
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _authUserState.value = Error(throwable)
+        _authUserResult.value = Error(throwable, userdata.value ?: User())
     }
 
     init {
-       /* viewModelScope.launch {
-            val auth = readAuthUserDatastoreUseCase()
-            _authUserState.value = AuthUserState.Default(auth)
-        }*/
+       getUserData()
     }
 
-    /*fun getAuthUser(user: User) {
-        viewModelScope.launch(exceptionHandler) {
-            val auth =
-
-            val auth = getAuthUserRemoteUseCase(username, password)
-            if (auth.isValid()) {
-                launch { writeAuthUserDatastoreUseCase(auth) }
-                _authUserState.value = Success(auth)
-            } else _authUserState.value = Error(IllegalAccessException())
+    private fun getUserData() {
+        viewModelScope.launch {
+            _userData.value = authManager.getUser()
         }
-    }*/
+    }
 
-    fun getAuthUser(user: User) {
+    fun authenticate(user: User) {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            _authUserState.postValue(Success(authManager.getAuthUser(user)))
+            val auth = authManager.authorize(user)
+            authManager.saveAuthUser(auth)
+            withContext(Dispatchers.Main) {
+                _authUserResult.value = Success(auth)
+            }
         }
     }
 
-
+    fun cancelAuthentication() {
+        viewModelScope.launch {
+            authManager.cancelAuthorization()
+        }
+    }
 }

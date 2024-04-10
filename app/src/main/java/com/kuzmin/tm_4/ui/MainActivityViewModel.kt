@@ -10,12 +10,14 @@ import com.kuzmin.tm_4.feature.login.domain.AuthManager
 import com.kuzmin.tm_4.feature.login.domain.usecases.ReadAuthUserDatastoreUseCase
 import com.kuzmin.tm_4.feature.sites.domain.model.SearchQuerySharedContainer
 import com.kuzmin.tm_4.model.AppState
+import com.kuzmin.tm_4.model.AuthState
 import com.kuzmin.tm_4.model.ScreenMode
 import com.kuzmin.tm_4.model.ToolbarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +28,6 @@ class MainActivityViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val authExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-
         Log.d("MainActivity", "Exception handler throwable: $throwable")
     }
 
@@ -95,23 +96,33 @@ class MainActivityViewModel @Inject constructor(
     fun checkAuthorization() {
         viewModelScope.launch(Dispatchers.IO + authExceptionHandler) {
             Log.d("MainActivity", "Launch check authorization ${this.coroutineContext}")
-            handleAuthResult(authManager.isUserAuthorized())
+            val isAuth = authManager.isUserAuthorized()
+            withContext(Dispatchers.Main) {
+                handleAuthResult(if (isAuth) AuthState.AUTHORIZED else AuthState.NOT_AUTHORIZED)
+            }
         }
     }
 
-    fun handleAuthResult(isAuthorized: Boolean) {
+    fun handleAuthResult(authState: AuthState) {
         Log.d("MainActivity", "HandleAuthResult")
-        _toolbarState.postValue(toolbarState.copy(isAuthorized = isAuthorized))
-
-        _appState.postValue(
-            appState.copy(
-                mode = if (isAuthorized) ScreenMode.HOME
-                else ScreenMode.AUTHORIZATION
-            )
+        _toolbarState.value = toolbarState.copy(
+            isAuthorized = (authState == AuthState.AUTHORIZED)
+        )
+        _appState.value = appState.copy(
+            mode = when (authState) {
+                AuthState.AUTHORIZED -> ScreenMode.HOME
+                AuthState.NOT_AUTHORIZED -> ScreenMode.AUTHORIZATION
+                AuthState.CANCELED -> ScreenMode.HOME
+            }
         )
     }
+
     fun handleSearchQuery(query: String?) {
         val editedQuery = query?.replace("\u00A0", "") ?: ""
         searchQuerySharedContainer.setData(editedQuery)
+    }
+
+    fun handleSiteSelected(name: String) {
+        _appState.value = appState.copy(mode = ScreenMode.SITE_SELECTED)
     }
 }

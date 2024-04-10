@@ -5,8 +5,10 @@ import com.kuzmin.tm_4.core.network.model.preview.SitePreviewListDto
 import com.kuzmin.tm_4.core.network.model.preview.SiteSampleDto
 import com.kuzmin.tm_4.core.network.model.preview.SitesSampleDtoObj
 import com.kuzmin.tm_4.core.network.model.site.SiteDto
+import com.kuzmin.tm_4.core.network.model.site.SiteDtoObj
 import com.kuzmin.tm_4.core.network.model.user.UserDto
 import com.kuzmin.tm_4.core.network.model.user.UserSignInDto
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -38,11 +40,12 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("sites/get_site/site_id={ids}")
     suspend fun getSitesById(
-        @Path(QUERY_PARAM_TEXT) ids: String
-    ): List<SiteDto>
+        @Header(HEADER_PARAM_AUTHORIZATION) token: String,
+        @Path(QUERY_PARAM_IDS) ids: String
+    ): SiteDtoObj
 
     @Headers("Content-Type: application/json")
-    @GET("sites/search={name}")
+    @GET("sites/search_site_by_name/search_string={name}")
     suspend fun getSitesByName(
         @Header(HEADER_PARAM_AUTHORIZATION) token: String,
         @Path(QUERY_PARAM_NAMES) name: String
@@ -73,13 +76,10 @@ interface ApiService {
 */
     companion object {
         private const val HEADER_PARAM_AUTHORIZATION = "Authorization"
-        private const val QUERY_PARAM_NAMES = "names"
+        private const val QUERY_PARAM_NAMES = "name"
         private const val QUERY_PARAM_TEXT = "text"
+        private const val QUERY_PARAM_IDS = "ids"
         private const val QUERY_PARAM_REGION_CODE = "region_code"
         private const val QUERY_PARAM_SITE_NAME = "site_name"
-        private const val QUERY_PARAM_TO_SYMBOLS = "tsyms"
-        private const val QUERY_PARAM_FROM_SYMBOLS = "fsyms"
-
-        private const val CURRENCY = "USD"
     }
 }

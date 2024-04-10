@@ -37,10 +37,10 @@ data class ResultDto(
     val tanAlpha: Double,
 
     @SerializedName("dist_to_measure_level")
-    val distToMeasureLevel: Int,
+    val distToMeasureLevel: Double,
 
     @SerializedName("dist_delta")
-    val distDelta: Int,
+    val distDelta: Double,
 
     @SerializedName("beta_average_left")
     val betaAverageLeft: Double,

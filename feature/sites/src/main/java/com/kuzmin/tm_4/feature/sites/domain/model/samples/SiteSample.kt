@@ -15,9 +15,9 @@ data class SiteSample(
 
     val description: String,
 
-    val photoUrl: String,
+    val photoUrl: String?,
 
-    val photoDimension: String,
+    val photoDimension: String?,
 
     val tenant: Tenant,
 

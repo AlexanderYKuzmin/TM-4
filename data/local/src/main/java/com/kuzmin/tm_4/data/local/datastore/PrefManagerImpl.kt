@@ -20,6 +20,7 @@ import com.kuzmin.tm_4.data.local.datastore.UserScheme.TOKEN_DATE
 import com.kuzmin.tm_4.data.local.datastore.UserScheme.USERNAME
 import com.kuzmin.tm_4.feature.login.api.PrefManager
 import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
+import com.kuzmin.tm_4.feature.login.domain.model.User
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -78,8 +79,26 @@ class PrefManagerImpl @Inject constructor(
 
                 AuthUser(username, password, token, dateToken, remoteId, firstName, lastName)
             }.first()
-
         }
         //return runBlocking(Dispatchers.IO) { flowValue.first() }
+    }
+
+    override suspend fun readUserData(): User {
+        with(UserScheme) {
+            return dataStore.data.map { prefs ->
+                val username = prefs[USERNAME] ?: NO_USERNAME
+                val password = prefs[PASSWORD] ?: NO_PASSWORD
+                //val password =  NO_PASSWORD
+
+                User(username, password)
+            }.first()
+        }
+    }
+
+    override suspend fun clearAuthData() {
+        dataStore.edit { prefs ->
+            prefs[TOKEN] = NO_TOKEN
+            prefs[TOKEN_DATE] = NO_DATE
+        }
     }
 }

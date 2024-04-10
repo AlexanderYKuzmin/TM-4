@@ -9,9 +9,9 @@ data class Site(
 
     val address: Address,
 
-    val photos: List<Photo>? = null,
+    val photos: List<Photo>,
 
-    val siteEquipments: List<SiteEquipment>? = null,
+    val siteEquipments: List<SiteEquipment>,
 
     val constructions: List<Construction>,
 
@@ -21,7 +21,7 @@ data class Site(
 
     val measurementsConstructions: List<MeasurementConstruction>,
 
-    val measurementsGroupsDto: List<Group>,
+    val measurementsGroups: List<Group>,
 
     val measurements: List<Measurement>,
 

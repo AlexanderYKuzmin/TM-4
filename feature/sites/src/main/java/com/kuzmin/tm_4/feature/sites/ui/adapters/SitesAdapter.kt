@@ -1,4 +1,4 @@
-package com.kuzmin.tm_4.feature.sites.ui
+package com.kuzmin.tm_4.feature.sites.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -17,7 +17,7 @@ class SitesAdapter(
 )
     : ListAdapter<SiteSample, SitesAdapter.ItemSiteSampleViewHolder>(SiteSimpleDiffCallback) {
 
-        var onItemClickListener: ((Long) -> Unit)? = null
+        var onItemClickListener: ((Long, String) -> Unit)? = null
         //var onItemLongClickListener: (() -> Unit)? = null
 
     override fun onCreateViewHolder(
@@ -53,7 +53,7 @@ class SitesAdapter(
                 }
                 Picasso.get().load(photoUrl).into(ivBuilding)
                 root.setOnClickListener {
-                    onItemClickListener?.invoke(remoteId)
+                    onItemClickListener?.invoke(remoteId, name)
                 }
             }
         }

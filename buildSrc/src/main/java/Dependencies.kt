@@ -20,6 +20,8 @@ object Version {
     const val datastore_preferences_version = "1.0.0"
     const val datastore_annotations_version = "1.6.0"
 
+    const val room_version = "2.5.2"
+
     const val picasso_version = "2.71828"
 }
 
@@ -68,6 +70,15 @@ object Gson {
 object DataStore {
     const val datastore_preferences = "androidx.datastore:datastore-preferences:1.0.0"
     const val datastore_annotations = "androidx.annotation:annotation:1.6.0"
+}
+
+object DataBase {
+    const val room = "androidx.room:room-runtime:${Version.room_version}"
+    const val room_commmon = "androidx.room:room-common:${Version.room_version}"
+    const val room_paging = "androidx.room:room-paging:${Version.room_version}"
+
+    const val room_kapt_compiler = "androidx.room:room-compiler:${Version.room_version}"
+    const val room_ktx = "androidx.room:room-ktx:${Version.room_version}"
 }
 
 object Picasso {

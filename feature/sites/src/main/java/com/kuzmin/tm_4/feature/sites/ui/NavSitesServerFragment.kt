@@ -7,20 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.kuzmin.tm_4.common.R.id.site_nav_graph
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
 import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentNavSitesBinding
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Error
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Loading
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Success
+import com.kuzmin.tm_4.feature.sites.ui.adapters.SitesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NavSitesLocalFragment : Fragment() {
+class NavSitesServerFragment : SitesFragment() {
+
+    //private var onSitesAdapterClickListener: OnSitesAdapterClickListener? = null
 
     private var _binding: FragmentNavSitesBinding? = null
     private val binding get() = _binding!!
@@ -53,7 +58,7 @@ class NavSitesLocalFragment : Fragment() {
         val adapter = SitesAdapter(appContext)
         binding.rvNavSitesLocal.adapter = adapter
 
-        setOnAdapterItemClickActions(adapter)
+        setAdapterItemClickAction(adapter)
 
         sitesViewModel.observeQuery(viewLifecycleOwner)
         sitesViewModel.siteResult.observe(viewLifecycleOwner) {
@@ -67,6 +72,7 @@ class NavSitesLocalFragment : Fragment() {
                     ).show()
                 Log.d("SitesFragment", "error: ${it.throwable}")}
                 is Loading -> showProgress()
+                else -> throw RuntimeException("Wrong server response.")
             }
         }
     }
@@ -75,14 +81,24 @@ class NavSitesLocalFragment : Fragment() {
         Log.d("MainActivity", "Progress ON")
     }
 
-    fun setOnAdapterItemClickActions(adapter: SitesAdapter) {
-        adapter.onItemClickListener = {
-            //findNavController().navigate(R.id.nav_construction, bundleOf(BUILDING_ID to it))
-            Log.d("MainActivity", "On item click! ID: $it")
+    private fun setAdapterItemClickAction(adapter: SitesAdapter) {
+        adapter.onItemClickListener = { id, name ->
+            Log.d("MainActivity", "On item click! ID: $id, $name")
+            navController.navigate(site_nav_graph,
+                bundleOf(
+                    "title" to name,
+                    "site_id" to id,
+                    "storage" to STORAGE_SERVER)
+            )
+            onSitesAdapterClickListener?.onItemSiteClick("")
         }
 
         /*adapter.onItemLongClickListener = {
 
         }*/
     }
+
+    /*interface OnSitesAdapterClickListener {
+        fun onItemSiteClick()
+    }*/
 }

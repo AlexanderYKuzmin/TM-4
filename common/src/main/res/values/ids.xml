@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Navigation graphs-->
+    <item name="login_nav_graph" type="id"/>
+    <item name="sites_nav_graph" type="id"/>
+    <item name="measurements_nav_graph" type="id"/>
+    <item name="report_nav_graph" type="id"/>
+    <item name="site_nav_graph" type="id"/>
+
+    <!--Navigations-->
+    <item name="sites_navigation" type="id"/>
+    <item name="mobile_navigation" type="id"/>
+
+    <!--Navigation actions-->
+    <item name="action_measurements_nav_graph_to_report_nav_graph" type="id"/>
+    <item name="action_sites_nav_graph_to_login_nav_graph" type="id"/>
+    <item name="action_sites_nav_graph_to_measurements_nav_graph" type="id"/>
+    <item name="action_sites_nav_graph_to_report_nav_graph" type="id"/>
+    <item name="action_sites_nav_graph_to_site_nav_graph" type="id"/>
+    <item name="action_site_nav_graph_to_measurements_nav_graph" type="id"/>
+    <item name="action_site_nav_graph_to_report_nav_graph" type="id"/>
+
+    <!--Main menu-->
+
+</resources>

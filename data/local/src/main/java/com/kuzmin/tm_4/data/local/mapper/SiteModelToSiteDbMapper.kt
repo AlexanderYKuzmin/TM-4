@@ -1,0 +1,318 @@
+package com.kuzmin.tm_4.data.local.mapper
+
+import com.kuzmin.tm_4.common.extension.formatToDateSqlString
+import com.kuzmin.tm_4.core.database.model.site.AddressDb
+import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
+import com.kuzmin.tm_4.core.database.model.site.GroupDb
+import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
+import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
+import com.kuzmin.tm_4.core.database.model.site.PhotoDb
+import com.kuzmin.tm_4.core.database.model.site.ResultDb
+import com.kuzmin.tm_4.core.database.model.site.SectionDb
+import com.kuzmin.tm_4.core.database.model.site.SiteDb
+import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
+import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
+import com.kuzmin.tm_4.core.database.model.site.TenantDb
+import com.kuzmin.tm_4.feature.sites.domain.model.Tenant
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Address
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Construction
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Group
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Level
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Measurement
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.MeasurementConstruction
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Photo
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Result
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Section
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.Site
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.SiteEquipment
+import com.kuzmin.tm_4.feature.sites.domain.model.sites.SiteParams
+import java.util.UUID
+import javax.inject.Inject
+
+class SiteModelToSiteDbMapper @Inject constructor(
+
+) {
+
+    fun mapSitesModelToSitesDb(sites: List<Site>): List<SiteDb> {
+        if (sites.isEmpty()) return emptyList()
+        return sites.map {
+            mapSiteModelToSiteDb(it)
+        }
+    }
+
+    fun mapSiteModelToSiteDb(site: Site): SiteDb {
+
+        with(site) {
+           return SiteDb(
+               siteParamsDb = mapSiteParamsToSiteParamsDb(siteParams),
+               tenantDb =  mapTenantToTenantDb(tenant, siteParams.siteUuid),
+               addressDb = mapAddressToAddressDb(address, siteParams.siteUuid) ,
+               siteEquipments = mapSiteEquipmentsToSiteEquipmentsDb(siteEquipments, siteParams.siteUuid),
+               photos =  mapPhotosToPhotosDb(photos, siteParams.siteUuid),
+               constructions =  mapConstructionsToConstructionsDb(constructions),
+               sections = mapSectionsToSectionsDb(constructionsSections, siteParams.siteUuid),
+               groups = mapGroupsToGroupsDb(measurementsGroups, siteParams.siteUuid),
+               measurementsConstructions = mapMcsToMcsDb(measurementsConstructions, siteParams.siteUuid),
+               measurements = mapMeasuresToMeasuresDb(measurements, siteParams.siteUuid, measurementsGroups),
+               results = mapResultsToResultsDb(results, siteParams.siteUuid, measurementsGroups)
+           )
+        }
+    }
+
+    private fun mapSiteParamsToSiteParamsDb(siteParams: SiteParams): SiteParamsDb {
+        with(siteParams) {
+            return SiteParamsDb(
+                uuid = UUID.randomUUID().toString(),
+                siteUuid = siteUuid,
+                name = name,
+                description = description,
+                latitude = latitude,
+                longitude = longitude,
+                siteType = siteType,
+                siteTypeDescription = siteTypeDescription
+            )
+        }
+    }
+
+    private fun mapTenantToTenantDb(tenant: Tenant, siteUuid: String): TenantDb {
+        with(tenant) {
+            return TenantDb(
+                uuid = UUID.randomUUID().toString(),
+                name = name,
+                logo = logo,
+                siteUuid = siteUuid
+            )
+        }
+    }
+
+    private fun mapAddressToAddressDb(address: Address, siteUuid: String): AddressDb {
+        with(address) {
+            return AddressDb(
+                uuid = uuid,
+                siteUuid = siteUuid,
+                country = country,
+                region = region,
+                regionCode = regionCode,
+                subRegion = subRegion,
+                city = city,
+                street = street,
+                building = building,
+                postalCode = postalCode
+            )
+        }
+    }
+
+    private fun mapSiteEquipmentsToSiteEquipmentsDb(siteEquipments: List<SiteEquipment>, siteUuid: String): List<SiteEquipmentDb> {
+        if (siteEquipments.isEmpty()) return emptyList()
+        return siteEquipments.map {
+            mapSiteEquipmentToSiteEquipmentDb(it, siteUuid)
+        }
+    }
+
+    private fun mapSiteEquipmentToSiteEquipmentDb(siteEquipment: SiteEquipment, siteUuid: String): SiteEquipmentDb {
+        with(siteEquipment) {
+            return SiteEquipmentDb(
+                uuid = uuid,
+                siteUuid = siteUuid,
+                type = type,
+                name = name
+            )
+        }
+    }
+
+    private fun mapPhotosToPhotosDb(photos: List<Photo>, siteUuid: String): List<PhotoDb> {
+        if (photos.isEmpty()) return emptyList()
+        return photos.map {
+            mapPhotoToPhotoDb(it, siteUuid)
+        }
+    }
+
+    private fun mapPhotoToPhotoDb(photo: Photo, siteUuid: String): PhotoDb {
+        with(photo) {
+            return PhotoDb(
+               uuid = uuid,
+               siteUuid = siteUuid,
+               name =  name,
+               date = date.formatToDateSqlString(),
+               url = url,
+               urlThumbnail = urlThumbnail,
+               employeeId = employeeId,
+               employeeName = employeeName,
+               dimensions = String.format("%dx%d", dimensionXPx, dimensionYPx),
+               thumbnailDim = String.format("%dx%d", thumbnailDimXPx, thumbnailDimYPx)
+            )
+        }
+    }
+
+    private fun mapConstructionsToConstructionsDb(constructions: List<Construction>): List<ConstructionDb> {
+        if (constructions.isEmpty()) return emptyList()
+        return constructions.map {
+            mapConstructionToConstructionDb(it)
+        }
+    }
+
+    private fun mapConstructionToConstructionDb(construction: Construction): ConstructionDb {
+        with(construction) {
+            return ConstructionDb(
+                uuid = uuid,
+                version = version,
+                description = description,
+                status = status,
+                numOfSections = numOfSections,
+                height = height,
+                constructionType = constructionType,
+                config = config,
+                measureLevels = measureLevels,
+                siteUuid = siteUuid
+            )
+        }
+    }
+
+    private fun mapSectionsToSectionsDb(sections: List<Section>, siteUuid: String): List<SectionDb> {
+        if (sections.isEmpty()) return emptyList()
+        return sections.map {
+            mapSectionToSectionDb(it, siteUuid)
+        }
+    }
+
+    private fun mapSectionToSectionDb(section: Section, siteUuid: String): SectionDb {
+        with(section) {
+            return SectionDb(
+                uuid = uuid,
+                siteUuid = siteUuid,
+                constructionUuid = constructionUuid,
+                number = number,
+                wBottom = wBottom,
+                wTop = wTop,
+                height = height,
+                level = level,
+                status = status
+            )
+        }
+    }
+
+    private fun mapGroupsToGroupsDb(groups: List<Group>, siteUuid: String): List<GroupDb> {
+        if (groups.isEmpty()) return emptyList()
+        return groups.map {
+            mapGroupToGroupDb(it, siteUuid)
+        }
+    }
+
+    private fun mapGroupToGroupDb(group: Group, siteUuid: String): GroupDb {
+        with(group) {
+            return GroupDb(
+                uuid = uuid,
+                siteUuid = siteUuid,
+                measurementConstructionUuid = measurementConstructionUuid,
+                groupNum = groupNum,
+                azimuth = azimuth,
+                theoDistance = theoDistance,
+                theoHeight = theoHeight
+            )
+        }
+    }
+
+    private fun mapMcsToMcsDb(measurementConstructions: List<MeasurementConstruction>, siteUuid: String): List<MeasurementConstructionDb> {
+        if (measurementConstructions.isEmpty()) return emptyList()
+        return measurementConstructions.map {
+            mapMcToMcDb(it, siteUuid)
+        }
+    }
+
+    private fun mapMcToMcDb(measurementConstruction: MeasurementConstruction, siteUuid: String): MeasurementConstructionDb {
+        with(measurementConstruction) {
+            return MeasurementConstructionDb(
+                uuid = uuid,
+                siteUuid = siteUuid,
+                constructionUuid = constructionUuid,
+                measurementName = measurementName,
+                creatorId = creator,
+                startLevel = startLevel,
+                creationDate = creationDate.formatToDateSqlString(),
+                completedDate = completedDate.formatToDateSqlString(),
+                isCompleted = isCompleted,
+                employeeId = employee,
+                employeeName = employeeName,
+                creatorName = creatorName
+            )
+        }
+    }
+
+    private fun mapMeasuresToMeasuresDb(
+        measurements: List<Measurement>,
+        siteUuid: String,
+        groups: List<Group>
+    ): List<MeasurementDb> {
+        if (measurements.isEmpty()) return emptyList()
+        return measurements.map { measure ->
+            val measurementConstructionUuid = groups.first { group ->
+                group.uuid == measure.measurementGroupUuid
+            }.measurementConstructionUuid
+            mapMeasureToMeasureDb(measure, siteUuid, measurementConstructionUuid)
+        }
+    }
+
+    private fun mapMeasureToMeasureDb(
+        measurement: Measurement,
+        siteUuid: String,
+        measurementConstructionUuid: String
+    ): MeasurementDb {
+        with(measurement) {
+            return MeasurementDb(
+                uuid = uuid,
+                siteUuid = siteUuid,
+                measurementConstructionUuid = measurementConstructionUuid,
+                measurementGroupUuid = measurementGroupUuid,
+                level = level,
+                leftAngleCl = leftAngleCl,
+                leftAngleCr = leftAngleCr,
+                rightAngleCr = rightAngleCl,
+                rightAngleCl = rightAngleCr
+            )
+        }
+    }
+
+    private fun mapResultsToResultsDb(
+        results: List<Result>,
+        siteUuid: String,
+        groups: List<Group>
+    ): List<ResultDb> {
+        if (results.isEmpty()) return emptyList()
+        return results.map { result ->
+            val measurementConstructionUuid = groups.first { group ->
+                group.uuid == result.measurementGroupUuid
+            }.measurementConstructionUuid
+            mapResultToResultDb(result, siteUuid, measurementConstructionUuid)
+        }
+    }
+
+    private fun mapResultToResultDb(
+        result: Result,
+        siteUuid: String,
+        measurementConstructionUuid: String
+    ): ResultDb {
+        with(result) {
+            return ResultDb(
+                uuid = uuid,
+                siteUuid = siteUuid,
+                measurementConstructionUuid = measurementConstructionUuid,
+                measurementGroupUuid = measurementGroupUuid,
+                measurementUuid = measurementUuid,
+                level = level,
+                sectionUuid = siteUuid,
+                averageCl = averageCl,
+                averageCr = averageCr,
+                averageClCr = averageClCr,
+                shiftDeg = shiftDeg,
+                shiftMm = shiftMm,
+                tanAlpha = tanAlpha,
+                distToMeasureLevel = distToMeasureLevel,
+                distDelta = distDelta,
+                betaAverageLeft = betaAverageLeft,
+                betaAverageRight = betaAverageRight,
+                betI = betI,
+                betaDelta = betaDelta
+            )
+        }
+    }
+}
