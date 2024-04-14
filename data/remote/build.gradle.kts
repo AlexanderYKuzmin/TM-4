@@ -37,7 +37,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":core:network"))
     implementation(project(":feature:login"))
-    implementation(project(":feature:sites"))
+    implementation(project(":feature:api"))
 
     implementation(Deps.core)
     //implementation("androidx.appcompat:appcompat:1.6.1")

@@ -14,9 +14,9 @@ import com.kuzmin.tm_4.common.extension.formatToDateString
 import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentSiteBinding
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Construction
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.MeasurementConstruction
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Site
+import com.kuzmin.tm_4.feature.api.model.site.Construction
+import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.model.site.Site
 import com.kuzmin.tm_4.feature.sites.ui.adapters.PhotoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext

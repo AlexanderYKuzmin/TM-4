@@ -35,7 +35,7 @@ android {
 
 dependencies {
     implementation(project(":feature:login"))
-    implementation(project(":feature:sites"))
+    implementation(project(":feature:api"))
     implementation(project(":core:database"))
     implementation(project(":common"))
 

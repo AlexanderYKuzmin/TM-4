@@ -6,15 +6,11 @@ import com.kuzmin.tm_4.core.network.model.preview.AddressSampleDto
 import com.kuzmin.tm_4.core.network.model.preview.ConstructionSampleDto
 import com.kuzmin.tm_4.core.network.model.preview.SiteSampleDto
 import com.kuzmin.tm_4.core.network.model.site.TenantDto
-import com.kuzmin.tm_4.feature.sites.domain.model.samples.AddressSample
-import com.kuzmin.tm_4.feature.sites.domain.model.samples.ConstructionSample
-import com.kuzmin.tm_4.feature.sites.domain.model.samples.SiteSample
-import com.kuzmin.tm_4.feature.sites.domain.model.Tenant
 
 class SitesSamplesDtoToModelMapper {
 
-    private fun mapSiteSampleDtoToSiteSample(siteSampleDto: SiteSampleDto): SiteSample {
-        return SiteSample(
+    private fun mapSiteSampleDtoToSiteSample(siteSampleDto: SiteSampleDto): com.kuzmin.tm_4.feature.api.model.sample.SiteSample {
+        return com.kuzmin.tm_4.feature.api.model.sample.SiteSample(
             remoteId = siteSampleDto.id,
             uuid = siteSampleDto.uuid,
             name = siteSampleDto.name,
@@ -33,15 +29,15 @@ class SitesSamplesDtoToModelMapper {
         )
     }
 
-    fun mapSitesSampleDtoToSitesSample(sitesSampleDto: List<SiteSampleDto>?): List<SiteSample>? {
+    fun mapSitesSampleDtoToSitesSample(sitesSampleDto: List<SiteSampleDto>?): List<com.kuzmin.tm_4.feature.api.model.sample.SiteSample>? {
         Log.d("Mapper", "sitesSampleDto: ${sitesSampleDto.toString()}")
         return sitesSampleDto?.let { sites ->
             sites.map { mapSiteSampleDtoToSiteSample(it) }
         }
     }
 
-    private fun mapConstructionSampleDtoToConstructionSample(constructionSampleDto: ConstructionSampleDto): ConstructionSample {
-        return ConstructionSample(
+    private fun mapConstructionSampleDtoToConstructionSample(constructionSampleDto: ConstructionSampleDto): com.kuzmin.tm_4.feature.api.model.sample.ConstructionSample {
+        return com.kuzmin.tm_4.feature.api.model.sample.ConstructionSample(
             constructionSampleDto.constructionType,
             constructionSampleDto.config,
             constructionSampleDto.heightMm,
@@ -51,21 +47,21 @@ class SitesSamplesDtoToModelMapper {
         )
     }
 
-    private fun mapConstructionsSampleDtoToConstructionsSample(constructionsSampleDto: List<ConstructionSampleDto>): List<ConstructionSample> {
+    private fun mapConstructionsSampleDtoToConstructionsSample(constructionsSampleDto: List<ConstructionSampleDto>): List<com.kuzmin.tm_4.feature.api.model.sample.ConstructionSample> {
         return constructionsSampleDto.map {
             mapConstructionSampleDtoToConstructionSample(it)
         }
     }
 
-    private fun mapTenantDtoToTenant(tenantDto: TenantDto): Tenant {
-        return Tenant(
+    private fun mapTenantDtoToTenant(tenantDto: TenantDto): com.kuzmin.tm_4.feature.api.model.Tenant {
+        return com.kuzmin.tm_4.feature.api.model.Tenant(
             name = tenantDto.name,
             logo = tenantDto.logo
         )
     }
 
-    private fun mapAddressDtoToAddressPreview(addressSampleDto: AddressSampleDto): AddressSample {
-        return AddressSample(
+    private fun mapAddressDtoToAddressPreview(addressSampleDto: AddressSampleDto): com.kuzmin.tm_4.feature.api.model.sample.AddressSample {
+        return com.kuzmin.tm_4.feature.api.model.sample.AddressSample(
             country = addressSampleDto.country,
             city = addressSampleDto.city,
             street = addressSampleDto.street,

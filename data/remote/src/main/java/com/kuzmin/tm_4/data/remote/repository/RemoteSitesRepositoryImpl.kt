@@ -2,13 +2,12 @@ package com.kuzmin.tm_4.data.remote.repository
 
 import android.util.Log
 import com.kuzmin.tm_4.core.network.ApiService
-import com.kuzmin.tm_4.core.network.RequestInterceptor
 import com.kuzmin.tm_4.data.remote.mapper.SitesDtoToModelMapper
 import com.kuzmin.tm_4.data.remote.mapper.SitesSamplesDtoToModelMapper
 import com.kuzmin.tm_4.feature.login.domain.AuthManager
-import com.kuzmin.tm_4.feature.sites.RemoteSitesRepository
-import com.kuzmin.tm_4.feature.sites.domain.model.samples.SiteSample
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Site
+import com.kuzmin.tm_4.feature.api.model.site.RemoteSitesRepository
+import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.model.site.Site
 import javax.inject.Inject
 
 class RemoteSitesRepositoryImpl @Inject constructor(

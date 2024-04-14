@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "669888439372",
+    "project_id": "tower-measurement",
+    "storage_bucket": "tower-measurement.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669888439372:android:275ca82600a4fe7cdd80e9",
+        "android_client_info": {
+          "package_name": "com.kuzmin.tm_4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAurib4fzMw2z8EKTQjfJwb607OnhAji7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

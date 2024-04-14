@@ -1,6 +1,7 @@
 package com.kuzmin.tm_4.feature.sites.ui.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.tm_4.common.extension.formatToDateString
 import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.ItemSiteSimpleBinding
-import com.kuzmin.tm_4.feature.sites.domain.model.samples.SiteSample
+import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
 import com.squareup.picasso.Picasso
 
 class SitesAdapter(
@@ -34,10 +35,9 @@ class SitesAdapter(
 
     override fun onBindViewHolder(holder: ItemSiteSampleViewHolder, position: Int) {
         val sampleSite = getItem(position)
-
+        Log.d("SiteAdapter", "PhotoUrl = ${sampleSite.photoUrl}")
         with(holder.binding) {
             with(sampleSite) {
-                //root.background = getBackgroundDrawable(isChosen) // нет не так буду делать
                 tvBuildingName.text = name
                 tvAddressBuilding.text = address.toString()
                 constructionsSample?.let {

@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -43,6 +44,7 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":data:remote"))
+    implementation(project(":data:remote_fb"))
     implementation(project(":data:local"))
 
     implementation(project(":feature:sites"))
@@ -60,6 +62,10 @@ dependencies {
 
     implementation(DaggerHilt.hilt)
     kapt(DaggerHilt.hilt_compiler)
+
+    implementation(platform(FireBase.firebase_platform))
+    implementation(FireBase.firebase_firestore)
+    implementation(FireBase.firebase_storage)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

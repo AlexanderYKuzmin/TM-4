@@ -13,19 +13,18 @@ import com.kuzmin.tm_4.core.database.model.site.SiteDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
 import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
-import com.kuzmin.tm_4.feature.sites.domain.model.Tenant
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Address
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Construction
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Group
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Level
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Measurement
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.MeasurementConstruction
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Photo
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Result
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Section
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Site
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.SiteEquipment
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.SiteParams
+import com.kuzmin.tm_4.feature.api.model.site.Address
+import com.kuzmin.tm_4.feature.api.model.site.Construction
+import com.kuzmin.tm_4.feature.api.model.site.Group
+import com.kuzmin.tm_4.feature.api.model.site.Measurement
+import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.model.site.Photo
+import com.kuzmin.tm_4.feature.api.model.site.Section
+import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.model.site.SiteEquipment
+import com.kuzmin.tm_4.feature.api.model.site.SiteParams
+import com.kuzmin.tm_4.feature.api.model.site.Result
+
 import java.util.UUID
 import javax.inject.Inject
 
@@ -74,7 +73,7 @@ class SiteModelToSiteDbMapper @Inject constructor(
         }
     }
 
-    private fun mapTenantToTenantDb(tenant: Tenant, siteUuid: String): TenantDb {
+    private fun mapTenantToTenantDb(tenant: com.kuzmin.tm_4.feature.api.model.Tenant, siteUuid: String): TenantDb {
         with(tenant) {
             return TenantDb(
                 uuid = UUID.randomUUID().toString(),

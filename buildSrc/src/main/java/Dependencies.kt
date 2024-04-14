@@ -20,6 +20,8 @@ object Version {
     const val datastore_preferences_version = "1.0.0"
     const val datastore_annotations_version = "1.6.0"
 
+    const val fireBase_version = "32.7.2"
+
     const val room_version = "2.5.2"
 
     const val picasso_version = "2.71828"
@@ -51,6 +53,14 @@ object Navigation {
     const val nav_ui_ktx = "androidx.navigation:navigation-ui-ktx:${Version.nav_version}"
     // Feature module Support
     const val nav_features = "androidx.navigation:navigation-dynamic-features-fragment:${Version.nav_version}"
+}
+
+object FireBase {
+    const val firebase_platform = "com.google.firebase:firebase-bom:${Version.fireBase_version}"
+    const val firebase_database = "com.google.firebase:firebase-database"
+    const val firebase_firestore = "com.google.firebase:firebase-firestore"
+    const val firebase_analytics = "com.google.firebase:firebase-analytics"
+    const val firebase_storage = "com.google.firebase:firebase-storage"
 }
 
 object Retrofit {

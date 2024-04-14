@@ -18,19 +18,20 @@ import com.kuzmin.tm_4.core.network.model.site.SiteDto
 import com.kuzmin.tm_4.core.network.model.site.SiteEquipmentDto
 import com.kuzmin.tm_4.core.network.model.site.SiteParamsDto
 import com.kuzmin.tm_4.core.network.model.site.TenantDto
-import com.kuzmin.tm_4.feature.sites.domain.model.Tenant
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Address
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Construction
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Group
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Level
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Measurement
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.MeasurementConstruction
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Photo
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Section
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Site
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.SiteEquipment
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.SiteParams
-import com.kuzmin.tm_4.feature.sites.domain.model.sites.Result
+import com.kuzmin.tm_4.feature.api.model.Tenant
+import com.kuzmin.tm_4.feature.api.model.site.Address
+import com.kuzmin.tm_4.feature.api.model.site.Construction
+import com.kuzmin.tm_4.feature.api.model.site.Group
+import com.kuzmin.tm_4.feature.api.model.site.Level
+import com.kuzmin.tm_4.feature.api.model.site.Measurement
+import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.model.site.Photo
+import com.kuzmin.tm_4.feature.api.model.site.Section
+import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.model.site.SiteEquipment
+import com.kuzmin.tm_4.feature.api.model.site.SiteParams
+import com.kuzmin.tm_4.feature.api.model.site.Result
+
 import java.util.Date
 
 class SitesDtoToModelMapper {
@@ -51,7 +52,9 @@ class SitesDtoToModelMapper {
             constructions = mapConstructionsDtoToConstructions(siteDto.constructionsDto),
             constructionsLevels = mapConstructionsLevelsDtoToConstructionsLevels(siteDto.constructionsLevelsDto),
             constructionsSections = mapConstructionsSectionsDtoToConstructionsSections(siteDto.constructionsSectionsDto),
-            measurementsConstructions = mapMeasurementConstructionsDtoToMeasurementConstructions(siteDto.measurementsConstructionsDto),
+            measurementsConstructions = mapMeasurementConstructionsDtoToMeasurementConstructions(
+                siteDto.measurementsConstructionsDto
+            ),
             measurementsGroups = mapMeasurementGroupsDtoToMeasurementGroups(siteDto.measurementsGroupsDto),
             measurements = mapMeasurementsDtoToMeasurements(siteDto.measurementsDto),
             results = mapResultsDtoToResults(siteDto.resultsDto)
@@ -117,7 +120,7 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapConstructionSectionDtoToConstructionSection(constructionSectionDto: SectionDto): Section {
-        return Section (
+        return Section(
             uuid = constructionSectionDto.uuid,
             number = constructionSectionDto.number,
             wBottom = constructionSectionDto.wBottom,
