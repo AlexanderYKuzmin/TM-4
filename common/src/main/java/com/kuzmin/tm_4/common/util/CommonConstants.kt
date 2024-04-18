@@ -30,4 +30,9 @@ object CommonConstants {
 
     const val STORAGE_LOCAL = 5000
     const val STORAGE_SERVER = 5001
+
+    //datastore constants
+    const val S = "site"
+    const val C = "construction"
+    const val MC = "measurement_construction"
 }

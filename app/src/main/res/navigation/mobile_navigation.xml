@@ -36,7 +36,7 @@
             android:defaultValue=""/>
         <argument
             android:name="site_id"
-            app:argType="long"
+            app:argType="string"
             android:defaultValue="-1L" />
         <argument
             android:name="storage"

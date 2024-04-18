@@ -18,7 +18,7 @@ class SitesAdapter(
 )
     : ListAdapter<SiteSample, SitesAdapter.ItemSiteSampleViewHolder>(SiteSimpleDiffCallback) {
 
-        var onItemClickListener: ((Long, String) -> Unit)? = null
+        var onItemClickListener: ((String, String, String) -> Unit)? = null
         //var onItemLongClickListener: (() -> Unit)? = null
 
     override fun onCreateViewHolder(
@@ -53,7 +53,7 @@ class SitesAdapter(
                 }
                 Picasso.get().load(photoUrl).into(ivBuilding)
                 root.setOnClickListener {
-                    onItemClickListener?.invoke(remoteId, name)
+                    onItemClickListener?.invoke(uuid, name, constructionsSample!!.first().uuid)
                 }
             }
         }

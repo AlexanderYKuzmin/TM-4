@@ -82,12 +82,13 @@ class NavSitesServerFragment : SitesFragment() {
     }
 
     private fun setAdapterItemClickAction(adapter: SitesAdapter) {
-        adapter.onItemClickListener = { id, name ->
-            Log.d("MainActivity", "On item click! ID: $id, $name")
+        adapter.onItemClickListener = { siteUuid, name, constrUuid ->
+            Log.d("MainActivity", "On item click! ID: $siteUuid, $name")
             navController.navigate(site_nav_graph,
                 bundleOf(
                     "title" to name,
-                    "site_id" to id,
+                    "site_id" to siteUuid,
+                    "construction_id" to constrUuid,
                     "storage" to STORAGE_SERVER)
             )
             onSitesAdapterClickListener?.onItemSiteClick("")

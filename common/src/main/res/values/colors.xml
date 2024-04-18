@@ -16,6 +16,7 @@
     <color name="color_on_container_dark">#A66400</color>
 
     <color name="color_gray">#9ca9ba</color>
+    <color name="color_gray_not_light">#E1E0D9</color>
     <color name="color_gray_light">#EEEEEE</color>
 
     <color name="black">#FF000000</color>

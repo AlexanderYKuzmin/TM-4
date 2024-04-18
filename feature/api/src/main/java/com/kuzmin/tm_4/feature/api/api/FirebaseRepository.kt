@@ -9,7 +9,7 @@ interface FirebaseRepository {
 
     suspend fun getSitesByName(name: String): List<SiteSample>
 
-    suspend fun getSiteById(uuid: String): List<Site>
+    suspend fun getSiteById(uuid: String): Site
 
     suspend fun getAllPhotoSamples(): Map<String, String>
 }

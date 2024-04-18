@@ -6,6 +6,8 @@ import com.kuzmin.tm_4.common.util.CommonConstants.TOWER_RU
 import java.util.Date
 
 data class ConstructionSample (
+    val uuid: String,
+
     val constructionType: String,
 
     val config: String,

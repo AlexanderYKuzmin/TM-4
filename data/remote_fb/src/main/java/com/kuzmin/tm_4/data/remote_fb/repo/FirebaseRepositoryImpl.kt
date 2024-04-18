@@ -24,11 +24,8 @@ class FirebaseRepositoryImpl @Inject constructor(
     private val photoMapper: PhotoMapper
 ) : FirebaseRepository {
     override suspend fun getAllSiteSamples(): List<SiteSample> {
-        Log.d("getAll", "get all sites")
-
         return mapper.mapSiteFbDtoMapToSiteSampleModelList(
-            firebaseService.getAllSites()
-                .entries
+            firebaseService.getAllSites().entries
                 .associate { entry ->
                     entry.key.toObject(SiteFbDto::class.java) to
                             entry.value.map { it.toObject(ConstructionFbDto::class.java) }
@@ -40,13 +37,13 @@ class FirebaseRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getSiteById(uuid: String): List<Site> {
-        TODO("Not yet implemented")
+    override suspend fun getSiteById(uuid: String): Site {
+        firebaseService.getSiteByIdNoSections(uuid)
     }
 
     override suspend fun getAllPhotoSamples(): Map<String, String> {
-        val photoItems = firebaseService.getAllPhotoSamples().items
-
-        return photoMapper.mapListResultToPhotoUrlMap(photoItems)
+        return photoMapper.mapListResultToPhotoUrlMap(
+            firebaseService.getAllPhotoSamples().items
+        )
     }
 }

@@ -26,8 +26,8 @@
     <string name="construction_sections">Кол-во секций:</string>
 
     <string name="measure_employee_name">Исполнитель:</string>
-    <string name="measure_date">Дата:</string>
-    <string name="measure_conclusion">Состояние:</string>  <!--Удовлетворительное или нет-->
+    <string name="measure_date">Дата измерений:</string>
+    <string name="measure_conclusion">Заключение:</string>  <!--Удовлетворительное или нет-->
     <string name="measure_satisfied_yes">Удовлетворительно</string>
     <string name="measure_satisfied_no">Неудовлетворительно</string>
 

@@ -1,17 +1,17 @@
 package com.kuzmin.tm_4.core.network_fb
 
 import android.util.Log
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.tasks.asDeferred
+import com.kuzmin.tm_4.core.network_fb.model.SiteDataFbDtoObj
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FirebaseService @Inject constructor(
@@ -22,36 +22,123 @@ class FirebaseService @Inject constructor(
     suspend fun getAllSites(): Map<DocumentSnapshot, List<DocumentSnapshot>> {
         val siteMap = mutableMapOf<DocumentSnapshot, List<DocumentSnapshot>>()
 
-        firestore.collection("sites").get().await()
+        firestore.collection(SITES_COLLECTION).get().await()
             .documents.forEach {
-                siteMap[it] = it.reference.collection("site_constructions")
+                siteMap[it] = it.reference.collection(CONSTRUCTIONS_COLLECTION)
                     .whereEqualTo("status", "actual")
                     .get()
-                    .await()
-                    .documents
+                    .await().documents
             }
-
-            /*.result*/
         Log.d("getAll", "SiteMap size: ${siteMap.size}")
         return siteMap
+    }
 
+    suspend fun getSiteByIdOnly(siteUuid: String): DocumentSnapshot {
+        return firestore.collection(SITES_COLLECTION).document(siteUuid).get().await()
+    }
 
-            /*.addOnSuccessListener { sitesQuerySnapshot ->
-                sitesQuerySnapshot.documents.forEach { siteDocSnapshot ->
-                    Log.d("getAll", "siteDocSnapshot: ${siteDocSnapshot.data}")
+    suspend fun getSiteByIdNoSections(siteUuid: String): SiteDataFbDtoObj {
 
-                    siteDocSnapshot.reference.collection("site_constructions")
-                        .whereEqualTo("status", "actual")
-                        .get()
-                        .addOnSuccessListener {
-                            siteMap[siteDocSnapshot] = it.documents.first()!!
-                            _fbSitesStateFlow.value = siteMap
-                        }
-                }
-            }*/
+        val siteRef = firestore.collection(SITES_COLLECTION).document(siteUuid)
+
+        val constructions = siteRef.collection(CONSTRUCTIONS_COLLECTION).get().await().documents
+
+        val measurementConstructions = mutableMapOf<String, List<DocumentSnapshot>>()
+        for (construction in constructions) {
+            measurementConstructions[construction.id] =
+                construction.reference.collection(MEASUREMENT_CONSTRUCTIONS_COLLECTION)
+                    .orderBy("completed_date", Query.Direction.DESCENDING)
+                    .get()
+                    .await().documents
+        }
+
+        val site = siteRef.get().await()
+
+        return SiteDataFbDtoObj(
+            siteFbDto = site,
+            constructions = mapOf(siteUuid to constructions),
+            measurementConstructions = measurementConstructions
+        )
+    }
+
+    suspend fun getSiteByIdFull(siteUuid: String): SiteDataFbDtoObj {
+
+        val siteRef = firestore.collection(SITES_COLLECTION).document(siteUuid)
+
+        val constructions = siteRef.collection(CONSTRUCTIONS_COLLECTION).get().await().documents
+        val site = siteRef.get().await()
+
+        val sectionsByConstructionUuid = mutableMapOf<String, List<DocumentSnapshot>>()  // Sections Map<construction_UUID, List<Sections of this construction>
+        for (i in constructions.indices) {
+            val sections = constructions[i].reference.collection(SECTIONS_COLLECTION)
+                .orderBy("number").get().await().documents
+
+            sectionsByConstructionUuid[constructions[i].id] = sections
+        }
+
+        val measurementConstructionsByConstructionUuid = mutableMapOf<String, List<DocumentSnapshot>>()//MeasurementConstructions Map<Construction UUID, List<Measurement_constructions of this construction>
+        for (i in constructions.indices) {
+            val measurementConstructions = constructions[i].reference.collection(
+                MEASUREMENT_CONSTRUCTIONS_COLLECTION
+            )
+                .orderBy("completed_date", Query.Direction.DESCENDING)
+                .get().await().documents
+
+            measurementConstructionsByConstructionUuid[constructions[i].id] = measurementConstructions
+        }
+
+        val groupsByMeasurementConstruction = mutableMapOf<String, List<DocumentSnapshot>>() // Measurement groups Map<Measurement construction UUID, List<Groups of this measurement construction>
+        for ((k,v) in measurementConstructionsByConstructionUuid) {
+            v.forEach {
+                val groups = it.reference.collection(GROUPS_COLLECTION)
+                    .orderBy("group_num")
+                    .get().await().documents
+                groupsByMeasurementConstruction[it.id] = groups
+            }
+        }
+
+        val measurementsByGroups = mutableMapOf<String, List<DocumentSnapshot>>()
+        val resultsByGroups = mutableMapOf<String, List<DocumentSnapshot>>()
+        for ((k,v) in groupsByMeasurementConstruction) {
+            v.forEach {
+                val measurementsGet = it.reference.collection(MEASUREMENTS_COLLECTION)
+                    .orderBy("level")
+                    .get()
+                val resultsGet = it.reference.collection(RESULTS_COLLECTION)
+                    .orderBy("level")
+                    .get()
+
+                measurementsByGroups[it.id] = measurementsGet.await().documents
+                resultsByGroups[it.id] = resultsGet.await().documents
+            }
+        }
+        return SiteDataFbDtoObj(
+            siteFbDto = site,
+            constructions = constructions,
+            measurementConstructions = measurementConstructionsByConstructionUuid,
+            sections = sectionsByConstructionUuid,
+            groups = groupsByMeasurementConstruction,
+            measurements = measurementsByGroups,
+            results = resultsByGroups
+        )
     }
 
     suspend fun getAllPhotoSamples(): ListResult {
         return storageRef.child("samples").listAll().await()
+    }
+
+    companion object {
+        private const val SITES_COLLECTION = "sites"
+        private const val CONSTRUCTIONS_COLLECTION = "site_constructions"
+        private const val MEASUREMENT_CONSTRUCTIONS_COLLECTION = "measurement_constructions"
+        private const val SECTIONS_COLLECTION = "sections"
+        private const val GROUPS_COLLECTION = "groups"
+        private const val MEASUREMENTS_COLLECTION = "measurements"
+        private const val RESULTS_COLLECTION = "results"
+
+
+
+        private const val SAMPLES_FOLDER = "samples"
+        private const val IMAGES_FOLDER = "images"
     }
 }

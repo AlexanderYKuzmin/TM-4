@@ -36,7 +36,7 @@ class SiteNavGraphFragment : Fragment() {
     }
 
     private var title: String? = null
-    private var siteId: Long? = null
+    private var siteUuid: String? = null
     private var storage: Int? = null
 
     private var currentActualConstrIndex: Int? = null
@@ -56,13 +56,13 @@ class SiteNavGraphFragment : Fragment() {
 
         arguments?.apply {
             title = getString("title")
-            siteId = getLong("site_id")
+            siteUuid = getString("site_id")
             storage = getInt("storage")
         }
-        siteId = arguments?.getLong("site_id")
-        storage = arguments?.getInt("storage")
+        //siteUuid = arguments?.getLong("site_id")
+        //storage = arguments?.getInt("storage")
 
-        Log.d("MainActivity", "arguments: siteId: $siteId, storage: $storage")
+        Log.d("MainActivity", "arguments: siteId: $siteUuid, storage: $storage")
 
         return binding.root
     }
@@ -75,7 +75,7 @@ class SiteNavGraphFragment : Fragment() {
         binding.rvSitePhotos.adapter = adapter
 
         //setOnAdapterItemClickActions(adapter)
-        siteViewModel.getSiteById(siteId, storage)
+        siteViewModel.getSiteById(siteUuid, storage)
         siteViewModel.siteResult.observe(viewLifecycleOwner) {
             when(it) {
                 is SiteResult.SuccessSingle -> {

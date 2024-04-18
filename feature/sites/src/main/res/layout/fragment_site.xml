@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_site_photos"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="560dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/tl_site_parameters"
@@ -24,12 +24,16 @@
         android:shrinkColumns="1"
         android:layout_margin="8dp"
         android:background="@drawable/site_background"
+        app:tabMode="scrollable"
         app:layout_constraintTop_toBottomOf="@id/rv_site_photos"
-        app:layout_constraintBottom_toTopOf="@id/card_construction"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
             <TextView
                 style="@style/SiteParamsTextView"
                 android:text="@string/site_address"
@@ -43,8 +47,10 @@
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/color_gray_not_light"
+            >
             <TextView
                 style="@style/SiteParamsTextView"
                 android:text="@string/site_position"
@@ -59,8 +65,9 @@
                 />
         </TableRow>
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
             <TextView
                 style="@style/SiteParamsTextView"
                 android:text="@string/site_type"
@@ -73,8 +80,10 @@
                 />
         </TableRow>
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/color_gray_not_light"
+            >
             <TextView
                 style="@style/SiteParamsTextView"
                 android:text="@string/site_owner"
@@ -86,9 +95,161 @@
                 tools:text="ПАО МТС"
                 />
         </TableRow>
+
+        <!--Construction-->
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/construction_description"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_desc"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_span="3"
+                tools:text="Башня возле дороги 90м"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/color_gray_not_light"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/construction_type"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_type"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_weight="3"
+                tools:text="Башня"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/construction_config"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_config"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_weight="2"
+                tools:text="Четырехгранная"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/color_gray_not_light"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/construction_height"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_height"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_weight="3"
+                tools:text="60м"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/construction_sections"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_sections"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_weight="2"
+                tools:text="4"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/color_gray_not_light"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/construction_version"
+                />
+            <TextView
+                android:id="@+id/tv_constr_version"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_span="3"
+                tools:text="2"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/measure_employee_name"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_employee"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_weight="3"
+                android:text="-"
+                tools:text="Петров"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/color_gray_not_light"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/measure_date"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_measure_date"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_weight="2"
+                android:text="-"
+                android:paddingEnd="8dp"
+                tools:text="2323-23-23"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
+            <TextView
+                style="@style/SiteParamsTextView"
+                android:text="@string/measure_conclusion"
+                />
+            <TextView
+                android:id="@+id/tv_site_constr_conclusion"
+                style="@style/SiteParamsTextViewValues"
+                android:layout_span="2"
+                android:textColor="@color/color_danger"
+                android:textStyle="italic"
+                android:text="@string/none"
+                tools:text="@string/measure_satisfied_no"
+                />
+        </TableRow>
     </TableLayout>
 
-    <TableLayout
+    <!--<TableLayout
         android:id="@+id/card_construction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,7 +259,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         >
 
-        <TableRow>
+        &lt;!&ndash;<TableRow>
             <TextView
                 style="@style/ConstructionParamsTextView"
                 android:text="@string/construction_version"
@@ -109,9 +270,9 @@
                 android:layout_span="3"
                 tools:text="2"
                 />
-        </TableRow>
+        </TableRow>&ndash;&gt;
 
-        <TableRow>
+        &lt;!&ndash;<TableRow>&lt;!&ndash;
             <TextView
                 style="@style/ConstructionParamsTextView"
                 android:text="@string/construction_description"
@@ -122,9 +283,9 @@
                 android:layout_span="3"
                 tools:text="Башня возле дороги 90м"
                 />
-        </TableRow>
+        </TableRow>&ndash;&gt;
 
-        <TableRow>
+        &lt;!&ndash;<TableRow>
             <TextView
                 style="@style/ConstructionParamsTextView"
                 android:text="@string/construction_type"
@@ -147,9 +308,9 @@
                 tools:text="4"
                 />
 
-        </TableRow>
+        </TableRow>&ndash;&gt;
 
-        <TableRow>
+        &lt;!&ndash;<TableRow>
             <TextView
                 style="@style/ConstructionParamsTextView"
                 android:text="@string/construction_height"
@@ -171,8 +332,8 @@
                 android:gravity="center"
                 tools:text="4"
                 />
-        </TableRow>
-        <TableRow>
+        </TableRow>&ndash;&gt;
+        &lt;!&ndash;<TableRow>
             <TextView
                 style="@style/ConstructionParamsTextView"
                 android:text="@string/measure_employee_name"
@@ -196,9 +357,9 @@
                 android:paddingEnd="8dp"
                 tools:text="2323-23-23"
                 />
-        </TableRow>
+        </TableRow>&ndash;&gt;
 
-        <TableRow>
+        &lt;!&ndash;<TableRow>
             <TextView
                 style="@style/ConstructionParamsTextView"
                 android:text="@string/measure_conclusion"
@@ -212,56 +373,9 @@
                 tools:text="@string/measure_satisfied_no"
 
                 />
-        </TableRow>
-    </TableLayout>
-
+        </TableRow>&ndash;&gt;
+    </TableLayout>-->
 
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--
-
-<androidx.recyclerview.widget.RecyclerView
-android:id="@+id/rv_constructions"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-tools:layout_editor_absoluteX="-142dp"
-tools:listitem="@layout/item_site_constructions"
-    />-->
-
-<!--<LinearLayout
-android:id="@+id/ll_constructions"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-app:layout_constraintTop_toBottomOf="@id/tl_site_parameters"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintBottom_toBottomOf="parent"
-android:background="@drawable/site_background"
-android:orientation="horizontal"
-    >
-
-<ImageButton
-    android:id="@+id/iv_back"
-    android:layout_width="20dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:src="@drawable/b_arrow"
-    />
-
-<include
-    android:id="@+id/card_construction"
-    layout="@layout/item_site_constructions"
-    />
-
-<ImageButton
-    android:id="@+id/iv_forward"
-    android:layout_width="20dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_gravity=""
-    android:src="@drawable/f_arrow"
-    />
-</LinearLayout>-->
