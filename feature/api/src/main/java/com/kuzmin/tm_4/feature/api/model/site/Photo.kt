@@ -4,25 +4,25 @@ import java.util.Date
 
 data class Photo (
 
-    val uuid: String,
+    val uuid: String? = null,
 
-    val name: String,
+    val name: String? = null,
 
-    val date: Date, //nullable or not need to be resolved
+    val date: Date? = null, //nullable or not need to be resolved
 
     val url: String,
 
-    val urlThumbnail: String,
+    val urlThumbnail: String? = null,
 
-    val employeeId: Long,
+    val employeeId: Long? = null,
 
-    val employeeName: String,
+    val employeeName: String? = null,
 
-    val dimensionXPx: Int,
+    val dimensionXPx: Int? = null,
 
-    val dimensionYPx: Int,
+    val dimensionYPx: Int? = null,
 
-    val thumbnailDimXPx: Int,
+    val thumbnailDimXPx: Int? = null,
 
-    val thumbnailDimYPx: Int
+    val thumbnailDimYPx: Int? = null
 )

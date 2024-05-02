@@ -1,5 +1,6 @@
 package com.kuzmin.tm_4.feature.api.model.site
 
+import com.kuzmin.tm_4.feature.api.model.McLevelInfo
 import java.util.Date
 
 data class MeasurementConstruction(
@@ -8,7 +9,7 @@ data class MeasurementConstruction(
 
     val measurementName: String?,
 
-    val creator: Long,
+    val creatorUuid: String,
 
     val startLevel: Int,
 
@@ -18,11 +19,15 @@ data class MeasurementConstruction(
 
     val isCompleted: Boolean,
 
-    val employee: Long,
+    val employeeUuid: String,
 
     val constructionUuid: String,
 
     val employeeName: String,
 
-    val creatorName: String
+    val creatorName: String,
+
+    val isServiceable: Boolean,
+
+    val levelsInfo: List<McLevelInfo>? = null
 )

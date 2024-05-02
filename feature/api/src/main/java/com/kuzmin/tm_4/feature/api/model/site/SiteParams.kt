@@ -4,7 +4,6 @@ import com.kuzmin.tm_4.common.util.DegreeConverter
 import java.util.UUID
 
 data class SiteParams(
-    //val uuid: String = UUID.randomUUID().toString(),
 
     val siteUuid: String,
 
@@ -18,7 +17,9 @@ data class SiteParams(
 
     val siteType: Int = 0,
 
-    val siteTypeDescription: String = ""
+    val siteTypeDescription: String = "",
+
+    val durability: String = "const"
 ) {
     val coordinates: String get() = DegreeConverter.doublesPairToDegreeString(latitude, longitude)
 }

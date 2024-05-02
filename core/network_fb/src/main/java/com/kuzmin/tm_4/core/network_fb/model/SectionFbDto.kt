@@ -23,4 +23,8 @@ data class SectionFbDto(
     var wTop: Int = -1,
 
     var status: String = "",
+
+    @get:PropertyName("construction_uuid")
+    @set:PropertyName("construction_uuid")
+    var constructionUuid: String = ""
 )

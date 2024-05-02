@@ -31,11 +31,15 @@ data class ConstructionFbDto(
 
     @get:PropertyName("c_date")
     @set:PropertyName("c_date")
-    var cDate: String = "",
+    var cDate: Long = -1L,
 
     @get:PropertyName("m_date")
     @set:PropertyName("m_date")
-    var mDate: String = "",
+    var mDate: Long = -1L,
 
-    var version: Int = -1
+    var version: Int = -1,
+
+    @get:PropertyName("site_uuid")
+    @set:PropertyName("site_uuid")
+    var siteUuid: String = "",
 )

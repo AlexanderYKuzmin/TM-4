@@ -18,7 +18,7 @@ import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
 
 @Dao
-abstract class TmDao {
+interface TmDao {
 
     /*@Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun addSite(
@@ -34,44 +34,44 @@ abstract class TmDao {
         results: List<ResultDb>
     ): Long*/
 
-   /* @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addSiteParams(siteParamsDb: SiteParamsDb)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addSiteParams(siteParamsDb: SiteParamsDb)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addTenant(tenantDb: TenantDb)
+    suspend fun addTenant(tenantDb: TenantDb)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addAddress(addressDb: AddressDb)
+    suspend fun addAddress(addressDb: AddressDb)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addSiteEquipment(siteEquipmentDb: SiteEquipmentDb)
+    suspend fun addSiteEquipment(siteEquipmentDb: SiteEquipmentDb)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addPhotos(photos: List<PhotoDb>)
+    suspend fun addPhotos(photos: List<PhotoDb>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addConstructions(constructions: List<ConstructionDb>)
+    suspend fun addConstructions(constructions: List<ConstructionDb>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addGroups(groups: List<GroupDb>)
+    suspend fun addGroups(groups: List<GroupDb>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addMeasurementsConstructions(measurementsConstructions: List<MeasurementConstructionDb>)
+    suspend fun addMeasurementsConstructions(measurementsConstructions: List<MeasurementConstructionDb>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addMeasurements(measurements: List<MeasurementDb>)
+    suspend fun addMeasurements(measurements: List<MeasurementDb>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addResults(results: List<ResultDb>)
+    suspend fun addResults(results: List<ResultDb>)
 
-    @Transaction
+    /*@Transaction
     @Insert
     abstract suspend fun addMeasurementsConstructionsComplex(
         measurementsConstructions: List<MeasurementConstructionDb>,
         groups: List<GroupDb>,
         measurements: List<MeasurementDb>,
         results: List<ResultDb>
-    )
+    )*/
 
     @Transaction
     suspend fun addSite(siteDb: SiteDb) {
@@ -79,7 +79,9 @@ abstract class TmDao {
             addSiteParams(siteParamsDb)
             addTenant(tenantDb)
             addAddress(addressDb)
-            addSiteEquipment(siteEquipments.first())
+
+            if (siteEquipments.isNotEmpty()) addSiteEquipment(siteEquipments.first())
+
             addPhotos(photos)
             addConstructions(constructions)
             addMeasurementsConstructions(measurementsConstructions)
@@ -87,11 +89,8 @@ abstract class TmDao {
             addMeasurements(measurements)
             addResults(results)
         }
-    }*/
+    }
 
     /*@Query("SELECT * FROM site_params")
     abstract suspend fun getAll(): SiteDb*/
-
-
-
 }

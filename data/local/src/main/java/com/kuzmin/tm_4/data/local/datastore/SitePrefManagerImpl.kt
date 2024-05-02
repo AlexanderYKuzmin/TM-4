@@ -12,13 +12,13 @@ import com.kuzmin.tm_4.common.util.CommonConstants.S
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.CONSTRUCTION_UUID
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.MEASUREMENT_CONSTRUCTION_UUID
+import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_NAME
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_UUID
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
+import com.kuzmin.tm_4.feature.api.model.SiteDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-
 
 val Context.dataStoreSite: DataStore<Preferences> by preferencesDataStore(name = "site_data")
 
@@ -27,21 +27,25 @@ class SitePrefManagerImpl @Inject constructor(
 ) : SitePrefManager{
     private val dataStore = appContext.dataStoreSite
 
-    override suspend fun readSiteData(): Map<String, String> {
+    override suspend fun readSiteData(): SiteDataStore {
         return dataStore.data.map { prefs ->
             val sUuid = prefs[SITE_UUID] ?: ""
+            val sName = prefs[SITE_NAME] ?: ""
             val cUuid = prefs[CONSTRUCTION_UUID] ?: ""
             val mcUuid = prefs[MEASUREMENT_CONSTRUCTION_UUID] ?: ""
 
-            mapOf(S to sUuid, C to cUuid, MC to mcUuid)
+            SiteDataStore(sUuid, sName, cUuid, mcUuid)
         }.first()
     }
 
-    override suspend fun writeSiteData(sUuid: String, cUuid: String, mcUuid: String) {
-        dataStore.edit { prefs ->
-            prefs[SITE_UUID] = sUuid
-            prefs[CONSTRUCTION_UUID] = cUuid
-            prefs[MEASUREMENT_CONSTRUCTION_UUID] = mcUuid
+    override suspend fun writeSiteData(siteDataStore: SiteDataStore) {
+        with(siteDataStore) {
+            dataStore.edit { prefs ->
+                prefs[SITE_UUID] = sUuid
+                prefs[SITE_NAME] = sName
+                prefs[CONSTRUCTION_UUID] = cUuid
+                prefs[MEASUREMENT_CONSTRUCTION_UUID] = mcUuid
+            }
         }
     }
 }

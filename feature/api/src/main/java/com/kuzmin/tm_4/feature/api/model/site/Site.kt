@@ -18,13 +18,13 @@ data class Site(
 
     val constructionsLevels: List<Level>? = null,
 
-    val constructionsSections: List<Section>,
+    val constructionsSections: List<Section>? = null,
 
-    val measurementsConstructions: List<MeasurementConstruction>,
+    val measurementsConstructions: List<MeasurementConstruction>? = null,
 
-    val measurementsGroups: List<Group>,
+    val measurementsGroups: List<Group>? = null,
 
-    val measurements: List<Measurement>,
+    val measurements: List<Measurement>? = null,
 
-    val results: List<Result>
+    val results: List<Result>? = null
 )

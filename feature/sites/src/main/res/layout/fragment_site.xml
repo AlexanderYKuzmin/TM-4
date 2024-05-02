@@ -1,253 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_surface">
+    android:background="@color/color_surface"
+    android:orientation="vertical"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_site_photos"
         android:layout_width="match_parent"
-        android:layout_height="560dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/tl_site_parameters"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="8dp"
+        android:layout_weight="3"
         tools:listitem="@layout/item_site_photo" />
 
-    <TableLayout
-        android:id="@+id/tl_site_parameters"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:shrinkColumns="1"
-        android:layout_margin="8dp"
+        android:layout_weight="2"
         android:background="@drawable/site_background"
-        app:tabMode="scrollable"
         app:layout_constraintTop_toBottomOf="@id/rv_site_photos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         >
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/site_address"
-                tools:text="@string/site_address"
-                />
-            <TextView
-                android:id="@+id/tv_address_site"
-                style="@style/SiteParamsTextViewValues"
-                tools:text="Какой-то очень длинный адрес который надо будет записать"
-                />
-        </TableRow>
+        <TableLayout
+            android:id="@+id/tl_site_parameters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="1"
+            android:layout_margin="8dp"
 
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/color_gray_not_light"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/site_position"
-                tools:text="@string/site_position"
-                />
-            <TextView
-                android:id="@+id/tv_position_site"
-                style="@style/SiteParamsTextViewValues"
-                android:textColor="#1976D2"
-                android:textStyle="italic|bold"
-                tools:text="54\u00B045'45\u0022N, 45\u00B0 45' 45\u0022E"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/site_type"
-                tools:text="@string/site_type"
-                />
-            <TextView
-                android:id="@+id/tv_site_type"
-                style="@style/SiteParamsTextViewValues"
-                tools:text="22 - Какое-то короткое описание сайта впихнем сюда же"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/color_gray_not_light"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/site_owner"
-                tools:text="@string/site_owner"
-                />
-            <TextView
-                android:id="@+id/tv_site_owner"
-                style="@style/SiteParamsTextViewValues"
-                tools:text="ПАО МТС"
-                />
-        </TableRow>
 
-        <!--Construction-->
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
             >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/construction_description"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_desc"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_span="3"
-                tools:text="Башня возле дороги 90м"
-                />
-        </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/site_address"
+                    tools:text="@string/site_address"
+                    />
+                <TextView
+                    android:id="@+id/tv_address_site"
+                    style="@style/SiteParamsTextViewValues"
+                    tools:text="Какой-то очень длинный адрес который надо будет записать"
+                    />
+            </TableRow>
 
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/color_gray_not_light"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/construction_type"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_type"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_weight="3"
-                tools:text="Башня"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/construction_config"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_config"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_weight="2"
-                tools:text="Четырехгранная"
-                />
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/color_gray_not_light"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/site_position"
+                    tools:text="@string/site_position"
+                    />
+                <TextView
+                    android:id="@+id/tv_position_site"
+                    style="@style/SiteParamsTextViewValues"
+                    android:textColor="#1976D2"
+                    android:textStyle="italic|bold"
+                    tools:text="54\u00B045'45\u0022N, 45\u00B0 45' 45\u0022E"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/site_type"
+                    tools:text="@string/site_type"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_type"
+                    style="@style/SiteParamsTextViewValues"
+                    tools:text="22 - Какое-то короткое описание сайта впихнем сюда же"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/color_gray_not_light"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/site_owner"
+                    tools:text="@string/site_owner"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_owner"
+                    style="@style/SiteParamsTextViewValues"
+                    tools:text="ПАО МТС"
+                    />
+            </TableRow>
 
-        </TableRow>
+            <!--Construction-->
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/construction_description"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_desc"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_span="3"
+                    tools:text="Башня возле дороги 90м"
+                    />
+            </TableRow>
 
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/color_gray_not_light"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/construction_height"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_height"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_weight="3"
-                tools:text="60м"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/construction_sections"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_sections"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_weight="2"
-                tools:text="4"
-                />
-        </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/color_gray_not_light"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/construction_type"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_type"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_weight="3"
+                    tools:text="Башня"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/construction_config"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_config"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_weight="2"
+                    tools:text="Четырехгранная"
+                    />
 
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/color_gray_not_light"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/construction_version"
-                />
-            <TextView
-                android:id="@+id/tv_constr_version"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_span="3"
-                tools:text="2"
-                />
-        </TableRow>
+            </TableRow>
 
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/measure_employee_name"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_employee"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_weight="3"
-                android:text="-"
-                tools:text="Петров"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/color_gray_not_light"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/measure_date"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_measure_date"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_weight="2"
-                android:text="-"
-                android:paddingEnd="8dp"
-                tools:text="2323-23-23"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            >
-            <TextView
-                style="@style/SiteParamsTextView"
-                android:text="@string/measure_conclusion"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_conclusion"
-                style="@style/SiteParamsTextViewValues"
-                android:layout_span="2"
-                android:textColor="@color/color_danger"
-                android:textStyle="italic"
-                android:text="@string/none"
-                tools:text="@string/measure_satisfied_no"
-                />
-        </TableRow>
-    </TableLayout>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/color_gray_not_light"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/construction_height"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_height"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_weight="3"
+                    tools:text="60м"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/construction_sections"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_sections"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_weight="2"
+                    tools:text="4"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/color_gray_not_light"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/construction_version"
+                    />
+                <TextView
+                    android:id="@+id/tv_constr_version"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_span="3"
+                    tools:text="2"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/measure_employee_name"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_employee"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_weight="3"
+                    android:text="-"
+                    tools:text="Петров"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/color_gray_not_light"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/measure_date"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_measure_date"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_weight="2"
+                    android:text="-"
+                    android:paddingEnd="8dp"
+                    tools:text="2323-23-23"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/SiteParamsTextView"
+                    android:text="@string/measure_conclusion"
+                    />
+                <TextView
+                    android:id="@+id/tv_site_constr_conclusion"
+                    style="@style/SiteParamsTextViewValues"
+                    android:layout_span="2"
+                    android:textColor="@color/color_danger"
+                    android:textStyle="italic"
+                    android:text="@string/none"
+                    tools:text="@string/measure_satisfied_no"
+                    />
+            </TableRow>
+        </TableLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
 
     <!--<TableLayout
         android:id="@+id/card_construction"
@@ -378,4 +393,4 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/ll_mc_common"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        android:background="@drawable/item_mc_background"
+        >
+
+        <TableLayout
+            android:id="@+id/tl_mc_common"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/McCommonTextView"
+                    android:text="@string/mc_date_completed"
+                    tools:text="@string/mc_date_completed"
+                    />
+                <TextView
+                    android:id="@+id/tv_date_completed"
+                    style="@style/McCommonTextViewValues"
+                    tools:text="27-02-2024"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/McCommonTextView"
+                    android:text="@string/mc_employee"
+                    tools:text="@string/mc_employee"
+                    />
+                <TextView
+                    android:id="@+id/tv_mc_employee"
+                    style="@style/McCommonTextViewValues"
+                    tools:text="Петров М.Н."
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/McCommonTextView"
+                    android:text="@string/mc_conclusion"
+                    tools:text="@string/mc_conclusion"
+                    />
+                <TextView
+                    android:id="@+id/tv_mc_conclusion"
+                    style="@style/McCommonTextViewValues"
+                    tools:text="Неудовлетворительно"
+                    android:textColor="@color/color_danger"
+                    android:textStyle="italic|bold"
+                    />
+            </TableRow>
+
+        </TableLayout>
+        <LinearLayout
+            android:id="@+id/ll_levels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tl_mc_common"
+            >
+            <TextView
+                style="@style/McCommonTextView"
+                android:layout_marginLeft="6dp"
+                android:text="@string/mc_levels_conclusion"
+                tools:text="@string/mc_levels_conclusion"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_levels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+
+                android:src="@drawable/arrow_right"
+                android:background="@android:color/transparent"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ll_mc_common"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_child_levels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="6dp"
+            tools:listitem="@layout/item_child_level_data"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

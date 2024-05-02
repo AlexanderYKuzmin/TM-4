@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@id/site_nav_graph"
-        android:name="com.kuzmin.tm_4.feature.sites.ui.SiteNavGraphFragment"
+        android:name="com.kuzmin.tm_4.feature.sites.ui.SingleSiteFragment"
         tools:layout="@layout/fragment_site"
         android:label="{title}"
         >

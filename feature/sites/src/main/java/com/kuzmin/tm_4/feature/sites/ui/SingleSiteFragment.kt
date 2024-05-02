@@ -17,13 +17,18 @@ import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.api.model.site.Construction
 import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
 import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.CONSTRUCTION_UUID
+import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.SITE_UUID
+import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.STORAGE_TYPE
+import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.TITLE
 import com.kuzmin.tm_4.feature.sites.ui.adapters.PhotoAdapter
+import com.kuzmin.tm_4.feature.sites.ui.viewmodels.SiteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SiteNavGraphFragment : Fragment() {
+class SingleSiteFragment : Fragment() {
     private var _binding: FragmentSiteBinding? = null
     private val binding get() = _binding!!
 
@@ -37,6 +42,7 @@ class SiteNavGraphFragment : Fragment() {
 
     private var title: String? = null
     private var siteUuid: String? = null
+    private var constructionUuid: String? = null
     private var storage: Int? = null
 
     private var currentActualConstrIndex: Int? = null
@@ -55,12 +61,11 @@ class SiteNavGraphFragment : Fragment() {
         _binding = FragmentSiteBinding.inflate(inflater, container, false)
 
         arguments?.apply {
-            title = getString("title")
-            siteUuid = getString("site_id")
-            storage = getInt("storage")
+            title = getString(TITLE)
+            siteUuid = getString(SITE_UUID)
+            constructionUuid = getString(CONSTRUCTION_UUID)
+            storage = getInt(STORAGE_TYPE)
         }
-        //siteUuid = arguments?.getLong("site_id")
-        //storage = arguments?.getInt("storage")
 
         Log.d("MainActivity", "arguments: siteId: $siteUuid, storage: $storage")
 
@@ -74,8 +79,9 @@ class SiteNavGraphFragment : Fragment() {
         val adapter = PhotoAdapter()
         binding.rvSitePhotos.adapter = adapter
 
+
         //setOnAdapterItemClickActions(adapter)
-        siteViewModel.getSiteById(siteUuid, storage)
+        siteViewModel.getSiteByIdNoSections(siteUuid, constructionUuid, storage)
         siteViewModel.siteResult.observe(viewLifecycleOwner) {
             when(it) {
                 is SiteResult.SuccessSingle -> {
@@ -120,7 +126,7 @@ class SiteNavGraphFragment : Fragment() {
             }
 
             currentConstructionMeasurement = if (currentConstruction != null) {
-                it.measurementsConstructions.firstOrNull { mc ->
+                it.measurementsConstructions?.firstOrNull { mc ->
                     mc.constructionUuid == currentConstruction!!.uuid
                 }
             } else null

@@ -13,6 +13,7 @@ import com.kuzmin.tm_4.core.database.model.site.SiteDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
 import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
+import com.kuzmin.tm_4.feature.api.model.Tenant
 import com.kuzmin.tm_4.feature.api.model.site.Address
 import com.kuzmin.tm_4.feature.api.model.site.Construction
 import com.kuzmin.tm_4.feature.api.model.site.Group
@@ -24,6 +25,7 @@ import com.kuzmin.tm_4.feature.api.model.site.Site
 import com.kuzmin.tm_4.feature.api.model.site.SiteEquipment
 import com.kuzmin.tm_4.feature.api.model.site.SiteParams
 import com.kuzmin.tm_4.feature.api.model.site.Result
+import java.util.Date
 
 import java.util.UUID
 import javax.inject.Inject
@@ -32,18 +34,18 @@ class SiteModelToSiteDbMapper @Inject constructor(
 
 ) {
 
-    fun mapSitesModelToSitesDb(sites: List<Site>): List<SiteDb> {
+    /*fun mapSitesModelToSitesDb(sites: List<Site>): List<SiteDb> {
         if (sites.isEmpty()) return emptyList()
         return sites.map {
             mapSiteModelToSiteDb(it)
         }
-    }
+    }*/
 
-    fun mapSiteModelToSiteDb(site: Site): SiteDb {
+    fun mapSiteModelToSiteDb(site: Site, durability: String): SiteDb {
 
         with(site) {
            return SiteDb(
-               siteParamsDb = mapSiteParamsToSiteParamsDb(siteParams),
+               siteParamsDb = mapSiteParamsToSiteParamsDb(siteParams, durability),
                tenantDb =  mapTenantToTenantDb(tenant, siteParams.siteUuid),
                addressDb = mapAddressToAddressDb(address, siteParams.siteUuid) ,
                siteEquipments = mapSiteEquipmentsToSiteEquipmentsDb(siteEquipments, siteParams.siteUuid),
@@ -58,25 +60,26 @@ class SiteModelToSiteDbMapper @Inject constructor(
         }
     }
 
-    private fun mapSiteParamsToSiteParamsDb(siteParams: SiteParams): SiteParamsDb {
+    private fun mapSiteParamsToSiteParamsDb(siteParams: SiteParams, durability: String): SiteParamsDb {
         with(siteParams) {
             return SiteParamsDb(
-                uuid = UUID.randomUUID().toString(),
+                uuid = siteUuid,
                 siteUuid = siteUuid,
                 name = name,
                 description = description,
                 latitude = latitude,
                 longitude = longitude,
                 siteType = siteType,
-                siteTypeDescription = siteTypeDescription
+                siteTypeDescription = siteTypeDescription,
+                durability = durability
             )
         }
     }
 
-    private fun mapTenantToTenantDb(tenant: com.kuzmin.tm_4.feature.api.model.Tenant, siteUuid: String): TenantDb {
+    private fun mapTenantToTenantDb(tenant: Tenant, siteUuid: String): TenantDb {
         with(tenant) {
             return TenantDb(
-                uuid = UUID.randomUUID().toString(),
+                uuid = uuid,
                 name = name,
                 logo = logo,
                 siteUuid = siteUuid
@@ -129,14 +132,14 @@ class SiteModelToSiteDbMapper @Inject constructor(
     private fun mapPhotoToPhotoDb(photo: Photo, siteUuid: String): PhotoDb {
         with(photo) {
             return PhotoDb(
-               uuid = uuid,
+               uuid = uuid ?: "",
                siteUuid = siteUuid,
-               name =  name,
-               date = date.formatToDateSqlString(),
+               name =  name ?: "",
+               date = date?.let { it.formatToDateSqlString() } ?: Date().formatToDateSqlString(),
                url = url,
-               urlThumbnail = urlThumbnail,
-               employeeId = employeeId,
-               employeeName = employeeName,
+               urlThumbnail = urlThumbnail ?: "",
+               employeeId = employeeId ?: -1,
+               employeeName = employeeName ?: "",
                dimensions = String.format("%dx%d", dimensionXPx, dimensionYPx),
                thumbnailDim = String.format("%dx%d", thumbnailDimXPx, thumbnailDimYPx)
             )
@@ -167,8 +170,8 @@ class SiteModelToSiteDbMapper @Inject constructor(
         }
     }
 
-    private fun mapSectionsToSectionsDb(sections: List<Section>, siteUuid: String): List<SectionDb> {
-        if (sections.isEmpty()) return emptyList()
+    private fun mapSectionsToSectionsDb(sections: List<Section>?, siteUuid: String): List<SectionDb> {
+        if (sections.isNullOrEmpty()) return emptyList()
         return sections.map {
             mapSectionToSectionDb(it, siteUuid)
         }
@@ -190,8 +193,8 @@ class SiteModelToSiteDbMapper @Inject constructor(
         }
     }
 
-    private fun mapGroupsToGroupsDb(groups: List<Group>, siteUuid: String): List<GroupDb> {
-        if (groups.isEmpty()) return emptyList()
+    private fun mapGroupsToGroupsDb(groups: List<Group>?, siteUuid: String): List<GroupDb> {
+        if (groups.isNullOrEmpty()) return emptyList()
         return groups.map {
             mapGroupToGroupDb(it, siteUuid)
         }
@@ -211,8 +214,8 @@ class SiteModelToSiteDbMapper @Inject constructor(
         }
     }
 
-    private fun mapMcsToMcsDb(measurementConstructions: List<MeasurementConstruction>, siteUuid: String): List<MeasurementConstructionDb> {
-        if (measurementConstructions.isEmpty()) return emptyList()
+    private fun mapMcsToMcsDb(measurementConstructions: List<MeasurementConstruction>?, siteUuid: String): List<MeasurementConstructionDb> {
+        if (measurementConstructions.isNullOrEmpty()) return emptyList()
         return measurementConstructions.map {
             mapMcToMcDb(it, siteUuid)
         }
@@ -225,12 +228,12 @@ class SiteModelToSiteDbMapper @Inject constructor(
                 siteUuid = siteUuid,
                 constructionUuid = constructionUuid,
                 measurementName = measurementName,
-                creatorId = creator,
+                creatorUuid = creatorUuid,
                 startLevel = startLevel,
                 creationDate = creationDate.formatToDateSqlString(),
                 completedDate = completedDate.formatToDateSqlString(),
                 isCompleted = isCompleted,
-                employeeId = employee,
+                employeeUuid = employeeUuid,
                 employeeName = employeeName,
                 creatorName = creatorName
             )
@@ -238,11 +241,11 @@ class SiteModelToSiteDbMapper @Inject constructor(
     }
 
     private fun mapMeasuresToMeasuresDb(
-        measurements: List<Measurement>,
+        measurements: List<Measurement>?,
         siteUuid: String,
-        groups: List<Group>
+        groups: List<Group>?
     ): List<MeasurementDb> {
-        if (measurements.isEmpty()) return emptyList()
+        if (measurements.isNullOrEmpty() || groups.isNullOrEmpty()) return emptyList()
         return measurements.map { measure ->
             val measurementConstructionUuid = groups.first { group ->
                 group.uuid == measure.measurementGroupUuid
@@ -272,11 +275,11 @@ class SiteModelToSiteDbMapper @Inject constructor(
     }
 
     private fun mapResultsToResultsDb(
-        results: List<Result>,
+        results: List<Result>?,
         siteUuid: String,
-        groups: List<Group>
+        groups: List<Group>?
     ): List<ResultDb> {
-        if (results.isEmpty()) return emptyList()
+        if (results.isNullOrEmpty() || groups.isNullOrEmpty()) return emptyList()
         return results.map { result ->
             val measurementConstructionUuid = groups.first { group ->
                 group.uuid == result.measurementGroupUuid

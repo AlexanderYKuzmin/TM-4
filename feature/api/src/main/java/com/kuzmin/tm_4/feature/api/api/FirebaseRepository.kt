@@ -1,8 +1,9 @@
 package com.kuzmin.tm_4.feature.api.api
 
 import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.model.site.Photo
 import com.kuzmin.tm_4.feature.api.model.site.Site
-import kotlinx.coroutines.flow.Flow
 
 interface FirebaseRepository {
     suspend fun getAllSiteSamples(): List<SiteSample>
@@ -12,4 +13,14 @@ interface FirebaseRepository {
     suspend fun getSiteById(uuid: String): Site
 
     suspend fun getAllPhotoSamples(): Map<String, String>
+
+    suspend fun getSitePhotos(sUuid: String): List<Photo>
+
+    suspend fun getSiteByIdNoSections(sUuid: String, cUuid: String): Site
+
+    suspend fun getMeasurementConstructionsBySiteId(
+        sUuid: String,
+        cUuid: String
+    ): List<MeasurementConstruction>
+
 }

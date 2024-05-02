@@ -87,6 +87,4 @@ class SitesAdapter(
             return oldItem == newItem
         }
     }
-
-
 }

@@ -20,11 +20,11 @@ data class MeasurementConstructionFbDto (
 
     @get:PropertyName("completed_date")
     @set:PropertyName("completed_date")
-    var comletedDate: String = "",
+    var completedDate: Long = -1L,
 
     @get:PropertyName("c_date")
     @set:PropertyName("c_date")
-    var cDate: String = "",
+    var cDate: Long = -1L,
 
     @get:PropertyName("creator_name")
     @set:PropertyName("creator_name")
@@ -48,11 +48,11 @@ data class MeasurementConstructionFbDto (
 
     @get:PropertyName("result_by_levels")
     @set:PropertyName("result_by_levels")
-    var resultByLevels: Map<Int, Int> = emptyMap(),
+    var resultByLevels: List<Int> = emptyList(),
 
     @get:PropertyName("failed_levels")
     @set:PropertyName("failed_levels")
-    var failedLevels: List<Int> = listOf<Int>(),
+    var failedLevels: List<Boolean> = emptyList(),
 
     var conclusion: Boolean = false,
 

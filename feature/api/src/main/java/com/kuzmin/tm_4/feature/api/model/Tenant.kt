@@ -4,7 +4,7 @@ import java.util.UUID
 
 data class Tenant(
 
-    //val uuid: String = UUID.randomUUID().toString(),
+    val uuid: String = UUID.randomUUID().toString(),
 
     val name: String,
 

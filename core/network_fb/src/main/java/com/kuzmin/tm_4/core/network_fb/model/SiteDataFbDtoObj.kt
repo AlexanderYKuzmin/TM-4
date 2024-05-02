@@ -9,7 +9,7 @@ data class SiteDataFbDtoObj (
 
     val sections: Map<String, List<DocumentSnapshot>>? = null,
 
-    val measurementConstructions: Map<String, List<DocumentSnapshot>>,
+    val measurementConstructions: Map<String, List<DocumentSnapshot>>? = null,
 
     val groups: Map<String, List<DocumentSnapshot>>? = null,
 

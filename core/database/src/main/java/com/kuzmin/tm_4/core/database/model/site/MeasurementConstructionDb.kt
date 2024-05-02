@@ -32,7 +32,7 @@ data class MeasurementConstructionDb(
     val measurementName: String?,
 
     @ColumnInfo("mc_creator_id")
-    val creatorId: Long,
+    val creatorUuid: String,
 
     @ColumnInfo("mc_start_level_mm")
     val startLevel: Int,
@@ -47,7 +47,7 @@ data class MeasurementConstructionDb(
     val isCompleted: Boolean,
 
     @ColumnInfo("employee")
-    val employeeId: Long,
+    val employeeUuid: String,
 
     @ColumnInfo("mc_empl_name")
     val employeeName: String,

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mc_date_completed">Дата измерения:</string>
+    <string name="mc_employee">Исполнитель:</string>
+    <string name="mc_conclusion">Заключение:</string>
+    <string name="mc_levels_conclusion">Уровни:</string>
+
+    <string name="serviceable">Удовлетворительно</string>
+    <string name="not_serviceable">Неудовлетворительно</string>
+</resources>

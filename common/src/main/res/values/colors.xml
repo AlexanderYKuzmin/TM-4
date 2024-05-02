@@ -34,6 +34,9 @@
 
     <color name="site_params_background">@color/color_on_container</color>
 
+    <!--Item mc background-->
+    <color name="color_item_mc_background">#DCEDC8</color>
+
     <!--title color-->
     <color name="color_title">#5C3904</color>
 </resources>

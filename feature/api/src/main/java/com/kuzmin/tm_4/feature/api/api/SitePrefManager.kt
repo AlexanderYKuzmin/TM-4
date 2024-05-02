@@ -1,7 +1,9 @@
 package com.kuzmin.tm_4.feature.api.api
 
-interface SitePrefManager {
-    suspend fun readSiteData(): Map<String, String>
+import com.kuzmin.tm_4.feature.api.model.SiteDataStore
 
-    suspend fun writeSiteData(sUuid: String, cUuid: String ="", mcUuid: String = "")
+interface SitePrefManager {
+    suspend fun readSiteData(): SiteDataStore
+
+    suspend fun writeSiteData(siteDataStore: SiteDataStore)
 }

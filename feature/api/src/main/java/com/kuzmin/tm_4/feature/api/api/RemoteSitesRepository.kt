@@ -1,6 +1,7 @@
-package com.kuzmin.tm_4.feature.api.model.site
+package com.kuzmin.tm_4.feature.api.api
 
 import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.model.site.Site
 
 
 interface RemoteSitesRepository {

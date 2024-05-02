@@ -41,12 +41,14 @@ android {
 
 dependencies {
 
+    implementation(project(":common"))
+
     implementation(Deps.core)
     implementation(Deps.appCompat)
     implementation(Deps.material)
 
     implementation(DataBase.room)
-    implementation(DataBase.room_commmon)
+    implementation(DataBase.room_common)
     kapt(DataBase.room_kapt_compiler)
     implementation(DataBase.room_paging)
     implementation(DataBase.room_ktx)

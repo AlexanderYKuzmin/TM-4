@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.kuzmin.tm_4.common.util.CommonConstants
 
 @Entity(
     tableName = "site_params",
@@ -39,5 +40,8 @@ data class SiteParamsDb(
     val siteType: Int,
 
     @ColumnInfo("sp_site_type_desc")
-    val siteTypeDescription: String
+    val siteTypeDescription: String,
+
+    @ColumnInfo("sp_durability")
+    val durability: String = CommonConstants.CONST            //TEMP , CONST
 )

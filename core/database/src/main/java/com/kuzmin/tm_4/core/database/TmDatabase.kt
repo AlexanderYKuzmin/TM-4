@@ -30,7 +30,7 @@ import com.kuzmin.tm_4.core.database.model.site.TenantDb
         MeasurementDb::class,
         ResultDb::class
     ],
-    version = 1
+    version = 2
 )
 abstract class TmDatabase : RoomDatabase() {
     companion object {

@@ -7,11 +7,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
 import com.kuzmin.tm_4.core.network_fb.model.SiteDataFbDtoObj
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FirebaseService @Inject constructor(
@@ -37,27 +33,27 @@ class FirebaseService @Inject constructor(
         return firestore.collection(SITES_COLLECTION).document(siteUuid).get().await()
     }
 
-    suspend fun getSiteByIdNoSections(siteUuid: String): SiteDataFbDtoObj {
+    suspend fun getSiteByIdNoSections(siteUuid: String, cUuid: String): SiteDataFbDtoObj { //Site with actual construction, actual measurement construction
 
         val siteRef = firestore.collection(SITES_COLLECTION).document(siteUuid)
 
-        val constructions = siteRef.collection(CONSTRUCTIONS_COLLECTION).get().await().documents
+        val constructionRef = siteRef.collection(CONSTRUCTIONS_COLLECTION).document(cUuid)
 
-        val measurementConstructions = mutableMapOf<String, List<DocumentSnapshot>>()
-        for (construction in constructions) {
-            measurementConstructions[construction.id] =
-                construction.reference.collection(MEASUREMENT_CONSTRUCTIONS_COLLECTION)
+        //val measurementConstructions = mutableMapOf<String, List<DocumentSnapshot>>()
+            //measurementConstructions[constructionRef.id] =
+        val measurementConstruction =
+                constructionRef.collection(MEASUREMENT_CONSTRUCTIONS_COLLECTION)
                     .orderBy("completed_date", Query.Direction.DESCENDING)
                     .get()
-                    .await().documents
-        }
+                    .await().documents.first()
 
+        val construction = constructionRef.get().await()
         val site = siteRef.get().await()
 
         return SiteDataFbDtoObj(
             siteFbDto = site,
-            constructions = mapOf(siteUuid to constructions),
-            measurementConstructions = measurementConstructions
+            constructions = mapOf(siteUuid to listOf(construction)),
+            measurementConstructions = mapOf(cUuid to listOf(measurementConstruction))
         )
     }
 
@@ -85,6 +81,7 @@ class FirebaseService @Inject constructor(
                 .get().await().documents
 
             measurementConstructionsByConstructionUuid[constructions[i].id] = measurementConstructions
+            Log.d("db", "Measurement constructions: ${measurementConstructions.size}, ${measurementConstructions.first().id}")
         }
 
         val groupsByMeasurementConstruction = mutableMapOf<String, List<DocumentSnapshot>>() // Measurement groups Map<Measurement construction UUID, List<Groups of this measurement construction>
@@ -114,7 +111,7 @@ class FirebaseService @Inject constructor(
         }
         return SiteDataFbDtoObj(
             siteFbDto = site,
-            constructions = constructions,
+            constructions = mapOf(siteUuid to constructions),
             measurementConstructions = measurementConstructionsByConstructionUuid,
             sections = sectionsByConstructionUuid,
             groups = groupsByMeasurementConstruction,
@@ -125,6 +122,18 @@ class FirebaseService @Inject constructor(
 
     suspend fun getAllPhotoSamples(): ListResult {
         return storageRef.child("samples").listAll().await()
+    }
+
+    suspend fun getSitePhotos(sUuid: String): ListResult {
+        return storageRef.child("images").child(sUuid).listAll().await()
+    }
+
+    suspend fun getMeasurementConstructionList(sUuid: String, cUuid: String): Map<String, List<DocumentSnapshot>> {
+
+        return mapOf(cUuid to firestore.collection(SITES_COLLECTION).document(sUuid)
+            .collection(CONSTRUCTIONS_COLLECTION).document(cUuid)
+            .collection(MEASUREMENT_CONSTRUCTIONS_COLLECTION)
+            .get().await().documents)
     }
 
     companion object {

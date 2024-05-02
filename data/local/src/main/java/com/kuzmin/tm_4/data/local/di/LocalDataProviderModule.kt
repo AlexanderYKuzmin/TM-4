@@ -2,7 +2,12 @@ package com.kuzmin.tm_4.data.local.di
 
 import android.content.Context
 import com.kuzmin.tm_4.data.local.datastore.PrefManagerImpl
+import com.kuzmin.tm_4.data.local.datastore.SitePrefManagerImpl
+import com.kuzmin.tm_4.data.local.repo.LocalRepositoryImpl
+import com.kuzmin.tm_4.feature.api.api.LocalRepository
+import com.kuzmin.tm_4.feature.api.api.SitePrefManager
 import com.kuzmin.tm_4.feature.login.api.PrefManager
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,14 +16,20 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class LocalDataProviderModule {
+interface LocalDataProviderModule {
 
-    @Provides
-    fun providePrefManager(@ApplicationContext appContext: Context): PrefManager {
-        return PrefManagerImpl(appContext)
+    @Binds
+    fun bindLocalRepository(localRepositoryImpl: LocalRepositoryImpl): LocalRepository
+
+    companion object {
+        @Provides
+        fun providePrefManager(@ApplicationContext appContext: Context): PrefManager {
+            return PrefManagerImpl(appContext)
+        }
+
+        @Provides
+        fun provideSitePrefManager(@ApplicationContext appContext: Context): SitePrefManager {
+            return SitePrefManagerImpl(appContext)
+        }
     }
-    /*@Binds
-    fun bindPrefManager(prefManagerImpl: PrefManagerImpl): PrefManager*/
-
-
 }

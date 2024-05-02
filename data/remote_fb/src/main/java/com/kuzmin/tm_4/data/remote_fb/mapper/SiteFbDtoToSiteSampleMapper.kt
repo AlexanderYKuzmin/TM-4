@@ -8,9 +8,10 @@ import com.kuzmin.tm_4.feature.api.model.Tenant
 import com.kuzmin.tm_4.feature.api.model.sample.AddressSample
 import com.kuzmin.tm_4.feature.api.model.sample.ConstructionSample
 import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import java.util.Date
 import javax.inject.Inject
 
-class SiteFbDtoToSiteMapper @Inject constructor() {
+class SiteFbDtoToSiteSampleMapper @Inject constructor() {
     fun mapSiteFbDtoMapToSiteSampleModelList(
         siteFbDtoMap: Map<SiteFbDto?, List<ConstructionFbDto?>>
     ): List<SiteSample> {
@@ -30,7 +31,7 @@ class SiteFbDtoToSiteMapper @Inject constructor() {
                 description = description,
                 photoUrl = null,
                 photoDimension = null,
-                tenant = Tenant(tenantName, null),
+                tenant = Tenant(name = tenantName, logo = null),
                 latitude = geo.latitude,
                 longitude = geo.longitude,
                 address = AddressSample(
@@ -57,11 +58,12 @@ class SiteFbDtoToSiteMapper @Inject constructor() {
     private fun mapConstructionFbDtoToConstructionSample(constructionFbDto: ConstructionFbDto): ConstructionSample {
         with(constructionFbDto) {
             return ConstructionSample(
+                uuid = uuid,
                 constructionType = type,
                 config = config,
                 heightMm = height,
-                creationDate = cDate.toDate(),
-                completedDate = mDate.toDate(),
+                creationDate = if (cDate > 0) Date(cDate) else null,
+                completedDate = if (mDate > 0) Date(mDate) else null,
                 isCompleted = isMeasured
             )
         }

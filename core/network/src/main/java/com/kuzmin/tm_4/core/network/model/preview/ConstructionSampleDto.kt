@@ -1,8 +1,11 @@
 package com.kuzmin.tm_4.core.network.model.preview
 
 import com.google.gson.annotations.SerializedName
+import java.util.UUID
 
 data class ConstructionSampleDto(
+    val uuid: String,
+
     @SerializedName("construction_type")
     val constructionType: String,
 

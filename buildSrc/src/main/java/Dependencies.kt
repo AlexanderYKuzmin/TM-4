@@ -22,7 +22,7 @@ object Version {
 
     const val fireBase_version = "32.7.2"
 
-    const val room_version = "2.5.2"
+    const val room_version = "2.6.1"
 
     const val picasso_version = "2.71828"
 }
@@ -84,7 +84,7 @@ object DataStore {
 
 object DataBase {
     const val room = "androidx.room:room-runtime:${Version.room_version}"
-    const val room_commmon = "androidx.room:room-common:${Version.room_version}"
+    const val room_common = "androidx.room:room-common:${Version.room_version}"
     const val room_paging = "androidx.room:room-paging:${Version.room_version}"
 
     const val room_kapt_compiler = "androidx.room:room-compiler:${Version.room_version}"

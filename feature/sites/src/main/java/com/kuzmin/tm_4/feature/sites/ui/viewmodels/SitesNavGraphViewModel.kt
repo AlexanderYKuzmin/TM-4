@@ -1,41 +1,36 @@
-package com.kuzmin.tm_4.feature.sites.ui
+package com.kuzmin.tm_4.feature.sites.ui.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.extension.isConsistentQuery
-import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.api.SitePrefManager
+import com.kuzmin.tm_4.feature.api.model.SiteDataStore
 import com.kuzmin.tm_4.feature.api.model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.SearchQuerySharedContainer
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.*
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetAllSamplesUseCase
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetAllSitesUseCase
-import com.kuzmin.tm_4.feature.sites.domain.usecases.GetSitesByIdUseCase
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetSitesByNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SitesViewModel @Inject constructor(
+class SitesNavGraphViewModel @Inject constructor(
     private val getAllSitesUseCase: GetAllSitesUseCase,
     private val getSitesByNameUseCase: GetSitesByNameUseCase,
     private val getAllSamplesUseCase: GetAllSamplesUseCase,
-    private val searchQuerySharedContainer: SearchQuerySharedContainer
+    private val searchQuerySharedContainer: SearchQuerySharedContainer,
+    private val sitePrefManager: SitePrefManager
 ) : ViewModel(){
 
     private val _siteResult = MutableLiveData<SiteResult>()
@@ -48,6 +43,14 @@ class SitesViewModel @Inject constructor(
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         //_siteResult.postValue(Error(throwable))
         _siteResult.value = Error(throwable)
+    }
+
+    fun storeSiteData(siteDataStore: SiteDataStore) {
+        viewModelScope.launch { sitePrefManager.writeSiteData(siteDataStore) }
+    }
+
+    fun saveSiteToDb(site: Site) {
+        TODO()
     }
 
     fun observeQuery(context: LifecycleOwner) {

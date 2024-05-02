@@ -5,7 +5,7 @@ import com.kuzmin.tm_4.data.remote.mapper.SitesSamplesDtoToModelMapper
 import com.kuzmin.tm_4.data.remote.repository.AuthRepositoryImpl
 import com.kuzmin.tm_4.data.remote.repository.RemoteSitesRepositoryImpl
 import com.kuzmin.tm_4.feature.login.api.AuthRepository
-import com.kuzmin.tm_4.feature.api.model.site.RemoteSitesRepository
+import com.kuzmin.tm_4.feature.api.api.RemoteSitesRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -22,7 +22,7 @@ interface RemoteDataModule {
     fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 
     @Binds
-    fun bindRemoteSitesRepository(remoteSitesRepositoryImpl: RemoteSitesRepositoryImpl): com.kuzmin.tm_4.feature.api.model.site.RemoteSitesRepository
+    fun bindRemoteSitesRepository(remoteSitesRepositoryImpl: RemoteSitesRepositoryImpl): RemoteSitesRepository
 
     companion object {
         @Provides

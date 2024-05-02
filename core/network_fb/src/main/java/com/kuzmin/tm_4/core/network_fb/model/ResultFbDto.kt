@@ -32,7 +32,7 @@ data class ResultFbDto(
 
     @get:PropertyName("shift_mm")
     @set:PropertyName("shift_mm")
-    var shiftMm: Double = 0.0,
+    var shiftMm: Int = 0,
 
     @get:PropertyName("tan_alfa")
     @set:PropertyName("tan_alfa")

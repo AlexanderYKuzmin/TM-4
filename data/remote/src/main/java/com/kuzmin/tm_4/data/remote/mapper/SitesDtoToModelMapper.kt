@@ -62,16 +62,18 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapSiteParamsDtoToSiteParams(siteParamsDto: SiteParamsDto): SiteParams {
-        return SiteParams(
-            //remoteId = siteParamsDto.id,
-            name = siteParamsDto.name,
-            siteUuid = siteParamsDto.siteUuid,
-            description = siteParamsDto.description,
-            latitude = siteParamsDto.latitude,
-            longitude = siteParamsDto.longitude,
-            siteType = siteParamsDto.siteType,
-            siteTypeDescription = siteParamsDto.siteTypeDescription
-        )
+        with(siteParamsDto) {
+            return SiteParams(
+                //remoteId = siteParamsDto.id,
+                name = name,
+                siteUuid = siteUuid,
+                description = description,
+                latitude = latitude,
+                longitude = longitude,
+                siteType = siteType,
+                siteTypeDescription = siteTypeDescription
+            )
+        }
     }
     private fun mapConstructionsDtoToConstructions(constructionsDto: List<ConstructionDto>): List<Construction> {
         return if (constructionsDto.isEmpty()) {
@@ -81,18 +83,20 @@ class SitesDtoToModelMapper {
         }
     }
     private fun mapConstructionDtoToConstruction(constructionDto: ConstructionDto): Construction {
-        return Construction(
-            uuid = constructionDto.uuid,
-            version = constructionDto.version,
-            description = constructionDto.description,
-            status = constructionDto.status,
-            numOfSections = constructionDto.numOfSections,
-            height = constructionDto.height,
-            constructionType = constructionDto.constructionType,
-            config = constructionDto.config,
-            measureLevels = constructionDto.measureLevels,
-            siteUuid = constructionDto.siteUuid
-        )
+        with(constructionDto) {
+            return Construction(
+                uuid = uuid,
+                version = version,
+                description = description,
+                status = status,
+                numOfSections = numOfSections,
+                height = height,
+                constructionType = constructionType,
+                config = config,
+                measureLevels = measureLevels,
+                siteUuid = siteUuid
+            )
+        }
     }
 
     private fun mapConstructionsLevelsDtoToConstructionsLevels(constructionsLevelsDto: List<LevelDto>?): List<Level> {
@@ -104,11 +108,13 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapConstructionLevelDtoToConstructionLevel(constructionLevelDto: LevelDto): Level {
-        return Level(
-            number = constructionLevelDto.number,
-            position = constructionLevelDto.position,
-            altitude = constructionLevelDto.altitude
-        )
+        with(constructionLevelDto) {
+            return Level(
+                number = number,
+                position = position,
+                altitude = altitude
+            )
+        }
     }
 
     private fun mapConstructionsSectionsDtoToConstructionsSections(constructionsSectionsDto: List<SectionDto>): List<Section> {
@@ -120,36 +126,43 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapConstructionSectionDtoToConstructionSection(constructionSectionDto: SectionDto): Section {
-        return Section(
-            uuid = constructionSectionDto.uuid,
-            number = constructionSectionDto.number,
-            wBottom = constructionSectionDto.wBottom,
-            wTop = constructionSectionDto.wTop,
-            height = constructionSectionDto.height,
-            level = constructionSectionDto.level,
-            status = constructionSectionDto.status,
-            constructionUuid = constructionSectionDto.constructionUuid
-        )
+        with(constructionSectionDto) {
+            return Section(
+                uuid = uuid,
+                number = number,
+                wBottom = wBottom,
+                wTop = wTop,
+                height = height,
+                level = level,
+                status = status,
+                constructionUuid = constructionUuid
+            )
+        }
     }
 
     private fun mapTenantDtoToTenant(tenantDto: TenantDto): Tenant {
-        return Tenant(
-            name = tenantDto.name,
-            logo = tenantDto.logo
-        )
+        with(tenantDto) {
+            return Tenant(
+                uuid = uuid,
+                name = name,
+                logo = logo
+            )
+        }
     }
     private fun mapAddressDtoToAddress(addressDto: AddressDto): Address {
-        return Address(
-            uuid = addressDto.uuid,
-            country = addressDto.country,
-            region = addressDto.region,
-            regionCode = addressDto.regionCode,
-            subRegion = addressDto.subRegion,
-            city = addressDto.city,
-            street = addressDto.street,
-            building = addressDto.building,
-            postalCode = addressDto.postalCode
-        )
+        with(addressDto) {
+            return Address(
+                uuid = uuid,
+                country = country,
+                region = region,
+                regionCode = regionCode,
+                subRegion = subRegion,
+                city = city,
+                street = street,
+                building = building,
+                postalCode = postalCode
+            )
+        }
     }
 
     private fun mapMeasurementConstructionsDtoToMeasurementConstructions(
@@ -168,19 +181,22 @@ class SitesDtoToModelMapper {
     private fun mapMeasurementConstructionDtoToMeasurementConstruction(
         measurementConstructionDto: MeasurementConstructionDto
     ): MeasurementConstruction {
-        return MeasurementConstruction(
-            uuid = measurementConstructionDto.uuid,
-            measurementName = measurementConstructionDto.measurementName,
-            creator = measurementConstructionDto.creator,
-            startLevel = measurementConstructionDto.startLevel,
-            creationDate = measurementConstructionDto.creationDate.toDate() ?: Date(),
-            completedDate = measurementConstructionDto.completedDate.toDate() ?: Date(),
-            isCompleted = measurementConstructionDto.isCompleted,
-            employee = measurementConstructionDto.employee,
-            constructionUuid = measurementConstructionDto.constructionUuid,
-            employeeName = measurementConstructionDto.employeeName,
-            creatorName = measurementConstructionDto.creatorName
-        )
+        with(measurementConstructionDto) {
+            return MeasurementConstruction(
+                uuid = uuid,
+                measurementName = measurementName,
+                creatorUuid = creatorUuid,
+                startLevel = startLevel,
+                creationDate = creationDate.toDate() ?: Date(),
+                completedDate = completedDate.toDate() ?: Date(),
+                isCompleted = isCompleted,
+                employeeUuid = employeeUuid,
+                constructionUuid = constructionUuid,
+                employeeName = employeeName,
+                creatorName = creatorName,
+                isServiceable = false // CHeck it
+            )
+        }
     }
 
     private fun mapMeasurementGroupsDtoToMeasurementGroups(groupsDto: List<GroupDto>): List<Group> {
@@ -192,14 +208,16 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapMeasurementGroupDtoToMeasurementGroup(groupDto: GroupDto): Group {
-        return Group(
-            uuid = groupDto.uuid,
-            measurementConstructionUuid = groupDto.measurementConstructionUuid,
-            groupNum = groupDto.groupNum,
-            azimuth = groupDto.azimuth,
-            theoDistance = groupDto.theoDistance,
-            theoHeight = groupDto.theoHeight,
-        )
+        with(groupDto) {
+            return Group(
+                uuid = uuid,
+                measurementConstructionUuid = measurementConstructionUuid,
+                groupNum = groupNum,
+                azimuth = azimuth,
+                theoDistance = theoDistance,
+                theoHeight = theoHeight,
+            )
+        }
     }
 
 
@@ -232,25 +250,27 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapResultDtoToResult(resultDto: ResultDto): Result {
-        return Result(
-            uuid = resultDto.uuid,
-            level = resultDto.level,
-            sectionUuid = resultDto.sectionUuid,
-            averageCl = resultDto.averageCl,
-            averageCr = resultDto.averageCr,
-            averageClCr = resultDto.averageClCr,
-            shiftDeg = resultDto.shiftDeg,
-            shiftMm = resultDto.shiftMm,
-            tanAlpha = resultDto.tanAlpha,
-            distToMeasureLevel = resultDto.distToMeasureLevel.toMmInt(),
-            distDelta = resultDto.distDelta.toMmInt(),
-            betaAverageLeft = resultDto.betaAverageLeft,
-            betaAverageRight = resultDto.betaAverageRight,
-            betI = resultDto.betI,
-            betaDelta = resultDto.betaDelta,
-            measurementUuid = resultDto.measurementUuid,
-            measurementGroupUuid = resultDto.measurementGroupUuid
-        )
+        with(resultDto) {
+            return Result(
+                uuid = uuid,
+                level = level,
+                sectionUuid = sectionUuid,
+                averageCl = averageCl,
+                averageCr = averageCr,
+                averageClCr = averageClCr,
+                shiftDeg = shiftDeg,
+                shiftMm = shiftMm,
+                tanAlpha = tanAlpha,
+                distToMeasureLevel = distToMeasureLevel.toMmInt(),
+                distDelta = distDelta.toMmInt(),
+                betaAverageLeft = betaAverageLeft,
+                betaAverageRight = betaAverageRight,
+                betI = betI,
+                betaDelta = betaDelta,
+                measurementUuid = measurementUuid,
+                measurementGroupUuid = measurementGroupUuid
+            )
+        }
     }
 
     private fun mapPhotosDtoToPhotos(photosDto: List<PhotoDto>): List<Photo> {
@@ -262,19 +282,21 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapPhotoDtoToPhoto(photoDto: PhotoDto): Photo {
-        return Photo(
-            uuid = photoDto.uuid,
-            name = photoDto.name,
-            date = photoDto.date.toDate() ?: Date(),
-            url = photoDto.url,
-            urlThumbnail = photoDto.urlThumbnail,
-            employeeId = photoDto.employeeId,
-            employeeName = photoDto.employeeName,
-            dimensionXPx = photoDto.dimensions.getX(),
-            dimensionYPx = photoDto.dimensions.getY(),
-            thumbnailDimXPx = photoDto.thumbnailDim.getX(),
-            thumbnailDimYPx = photoDto.thumbnailDim.getY()
-        )
+        with(photoDto) {
+            return Photo(
+                uuid = uuid,
+                name = name,
+                date = date.toDate() ?: Date(),
+                url = url,
+                urlThumbnail = urlThumbnail,
+                employeeId = employeeId,
+                employeeName = employeeName,
+                dimensionXPx = dimensions.getX(),
+                dimensionYPx = dimensions.getY(),
+                thumbnailDimXPx = thumbnailDim.getX(),
+                thumbnailDimYPx = thumbnailDim.getY()
+            )
+        }
     }
 
     private fun mapSiteEquipmentsDtoToSiteEquipments(siteEquipmentsDto: List<SiteEquipmentDto>): List<SiteEquipment> {
@@ -286,10 +308,12 @@ class SitesDtoToModelMapper {
     }
 
     private fun mapSiteEquipmentDtoToSiteEquipment(siteEquipmentDto: SiteEquipmentDto): SiteEquipment {
-        return SiteEquipment(
-            uuid = siteEquipmentDto.uuid,
-            type = siteEquipmentDto.type,
-            name = siteEquipmentDto.name
-        )
+        with(siteEquipmentDto) {
+            return SiteEquipment(
+                uuid = uuid,
+                type = type,
+                name = name
+            )
+        }
     }
 }

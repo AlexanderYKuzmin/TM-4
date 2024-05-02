@@ -16,7 +16,7 @@ data class MeasurementConstructionDto(
     val measurementName: String?,
 
     @SerializedName("creator")
-    val creator: Long,
+    val creatorUuid: String,
 
     @SerializedName("start_level_mm")
     val startLevel: Int,
@@ -31,7 +31,7 @@ data class MeasurementConstructionDto(
     val isCompleted: Boolean,
 
     @SerializedName("employee")
-    val employee: Long,
+    val employeeUuid: String,
 
     @SerializedName("c_date") //"2024-01-11 10:16:29"
     val cDate: String,

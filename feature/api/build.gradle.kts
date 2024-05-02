@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -38,6 +39,9 @@ dependencies {
     implementation(Deps.core)
     implementation(Deps.appCompat)
     implementation(Deps.material)
+
+    implementation(DaggerHilt.hilt)
+    kapt(DaggerHilt.hilt_compiler)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
