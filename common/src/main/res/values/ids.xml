@@ -5,6 +5,7 @@
     <item name="login_nav_graph" type="id"/>
     <item name="sites_nav_graph" type="id"/>
     <item name="measurements_nav_graph" type="id"/>
+    <item name="measurement_view_nav_graph" type="id"/>
     <item name="report_nav_graph" type="id"/>
     <item name="site_nav_graph" type="id"/>
 

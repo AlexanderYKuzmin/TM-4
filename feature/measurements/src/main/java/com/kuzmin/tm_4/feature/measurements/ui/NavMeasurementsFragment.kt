@@ -6,8 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.kuzmin.tm_4.common.R
+import com.kuzmin.tm_4.common.util.CommonConstants
+import com.kuzmin.tm_4.feature.api.model.SiteDataStore
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentNavMeasurementsBinding
 import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Error
 import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Loading
@@ -24,6 +29,10 @@ class NavMeasurementsFragment : Fragment() {
     @Inject
     @ApplicationContext
     lateinit var appContext: Context
+
+    private val navController by lazy {
+        findNavController()
+    }
 
     private var _binding: FragmentNavMeasurementsBinding? = null
     private val binding get() = _binding!!
@@ -44,6 +53,8 @@ class NavMeasurementsFragment : Fragment() {
 
         val adapter = MeasurementConstructionsAdapter(appContext)
         binding.rvNavMeasuremnts.adapter = adapter
+
+        setAdapterItemClickAction(adapter)
 
         navMeasurementsViewModel.getAllMeasurementConstructions()
 
@@ -79,7 +90,26 @@ class NavMeasurementsFragment : Fragment() {
         }
     }
 
+    private fun setAdapterItemClickAction(adapter: MeasurementConstructionsAdapter) {
+        adapter.onItemClickListener = { mcUuid ->
+            Log.d("MC", "On item click! ID: $mcUuid")
+
+            navController.navigate(
+                R.id.measurement_view_nav_graph,
+                bundleOf(
+                    MC_UUID to mcUuid
+                )
+            )
+            //onSitesAdapterClickListener?.onItemSiteClick("")
+            // TODO notice main activity about it
+        }
+    }
+
+
     companion object {
+
+        const val MC_UUID: String = "mc_uuid"
+
         @JvmStatic
         fun newInstance() = NavMeasurementsFragment()
     }

@@ -62,6 +62,9 @@
         <action
             android:id="@id/action_measurements_nav_graph_to_report_nav_graph"
             app:destination="@id/report_nav_graph" />
+        <action
+            android:id="@+id/action_measurements_nav_graph_to_measurement_view_nav_graph"
+            app:destination="@id/measurement_view_nav_graph" />
     </fragment>
 
     <fragment
@@ -79,6 +82,22 @@
         android:name="com.kuzmin.tm_4.feature.login.ui.LoginFragment"
         tools:layout="@layout/fragment_login">
 
+    </fragment>
+
+    <fragment
+        android:id="@id/measurement_view_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.measurements.ui.TowerMeasurePagerFragment"
+        tools:layout="@layout/fragment_tower_measure_pager"
+        >
+        <argument
+            android:name="mc_uuid"
+            app:argType="string"
+            android:defaultValue=""
+            />
+
+        <action
+            android:id="@+id/action_measurement_view_nav_graph_to_report_nav_graph"
+            app:destination="@id/report_nav_graph" />
     </fragment>
 
 

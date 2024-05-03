@@ -91,6 +91,9 @@ interface TmDao {
         }
     }
 
-    /*@Query("SELECT * FROM site_params")
-    abstract suspend fun getAll(): SiteDb*/
+    @Transaction
+    @Query("SELECT  *, *, * FROM site_params " +
+            "JOIN addresses ON sp_site_uuid = addr_site_uuid " +
+            "JOIN tenants ON sp_site_uuid = ten_site_uuid")
+    suspend fun getSite(): SiteDb
 }

@@ -1,6 +1,7 @@
 package com.kuzmin.tm_4.feature.measurements.ui.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class MeasurementConstructionsAdapter(
 )
     : ListAdapter<McParent, MeasurementConstructionsAdapter.ItemMeasurementConstructionViewHolder>(McParentDiffCallback){
 
-//set on click listener On Parent
+    var onItemClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -66,6 +67,11 @@ class MeasurementConstructionsAdapter(
                     AppCompatResources.getDrawable(appContext, R.drawable.arrow_right)
                 )
             }
+        }
+
+        binding.root.setOnClickListener {
+            Log.d("Parent click", "On Parent Item Click!")
+            onItemClickListener?.invoke(parent.uuid)
         }
     }
 
