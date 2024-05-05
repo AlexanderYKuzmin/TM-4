@@ -1,6 +1,12 @@
 package com.kuzmin.tm_4.common.util
 
 object DegreeConverter {
+
+    const val RIGHT_SINGLE_QUOTE: Char = '\u2019'
+    const val QUOTE: Char = '\u0022'
+    const val DEGREE: Char = '\u00B0'
+    const val LOW_SINGLE_QUOTE: Char = '\u201A'
+
     fun doubleToDegreeArray(coordinate: Double): Array<Int> {
         val degree = coordinate.toInt()
         val minutes = ((coordinate - degree) * 60).toInt()

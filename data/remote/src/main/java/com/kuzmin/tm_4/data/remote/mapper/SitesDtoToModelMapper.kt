@@ -289,7 +289,7 @@ class SitesDtoToModelMapper {
                 date = date.toDate() ?: Date(),
                 url = url,
                 urlThumbnail = urlThumbnail,
-                employeeId = employeeId,
+                employeeUuid = employeeId,
                 employeeName = employeeName,
                 dimensionXPx = dimensions.getX(),
                 dimensionYPx = dimensions.getY(),

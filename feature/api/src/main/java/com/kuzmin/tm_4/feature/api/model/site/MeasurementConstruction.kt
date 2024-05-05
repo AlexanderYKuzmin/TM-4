@@ -15,7 +15,7 @@ data class MeasurementConstruction(
 
     val creationDate: Date,
 
-    val completedDate: Date,
+    val completedDate: Date?,
 
     val isCompleted: Boolean,
 
@@ -29,5 +29,6 @@ data class MeasurementConstruction(
 
     val isServiceable: Boolean,
 
-    val levelsInfo: List<McLevelInfo>? = null
+    val levelsInfo: List<McLevelInfo>? = null,
+
 )

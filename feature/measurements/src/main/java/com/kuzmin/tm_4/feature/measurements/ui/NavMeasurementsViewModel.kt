@@ -39,7 +39,7 @@ class NavMeasurementsViewModel @Inject constructor(
     }
 
     private val getAndSaveFullSiteExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        TODO()
+        //TODO()
     }
 
     init {

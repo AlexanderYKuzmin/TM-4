@@ -42,7 +42,7 @@ class MeasurementConstructionsAdapter(
         val parent = getItem(position)
 
         with(binding) {
-            tvDateCompleted.text = parent.date.formatToDateString()
+            tvDateCompleted.text = parent.date?.formatToDateString()
             tvMcEmployee.text = parent.employee
             tvMcConclusion.text = parent.getConclusion(appContext)
         }

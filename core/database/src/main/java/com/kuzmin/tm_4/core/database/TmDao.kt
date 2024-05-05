@@ -5,6 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.kuzmin.tm_4.core.database.delivery.ConstructionAndSectionsDb
+import com.kuzmin.tm_4.core.database.delivery.ConstructionFullDb
+import com.kuzmin.tm_4.core.database.delivery.GroupFullDb
+import com.kuzmin.tm_4.core.database.delivery.McDbFull
 import com.kuzmin.tm_4.core.database.model.site.AddressDb
 import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.GroupDb
@@ -12,7 +16,7 @@ import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
 import com.kuzmin.tm_4.core.database.model.site.ResultDb
-import com.kuzmin.tm_4.core.database.model.site.SiteDb
+import com.kuzmin.tm_4.core.database.delivery.SiteDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
 import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
@@ -96,4 +100,31 @@ interface TmDao {
             "JOIN addresses ON sp_site_uuid = addr_site_uuid " +
             "JOIN tenants ON sp_site_uuid = ten_site_uuid")
     suspend fun getSite(): SiteDb
+
+    @Query("SELECT * FROM constructions WHERE constr_uuid == :cUuid")
+    suspend fun getConstructionAndSections(cUuid: String): ConstructionAndSectionsDb
+
+    @Transaction
+    suspend fun getConstructionFull(cUuid: String): ConstructionFullDb {
+        return ConstructionFullDb(
+            getConstructionAndSections(cUuid),
+            getMcFullListByConstructionUuid(cUuid)
+        )
+    }
+
+    /*@Query("SELECT * FROM constructions WHERE constr_uuid = :cUuid")
+    suspend fun getConstructionFull(cUuid: String): ConstructionFullDb*/
+
+    @Query("SELECT * FROM measurements_constructions WHERE mc_constr_uuid = :cUuid")
+    suspend fun getMcFullListByConstructionUuid(cUuid: String): List<McDbFull>
+
+    @Transaction
+    @Query("SELECT * FROM measurements_constructions WHERE mc_uuid = :mcUuid")
+    suspend fun getMcFull(mcUuid: String): McDbFull
+
+    @Query("SELECT * FROM measurements_constructions WHERE mc_uuid = :mcUuid" )
+    suspend fun getMc(mcUuid: String): MeasurementConstructionDb
+
+    @Query("SELECT * FROM groups WHERE gr_meas_constr_uuid = :mcUuid AND gr_num = :groupNum")
+    suspend fun getGroupFull(groupNum: Int, mcUuid: String): GroupFullDb
 }

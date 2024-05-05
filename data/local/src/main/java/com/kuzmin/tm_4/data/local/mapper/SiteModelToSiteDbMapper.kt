@@ -9,7 +9,7 @@ import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
 import com.kuzmin.tm_4.core.database.model.site.ResultDb
 import com.kuzmin.tm_4.core.database.model.site.SectionDb
-import com.kuzmin.tm_4.core.database.model.site.SiteDb
+import com.kuzmin.tm_4.core.database.delivery.SiteDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
 import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
@@ -27,7 +27,6 @@ import com.kuzmin.tm_4.feature.api.model.site.SiteParams
 import com.kuzmin.tm_4.feature.api.model.site.Result
 import java.util.Date
 
-import java.util.UUID
 import javax.inject.Inject
 
 class SiteModelToSiteDbMapper @Inject constructor(
@@ -138,7 +137,7 @@ class SiteModelToSiteDbMapper @Inject constructor(
                date = date?.let { it.formatToDateSqlString() } ?: Date().formatToDateSqlString(),
                url = url,
                urlThumbnail = urlThumbnail ?: "",
-               employeeId = employeeId ?: -1,
+               employeeId = employeeUuid ?: -1,
                employeeName = employeeName ?: "",
                dimensions = String.format("%dx%d", dimensionXPx, dimensionYPx),
                thumbnailDim = String.format("%dx%d", thumbnailDimXPx, thumbnailDimYPx)
@@ -231,11 +230,12 @@ class SiteModelToSiteDbMapper @Inject constructor(
                 creatorUuid = creatorUuid,
                 startLevel = startLevel,
                 creationDate = creationDate.formatToDateSqlString(),
-                completedDate = completedDate.formatToDateSqlString(),
+                completedDate = completedDate?.formatToDateSqlString() ?: "",
                 isCompleted = isCompleted,
                 employeeUuid = employeeUuid,
                 employeeName = employeeName,
-                creatorName = creatorName
+                creatorName = creatorName,
+                isServiceable = isServiceable
             )
         }
     }

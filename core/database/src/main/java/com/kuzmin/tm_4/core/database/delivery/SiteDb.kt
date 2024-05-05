@@ -1,7 +1,18 @@
-package com.kuzmin.tm_4.core.database.model.site
+package com.kuzmin.tm_4.core.database.delivery
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.kuzmin.tm_4.core.database.model.site.AddressDb
+import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
+import com.kuzmin.tm_4.core.database.model.site.GroupDb
+import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
+import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
+import com.kuzmin.tm_4.core.database.model.site.PhotoDb
+import com.kuzmin.tm_4.core.database.model.site.ResultDb
+import com.kuzmin.tm_4.core.database.model.site.SectionDb
+import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
+import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
+import com.kuzmin.tm_4.core.database.model.site.TenantDb
 
 data class SiteDb(
     @Embedded

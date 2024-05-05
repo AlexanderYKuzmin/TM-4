@@ -14,7 +14,7 @@ data class Photo (
 
     val urlThumbnail: String? = null,
 
-    val employeeId: Long? = null,
+    val employeeUuid: Long? = null,
 
     val employeeName: String? = null,
 

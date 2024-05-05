@@ -154,7 +154,7 @@ class SingleSiteFragment : Fragment() {
         with(binding) {
             with(currentConstructionMeasurement!!) {
                 tvSiteConstrEmployee.text = employeeName
-                tvSiteConstrMeasureDate.text = completedDate.formatToDateString()
+                tvSiteConstrMeasureDate.text = completedDate?.formatToDateString() ?: ""
                 tvSiteConstrConclusion.text = isCompleted.toString() // TODO satisfactory
             }
         }

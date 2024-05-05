@@ -54,4 +54,7 @@ data class MeasurementConstructionDb(
 
     @ColumnInfo("mc_cr_name")
     val creatorName: String,
+
+    @ColumnInfo("mc_serviceable")
+    val isServiceable: Boolean
 )

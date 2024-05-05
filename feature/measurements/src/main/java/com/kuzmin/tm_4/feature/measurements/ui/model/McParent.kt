@@ -8,7 +8,7 @@ import java.util.Date
 data class McParent(
     val uuid: String,
 
-    val date: Date,
+    val date: Date?,
 
     val employee: String,
 
