@@ -72,6 +72,8 @@ class FirebaseService @Inject constructor(
             sectionsByConstructionUuid[constructions[i].id] = sections
         }
 
+        Log.d("fb", "Sections map: ${sectionsByConstructionUuid}")
+
         val measurementConstructionsByConstructionUuid = mutableMapOf<String, List<DocumentSnapshot>>()//MeasurementConstructions Map<Construction UUID, List<Measurement_constructions of this construction>
         for (i in constructions.indices) {
             val measurementConstructions = constructions[i].reference.collection(
@@ -81,7 +83,7 @@ class FirebaseService @Inject constructor(
                 .get().await().documents
 
             measurementConstructionsByConstructionUuid[constructions[i].id] = measurementConstructions
-            Log.d("db", "Measurement constructions: ${measurementConstructions.size}, ${measurementConstructions.first().id}")
+            Log.d("fb", "Measurement constructions: ${measurementConstructions.size}, ${measurementConstructions.first().id}")
         }
 
         val groupsByMeasurementConstruction = mutableMapOf<String, List<DocumentSnapshot>>() // Measurement groups Map<Measurement construction UUID, List<Groups of this measurement construction>

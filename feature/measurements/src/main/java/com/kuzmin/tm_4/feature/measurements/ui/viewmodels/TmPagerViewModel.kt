@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
 import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult
 import com.kuzmin.tm_4.feature.measurements.domain.usecases.GetMeasurementConstructionFromDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,6 @@ class TmPagerViewModel @Inject constructor(
     private val getMeasurementConstructionFromDbUseCase: GetMeasurementConstructionFromDbUseCase
 ) : ViewModel(){
 
-
     private val _mcResult = MutableLiveData<MeasurementConstructionResult>()
     val mcResult: LiveData<MeasurementConstructionResult> get() = _mcResult
 
@@ -30,7 +28,7 @@ class TmPagerViewModel @Inject constructor(
     fun getMeasurementConstructionFromDb(mcUuid: String) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val mc = getMeasurementConstructionFromDbUseCase(mcUuid) ?: throw RuntimeException("Wrong mcUuid, there is no such mc in db.")
-            _mcResult.postValue(MeasurementConstructionResult.Success(listOf(mc)))
+            _mcResult.postValue(MeasurementConstructionResult.SuccessMc(listOf(mc)))
         }
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="iv_graph_icon" type="id">iv_graph_icon</item>
+    <item name="tv_graphic_title" type="id"/>
+    <item name="tv_graphic_description" type="id"/>
+
+    <item name="cl_graphs" type="id"/>
+    <item name="cl_tables" type="id"/>
+    <item name="cl_report" type="id"/>
+</resources>

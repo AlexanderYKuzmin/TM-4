@@ -31,6 +31,8 @@ class SiteDataFbDtoToSiteModelMapper @Inject constructor(
         siteDataFbDto: SiteDataFbDto
     ): Site {
         with(siteDataFbDto) {
+            Log.d("fb", "Mapper Site. Sections: $sections")
+            Log.d("fb", "Mapper Site. MeasurementConstructions: $measurementConstructions")
             return Site(
                 siteParams = mapSiteParamsDtoToSiteParams(siteFbDto),
                 tenant = mapTenantDtoToTenant(siteFbDto),

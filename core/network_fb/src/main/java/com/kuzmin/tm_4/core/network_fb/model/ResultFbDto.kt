@@ -60,5 +60,7 @@ data class ResultFbDto(
     @set:PropertyName("beta_i")
     var betaI: Double = 0.0,
 
+    @get:PropertyName("beta_delta")
+    @set:PropertyName("beta_delta")
     var betaDelta: Int = 0
 )

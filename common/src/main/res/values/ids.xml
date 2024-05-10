@@ -7,6 +7,9 @@
     <item name="measurements_nav_graph" type="id"/>
     <item name="measurement_view_nav_graph" type="id"/>
     <item name="report_nav_graph" type="id"/>
+    <item name="report_graphs" type="id"/>
+    <item name="report_tables" type="id"/>
+    <item name="report_report" type="id"/>
     <item name="site_nav_graph" type="id"/>
 
     <!--Navigations-->
@@ -21,6 +24,9 @@
     <item name="action_sites_nav_graph_to_site_nav_graph" type="id"/>
     <item name="action_site_nav_graph_to_measurements_nav_graph" type="id"/>
     <item name="action_site_nav_graph_to_report_nav_graph" type="id"/>
+    <item name="action_report_nav_graph_to_report_graphs" type="id"/>
+    <item name="action_report_nav_graph_to_report_tables" type="id"/>
+    <item name="action_report_nav_graph_to_report_report" type="id"/>
 
     <!--Main menu-->
 

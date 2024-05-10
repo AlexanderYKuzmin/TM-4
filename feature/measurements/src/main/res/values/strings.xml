@@ -5,6 +5,10 @@
     <string name="mc_conclusion">Заключение:</string>
     <string name="mc_levels_conclusion">Уровни:</string>
 
+    <string name="mc_level_title">Уровень |</string>
+    <string name="mc_shift_title">Смещение |</string>
+    <string name="mc_conclusion_title">Допуск</string>
+
     <string name="serviceable">Удовлетворительно</string>
     <string name="not_serviceable">Неудовлетворительно</string>
 
@@ -13,6 +17,8 @@
         <item>Группа 1</item>
         <item>Группа 2</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="azimuth">Азимут:</string>
+    <string name="theo_distance">Тео дист:</string>
+    <string name="theo_height">Тео выс:</string>
 </resources>

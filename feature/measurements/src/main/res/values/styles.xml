@@ -19,11 +19,20 @@
         <item name="android:layout_margin">6dp</item>
     </style>
 
-    <style name="SettingsTabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+    <style name="MeasureActionTabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">18dp</item>
         <item name="android:textStyle">bold</item>
-
+        <item name="android:textScaleX">1.5</item>
+        <item name="fontFamily">@font/local_titiles</item>
         <item name="android:layout_gravity">start</item>
+    </style>
+
+    <style name="FabTowerMeasure" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/color_item_site_remote</item>
+        <item name="android:tint">@color/color_on_surface</item>
+        <item name="android:layout_margin">16dp</item>
     </style>
 </resources>
 

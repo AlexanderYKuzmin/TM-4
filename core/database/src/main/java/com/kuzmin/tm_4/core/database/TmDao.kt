@@ -17,6 +17,7 @@ import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
 import com.kuzmin.tm_4.core.database.model.site.ResultDb
 import com.kuzmin.tm_4.core.database.delivery.SiteDb
+import com.kuzmin.tm_4.core.database.model.site.SectionDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
 import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
@@ -57,6 +58,9 @@ interface TmDao {
     suspend fun addConstructions(constructions: List<ConstructionDb>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addSections(sections: List<SectionDb>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addGroups(groups: List<GroupDb>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -88,6 +92,7 @@ interface TmDao {
 
             addPhotos(photos)
             addConstructions(constructions)
+            addSections(sections)
             addMeasurementsConstructions(measurementsConstructions)
             addGroups(groups)
             addMeasurements(measurements)

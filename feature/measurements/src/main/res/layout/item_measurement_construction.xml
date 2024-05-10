@@ -104,7 +104,38 @@
                 />
 
         </LinearLayout>
+        <TableLayout
+            android:id="@+id/tl_title_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            >
+
+            <TableRow
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                >
+                <TextView
+                    style="@style/McCommonTextView"
+                    android:text="@string/mc_level_title"
+                    tools:text="@string/mc_level_title"
+                    />
+                <TextView
+                    style="@style/McCommonTextView"
+                    android:text="@string/mc_shift_title"
+                    tools:text="@string/mc_shift_title"
+                    />
+                <TextView
+                    style="@style/McCommonTextView"
+                    android:text="@string/mc_conclusion_title"
+                    tools:text="@string/mc_conclusion_title"
+                    />
+
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

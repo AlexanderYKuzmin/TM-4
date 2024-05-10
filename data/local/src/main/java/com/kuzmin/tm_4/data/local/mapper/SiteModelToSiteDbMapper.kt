@@ -1,5 +1,6 @@
 package com.kuzmin.tm_4.data.local.mapper
 
+import android.util.Log
 import com.kuzmin.tm_4.common.extension.formatToDateSqlString
 import com.kuzmin.tm_4.core.database.model.site.AddressDb
 import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
@@ -221,6 +222,7 @@ class SiteModelToSiteDbMapper @Inject constructor(
     }
 
     private fun mapMcToMcDb(measurementConstruction: MeasurementConstruction, siteUuid: String): MeasurementConstructionDb {
+        Log.d("db", "Mapper. Map MC to MCDb. mc: $measurementConstruction, site uuid: $siteUuid")
         with(measurementConstruction) {
             return MeasurementConstructionDb(
                 uuid = uuid,

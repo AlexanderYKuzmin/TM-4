@@ -1,55 +1,93 @@
 package com.kuzmin.tm_4.feature.report.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.kuzmin.tm_4.feature.report.R
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.kuzmin.tm_4.common.extension.toast
+import com.kuzmin.tm_4.feature.report.databinding.FragmentNavReportBinding
+import com.kuzmin.tm_4.feature.report.ui.viewmodels.NavReportViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- * Use the [NavReportFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class NavReportFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var mcUuid: String? = null
+
+    @Inject
+    @ApplicationContext
+    lateinit var appContext: Context
+
+    private val navController by lazy {
+        findNavController()
+    }
+
+    private var _binding: FragmentNavReportBinding? = null
+    val binding: FragmentNavReportBinding get() = _binding!!
+
+    private val navReportViewModel: NavReportViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
+        arguments?.let {
+            mcUuid = it.getString(MC_UUID)
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav_report, container, false)
+    ): View {
+            _binding = FragmentNavReportBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (mcUuid == null) {
+            navReportViewModel.getMcUuidFromDatastore()
+        }
+
+        navReportViewModel.mcUuidLiveData.observe(viewLifecycleOwner) {
+            if (it == null) appContext.toast("Не выбрана конструкция для отображения.")
+            else mcUuid = it
+        }
+
+        setClickListeners()
+    }
+
+    private fun setClickListeners() {
+        with(binding) {
+            clGraphs.setOnClickListener {
+               // if (mcUuid != null) navController.navigate()
+            }
+            clTables.setOnClickListener {
+                // TODO:
+            }
+            clReport.setOnClickListener {
+                Log.d("Report", "Here's gonna be a report!")
+            }
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NavReportFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
+        const val MC_UUID = "mc_uuid"
+
+        /*@JvmStatic
         fun newInstance(param1: String, param2: String) =
             NavReportFragment().apply {
                 arguments = Bundle().apply {
-                    /*putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)*/
+                    *//*putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)*//*
                 }
-            }
+            }*/
     }
 }

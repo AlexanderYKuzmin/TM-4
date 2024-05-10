@@ -108,6 +108,7 @@ class FirebaseRepositoryImpl @Inject constructor(
                 } else null,
                 sections =
                     if (siteFbObj.sections!!.isNotEmpty()) {
+                        Log.d("fb", "repository: Mapping sections ${siteFbObj.sections}")
                         siteFbObj.sections!!.entries.associate { entry ->
                             entry.key to entry.value.map {documentSnapshot ->
                                 documentSnapshot.toObject(SectionFbDto::class.java) ?: throw RuntimeException("No section for mapping")

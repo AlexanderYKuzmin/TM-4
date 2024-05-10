@@ -70,11 +70,21 @@
     <fragment
         android:id="@id/report_nav_graph"
         android:name="com.kuzmin.tm_4.feature.report.ui.NavReportFragment"
-        tools:layout="@layout/fragment_nav_report" >
-        <!--<action
-            android:id="@+id/action_navigation_chat_to_single_chat"
-            app:destination="@id/single_chat"
-            app:popUpTo="@id/navigation_chat" />-->
+        tools:layout="@layout/fragment_nav_report"
+        >
+        <argument
+            android:name="mc_uuid"
+            app:argType="string"
+            android:defaultValue=""
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@id/report_graphs"
+
+        >
+
     </fragment>
 
     <fragment
@@ -99,29 +109,4 @@
             android:id="@+id/action_measurement_view_nav_graph_to_report_nav_graph"
             app:destination="@id/report_nav_graph" />
     </fragment>
-
-
-    <!--<fragment
-        android:id="@+id/nav_construction"
-        android:name="com.kuzmin.tm_3.ui.nav_constructions.ConstructionFragment"
-        android:label="fragment_construction"
-        tools:layout="@layout/fragment_construction" >
-        <argument
-            android:name="building_id"
-            app:argType="long"
-            android:defaultValue="-1L" />
-    </fragment>-->
-
-
-    <!--<fragment
-        android:id="@+id/navigation_sites_remote"
-        android:label="Загрузка с сервера"
-        android:name="com.kuzmin.tm_3.ui.nav_sites_remote.NavSitesRemoteFragment"
-        tools:layout="@layout/fragment_sites_remote">
-        <argument
-            android:name="token"
-            app:argType="string" />
-
-    </fragment>-->
-
 </navigation>

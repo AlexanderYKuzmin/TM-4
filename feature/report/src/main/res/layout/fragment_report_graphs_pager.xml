@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.TowerMeasurePagerFragment">
+    tools:context=".ui.ReportGraphsPagerFragment">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_azimuth"
+        android:id="@+id/tab_graphs"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         app:tabIndicatorFullWidth="true"
@@ -19,11 +19,11 @@
         app:tabIndicatorColor="@color/color_primary_dark"
         app:tabIndicatorAnimationMode="elastic"
         app:tabIndicatorHeight="48dp"
-        app:tabTextAppearance="@style/MeasureActionTabLayoutTextAppearance"
+        app:tabTextAppearance="@style/ReportTabLayoutTextAppearance"
         />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_tower_measures"
+        android:id="@+id/vp_report_graphs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

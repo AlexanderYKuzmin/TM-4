@@ -1,33 +1,41 @@
 package com.kuzmin.tm_4.feature.measurements.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.kuzmin.tm_4.feature.api.model.site.Group
 import com.kuzmin.tm_4.feature.api.model.site.Measurement
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentTowerMeasureActionBinding
-import com.kuzmin.tm_4.feature.measurements.databinding.FragmentTowerMeasurePagerBinding
+import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult
+import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.TowerMeasureActionViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class TowerMeasureActionFragment : Fragment() {
 
-    private var groupNum: Int? = null
+    private var groupNum: Int = 0
     private var constructionUuid: String? = null
     private var mcUuid: String? = null
 
     private var _binding: FragmentTowerMeasureActionBinding? = null
     private val binding: FragmentTowerMeasureActionBinding get() = _binding!!
 
+    private val towerMeasureActionViewModel: TowerMeasureActionViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             groupNum = it.getInt(GROUP_NUMBER)
-            constructionUuid = it.getString(CONSTRUCTION_UUID)
+            constructionUuid = it.getString(CONSTRUCTION_UUID) ?: throw RuntimeException("Construction UUID must not be null.")
             mcUuid = it.getString(MC_UUID)
         }
+
+        if (groupNum == 0) throw RuntimeException("Measure group must not be zero.")
     }
 
     override fun onCreateView(
@@ -41,7 +49,21 @@ class TowerMeasureActionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvGroupNum.text = groupNum.toString()
+        towerMeasureActionViewModel.getConstructionFullFromDb(constructionUuid!!)
+        towerMeasureActionViewModel.constructionResult.observe(viewLifecycleOwner) {
+            when(it) {
+                is MeasurementConstructionResult.Loading -> {
+
+                }
+                is MeasurementConstructionResult.SuccessC -> {
+                    binding.tvTower.populate(it.constructionFull, groupNum, mcUuid)
+                }
+                is MeasurementConstructionResult.Error -> {
+                    Log.d("Constr", "ERROR has occurred while construction was getting ${it.throwable}")
+                }
+                else -> throw RuntimeException("Construction Result do not match to instance properly.")
+            }
+        }
     }
 
     companion object {

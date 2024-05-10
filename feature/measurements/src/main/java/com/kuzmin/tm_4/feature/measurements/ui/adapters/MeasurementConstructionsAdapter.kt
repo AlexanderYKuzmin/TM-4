@@ -60,12 +60,15 @@ class MeasurementConstructionsAdapter(
                 binding.ivLevels.setImageDrawable(
                     AppCompatResources.getDrawable(appContext, R.drawable.arrow_down)
                 )
+
+                binding.tlTitleChild.visibility = View.VISIBLE
             } else {
                 binding.llMcCommon.startAnimation(upAnim)
                 binding.rvChildLevels.visibility = View.GONE
                 binding.ivLevels.setImageDrawable(
                     AppCompatResources.getDrawable(appContext, R.drawable.arrow_right)
                 )
+                binding.tlTitleChild.visibility = View.GONE
             }
         }
 

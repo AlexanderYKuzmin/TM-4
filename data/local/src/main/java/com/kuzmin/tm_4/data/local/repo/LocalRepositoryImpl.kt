@@ -20,9 +20,10 @@ class LocalRepositoryImpl @Inject constructor(
     private val mcDbToModelMapper: MeasurementConstructionFullDbToMeasurementConstructionFullMapper
 ) : LocalRepository {
     override suspend fun addSiteToDb(site: Site, durability: String) {
-        tmDao.addSite(
-            siteModelToDbMapper.mapSiteModelToSiteDb(site, durability)
-        )
+        Log.d("Db", "Add site to db. $site, mc: ${site.measurementsConstructions}")
+        val siteDb = siteModelToDbMapper.mapSiteModelToSiteDb(site, durability)
+        Log.d("Db", "Add site to db. Site DB: $siteDb, mc: ${siteDb.measurementsConstructions}")
+        tmDao.addSite(siteDb)
     }
 
     override suspend fun getSite(siteUuid: String): Site? {
@@ -39,9 +40,8 @@ class LocalRepositoryImpl @Inject constructor(
 
     override suspend fun getMc(mcUuid: String): MeasurementConstruction {
         Log.d("MC", "Local repository GET MC")
-        return mcDbToModelMapper.mapMeasurementConstructionDbToMeasurementConstruction(
-            tmDao.getMc(mcUuid)
-        )
+        val mc = tmDao.getMc(mcUuid)
+        return mcDbToModelMapper.mapMeasurementConstructionDbToMeasurementConstruction(mc)
     }
 
     override suspend fun getMcFull(mcUuid: String): McFull? {

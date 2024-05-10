@@ -23,10 +23,14 @@ object DegreeConverter {
 
     fun doubleToDegreeString(coordinate: Double): String {
         val elements = doubleToDegreeArray(coordinate)
-        return String.format("%d\u0020%d\'%d\"", elements[0], elements[1], elements[2])
+        return String.format("%d%s%d%s%d%s", elements[0], DEGREE, elements[1], RIGHT_SINGLE_QUOTE, elements[2], QUOTE)
     }
 
     fun doublesPairToDegreeString(latitude: Double, longitude: Double): String {
         return String.format("%sN, %sE", doubleToDegreeString(latitude), doubleToDegreeString(longitude))
+    }
+
+    fun intToDegree(value: Int): String {
+        return String.format("%d%s", value, DEGREE)
     }
 }

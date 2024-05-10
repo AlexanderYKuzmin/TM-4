@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
-import com.kuzmin.tm_4.common.util.DegreeConverter
-import com.kuzmin.tm_4.common.util.DegreeConverter.DEGREE
-import com.kuzmin.tm_4.feature.api.model.site.Group
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentTowerMeasurePagerBinding
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult
 import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Error
 import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Loading
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Success
+import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.SuccessMc
 import com.kuzmin.tm_4.feature.measurements.ui.NavMeasurementsFragment.Companion.MC_UUID
 import com.kuzmin.tm_4.feature.measurements.ui.adapters.TowerMeasureTabAdapter
 import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.TmPagerViewModel
@@ -48,18 +44,15 @@ class TowerMeasurePagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("MC", "Pager. MC Uuid = $mcUuid")
         mcUuid?.let { tmPagerViewModel.getMeasurementConstructionFromDb(it) } // maybe it was exceeded. No need in full obj
-
-        /*val adapter = TowerMeasureTabAdapter(this)
-        binding.vpTowerMeasures.adapter = adapter
-        attachTabLayoutMediator()*/
 
         tmPagerViewModel.mcResult.observe(viewLifecycleOwner) {
             when(it) {
                 is Loading -> {
 
                 }
-                is Success -> {
+                is SuccessMc -> {
                     Log.d("MC", "Getting mc success!")
                     val adapter = TowerMeasureTabAdapter(this).apply {
                         mc = it.measurementConstructionList.first()
@@ -68,8 +61,10 @@ class TowerMeasurePagerFragment : Fragment() {
                     attachTabLayoutMediator()
                 }
                 is Error -> {
-                    Log.d("MC", "Error happened while mc was getting ${it.throwable}")
+                    Log.d("MC", "ERROR: happened while mc was getting ${it.throwable}")
                 }
+
+                else -> {Log.d("MC", "ERROR: There are no appropriate result class")}
             }
         }
     }

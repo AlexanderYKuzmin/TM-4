@@ -15,11 +15,11 @@
 
     <TextView
         android:id="@+id/tv_level_num"
-        android:layout_width="20dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="10dp"
         android:textStyle="bold"
         tools:text="0:"/>
@@ -31,7 +31,7 @@
         android:layout_marginBottom="6dp"/>
     <TextView
         android:id="@+id/tv_level_mm"
-        android:layout_width="20dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
@@ -39,6 +39,7 @@
         android:layout_marginRight="10dp"
         android:textStyle="bold"
         android:textColor="@color/color_danger"
+        android:gravity="center"
         tools:text="23"/>
     <View
         android:layout_width="1dp"
@@ -48,7 +49,7 @@
         android:layout_marginBottom="6dp"/>
     <ImageView
         android:id="@+id/iv_level_state"
-        android:layout_width="20dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="6dp"

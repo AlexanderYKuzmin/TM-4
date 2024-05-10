@@ -1,5 +1,6 @@
-package com.kuzmin.tm_4.feature.measurements.ui
+package com.kuzmin.tm_4.feature.measurements.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,7 +40,7 @@ class NavMeasurementsViewModel @Inject constructor(
     }
 
     private val getAndSaveFullSiteExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        //TODO()
+        Log.d("MC", "Got an error during get and save site: $throwable")
     }
 
     init {
@@ -53,23 +54,26 @@ class NavMeasurementsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             if (siteDataStore == null) delay(100)
 
-            val mcList =
+            val mcList = async {
                 with(siteDataStore!!) {
                     getMeasurementConstructionsBySiteIdUseCase(sUuid, cUuid)
                 }
+            }.await()
 
             withContext(Dispatchers.Main) {
-                _measurementConstructionResult.value = Success(mcList)
+                _measurementConstructionResult.value = SuccessMc(mcList)
             }
         }
     }
 
      fun getAndSaveFullSiteToDbAsTemp() {
+         Log.d("MC", "Measurement View model. Get full site from firestore and save site to db.")
          viewModelScope.launch(Dispatchers.IO + getAndSaveFullSiteExceptionHandler) {
              val site = async {
                 getSiteByIdUseCase.invoke(siteDataStore!!.sUuid)
              }.await()
 
+             Log.d("MC", "Get site. Site: $site")
             saveSiteToDbUseCase(site, CommonConstants.TEMP)
          }
 

@@ -11,17 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kuzmin.tm_4.common.R
-import com.kuzmin.tm_4.common.util.CommonConstants
-import com.kuzmin.tm_4.feature.api.model.SiteDataStore
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentNavMeasurementsBinding
 import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Error
 import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Loading
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Success
+import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.SuccessMc
 import com.kuzmin.tm_4.feature.measurements.ui.adapters.MeasurementConstructionsAdapter
 import com.kuzmin.tm_4.feature.measurements.ui.model.McParent
+import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.NavMeasurementsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -64,7 +62,7 @@ class NavMeasurementsFragment : Fragment() {
         navMeasurementsViewModel.measurementConstructionResult.observe(viewLifecycleOwner) {
             when(it) {
                 is Loading -> TODO()
-                is Success -> {
+                is SuccessMc -> {
                     with(it) {
                         measurementConstructionList.forEach {
                             Log.d("MC", "${it.employeeName}")
