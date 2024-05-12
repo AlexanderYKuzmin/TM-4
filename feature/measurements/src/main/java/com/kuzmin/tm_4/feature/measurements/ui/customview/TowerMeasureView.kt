@@ -16,8 +16,8 @@ import androidx.appcompat.widget.Toolbar
 import com.kuzmin.tm_4.common.util.AltitudeConverter
 import com.kuzmin.tm_4.common.util.DegreeConverter
 import com.kuzmin.tm_4.common.util.DistanceConverter
-import com.kuzmin.tm_4.feature.api.model.model_complex_obj.ConstructionFull
-import com.kuzmin.tm_4.feature.api.model.site.Measurement
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.ConstructionFull
+import com.kuzmin.tm_4.feature.api.domain.model.site.Measurement
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.ui.customview.TowerMeasureView.NodeSide.*
 

@@ -1,13 +1,12 @@
 package com.kuzmin.tm_4.data.remote_fb.mapper
 
 import android.util.Log
-import com.kuzmin.tm_4.common.extension.toDate
 import com.kuzmin.tm_4.core.network_fb.model.ConstructionFbDto
 import com.kuzmin.tm_4.core.network_fb.model.SiteFbDto
-import com.kuzmin.tm_4.feature.api.model.Tenant
-import com.kuzmin.tm_4.feature.api.model.sample.AddressSample
-import com.kuzmin.tm_4.feature.api.model.sample.ConstructionSample
-import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.Tenant
+import com.kuzmin.tm_4.feature.api.domain.model.sample.AddressSample
+import com.kuzmin.tm_4.feature.api.domain.model.sample.ConstructionSample
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
 import java.util.Date
 import javax.inject.Inject
 

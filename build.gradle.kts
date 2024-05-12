@@ -2,6 +2,7 @@
 buildscript {
     dependencies {
         classpath("com.google.gms:google-services:4.4.1")
+        classpath ("com.github.dcendents:android-maven-gradle-plugin:2.0")
     }
 }
 

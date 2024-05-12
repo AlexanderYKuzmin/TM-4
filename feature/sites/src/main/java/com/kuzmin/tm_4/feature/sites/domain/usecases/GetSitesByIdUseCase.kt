@@ -1,7 +1,7 @@
 package com.kuzmin.tm_4.feature.sites.domain.usecases
 
 import com.kuzmin.tm_4.feature.api.api.FirebaseRepository
-import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import javax.inject.Inject
 
 class GetSitesByIdUseCase @Inject constructor(

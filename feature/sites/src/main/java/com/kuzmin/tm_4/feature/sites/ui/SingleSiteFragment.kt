@@ -14,9 +14,9 @@ import com.kuzmin.tm_4.common.extension.formatToDateString
 import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentSiteBinding
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
-import com.kuzmin.tm_4.feature.api.model.site.Construction
-import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
-import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
+import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.CONSTRUCTION_UUID
 import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.SITE_UUID
 import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.STORAGE_TYPE

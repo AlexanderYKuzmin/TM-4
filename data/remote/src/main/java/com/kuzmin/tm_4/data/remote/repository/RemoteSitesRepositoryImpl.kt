@@ -6,8 +6,8 @@ import com.kuzmin.tm_4.data.remote.mapper.SitesDtoToModelMapper
 import com.kuzmin.tm_4.data.remote.mapper.SitesSamplesDtoToModelMapper
 import com.kuzmin.tm_4.feature.login.domain.AuthManager
 import com.kuzmin.tm_4.feature.api.api.RemoteSitesRepository
-import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
-import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import javax.inject.Inject
 
 class RemoteSitesRepositoryImpl @Inject constructor(

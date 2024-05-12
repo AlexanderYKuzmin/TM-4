@@ -1,9 +1,8 @@
 package com.kuzmin.tm_4.data.remote_fb.mapper
 
 import android.util.Log
-import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
-import com.kuzmin.tm_4.feature.api.model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 import javax.inject.Inject

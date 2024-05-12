@@ -7,7 +7,6 @@ import com.kuzmin.tm_4.core.network_fb.model.MeasurementFbDto
 import com.kuzmin.tm_4.core.network_fb.model.ResultFbDto
 import com.kuzmin.tm_4.core.network_fb.model.SectionFbDto
 import com.kuzmin.tm_4.core.network_fb.model.SiteFbDto
-import com.kuzmin.tm_4.feature.api.model.site.SiteEquipment
 
 data class SiteDataFbDto(
     val siteFbDto: SiteFbDto,

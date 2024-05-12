@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     implementation(project(":common"))
     implementation(project(":feature:api"))
@@ -62,6 +63,7 @@ dependencies {
     implementation(Picasso.picasso)
 
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    //implementation ("com.github.AnyChart:AnyChart-Android:0.0.3")
 
     //implementation ("com.jjoe64:graphview:4.2.2")
     testImplementation("junit:junit:4.13.2")

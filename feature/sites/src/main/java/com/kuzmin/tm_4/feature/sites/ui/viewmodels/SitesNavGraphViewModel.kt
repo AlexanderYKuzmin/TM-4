@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.extension.isConsistentQuery
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
-import com.kuzmin.tm_4.feature.api.model.SiteDataStore
-import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.SearchQuerySharedContainer
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.*

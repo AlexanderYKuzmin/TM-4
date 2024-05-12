@@ -13,6 +13,7 @@
         android:id="@id/cl_graphs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:background="@drawable/item_mc_background"
         android:layout_margin="12dp"
         >
@@ -29,10 +30,12 @@
         <TextView
             android:id="@id/tv_graphic_title"
             style="@style/TitleReport"
+            android:fontFamily="@font/local_titles"
             app:layout_constraintStart_toEndOf="@id/iv_graph_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Графики"
+            android:text="@string/graths_title"
+            tools:text="@string/graths_title"
             />
 
         <TextView
@@ -46,7 +49,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textAlignment="center"
             android:gravity="center"
-            tools:text="Графическое представление результатов разсчета в 3х проекциях"
+            android:text="@string/graphs_description"
+            tools:text="@string/graphs_description"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -60,7 +64,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@id/iv_graph_icon"
+            android:id="@id/iv_table_icon"
             style="@style/ImageReport"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,12 +73,14 @@
             android:background="@drawable/icon_bgd"
             />
         <TextView
-            android:id="@id/tv_graphic_title"
+            android:id="@id/tv_table_title"
             style="@style/TitleReport"
-            app:layout_constraintStart_toEndOf="@id/iv_graph_icon"
+            android:fontFamily="@font/local_titles"
+            app:layout_constraintStart_toEndOf="@id/iv_table_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Таблицы"
+            android:text="@string/tables_title"
+            tools:text="@string/tables_title"
             />
 
         <TextView
@@ -83,12 +89,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            app:layout_constraintStart_toEndOf="@id/iv_graph_icon"
-            app:layout_constraintTop_toBottomOf="@id/tv_graphic_title"
+            app:layout_constraintStart_toEndOf="@id/iv_table_icon"
+            app:layout_constraintTop_toBottomOf="@id/tv_table_title"
             app:layout_constraintEnd_toEndOf="parent"
             android:textAlignment="center"
             android:gravity="center"
-            tools:text="Табличное представление результатов расчета"
+            android:text="@string/tables_description"
+            tools:text="@string/tables_description"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,7 +109,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@id/iv_graph_icon"
+            android:id="@id/iv_report_icon"
             style="@style/ImageReport"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,12 +118,14 @@
             android:background="@drawable/icon_bgd"
             />
         <TextView
-            android:id="@id/tv_graphic_title"
+            android:id="@id/tv_report_title"
            style="@style/TitleReport"
-            app:layout_constraintStart_toEndOf="@id/iv_graph_icon"
+            android:fontFamily="@font/local_titles"
+            app:layout_constraintStart_toEndOf="@id/iv_report_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Отчет"
+            android:text="@string/report_title"
+            tools:text="@string/report_title"
             />
 
         <TextView
@@ -125,12 +134,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            app:layout_constraintStart_toEndOf="@id/iv_graph_icon"
-            app:layout_constraintTop_toBottomOf="@id/tv_graphic_title"
+            app:layout_constraintStart_toEndOf="@id/iv_report_icon"
+            app:layout_constraintTop_toBottomOf="@id/tv_report_title"
             app:layout_constraintEnd_toEndOf="parent"
             android:textAlignment="center"
             android:gravity="center"
-            tools:text="Формирование отчета в пользовательском формате"
+            android:text="@string/report_description"
+            tools:text="@string/report_description"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

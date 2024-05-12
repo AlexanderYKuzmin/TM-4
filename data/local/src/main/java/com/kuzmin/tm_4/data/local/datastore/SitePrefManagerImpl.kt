@@ -5,16 +5,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.kuzmin.tm_4.common.util.CommonConstants
-import com.kuzmin.tm_4.common.util.CommonConstants.C
-import com.kuzmin.tm_4.common.util.CommonConstants.MC
-import com.kuzmin.tm_4.common.util.CommonConstants.S
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.CONSTRUCTION_UUID
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.MEASUREMENT_CONSTRUCTION_UUID
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_NAME
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_UUID
-import com.kuzmin.tm_4.feature.api.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

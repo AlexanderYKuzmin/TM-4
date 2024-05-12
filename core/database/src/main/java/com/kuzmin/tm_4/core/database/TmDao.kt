@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.kuzmin.tm_4.core.database.delivery.ConstructionAndMcFullSingle
 import com.kuzmin.tm_4.core.database.delivery.ConstructionAndSectionsDb
 import com.kuzmin.tm_4.core.database.delivery.ConstructionFullDb
 import com.kuzmin.tm_4.core.database.delivery.GroupFullDb
@@ -116,6 +117,16 @@ interface TmDao {
             getMcFullListByConstructionUuid(cUuid)
         )
     }
+
+    @Transaction
+    suspend fun getMcAndConstructionByMcUuid(mcUuid: String): ConstructionAndMcFullSingle {
+        val mc = getMcFull(mcUuid)
+        val construction = getConstruction(mc.mcDb.constructionUuid)
+        return ConstructionAndMcFullSingle(construction, mc)
+    }
+
+    @Query("SELECT * FROM constructions WHERE constr_uuid == :cUuid")
+    suspend fun getConstruction(cUuid: String): ConstructionDb
 
     /*@Query("SELECT * FROM constructions WHERE constr_uuid = :cUuid")
     suspend fun getConstructionFull(cUuid: String): ConstructionFullDb*/

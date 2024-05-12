@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kuzmin.tm_4.feature.api.model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
 import com.kuzmin.tm_4.feature.sites.databinding.ItemSitePhotoBinding
 import com.squareup.picasso.Picasso
 

@@ -6,11 +6,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.kuzmin.tm_4.common.R
 import com.kuzmin.tm_4.common.extension.toast
+import com.kuzmin.tm_4.common.util.CommonConstants.MC_UUID
+import com.kuzmin.tm_4.feature.api.R.*
+
 import com.kuzmin.tm_4.feature.report.databinding.FragmentNavReportBinding
 import com.kuzmin.tm_4.feature.report.ui.viewmodels.NavReportViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,9 +71,15 @@ class NavReportFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        val downAnim = AnimationUtils.loadAnimation(appContext, anim.down)
         with(binding) {
             clGraphs.setOnClickListener {
-               // if (mcUuid != null) navController.navigate()
+                it.startAnimation(downAnim)
+                if (mcUuid != null) navController.navigate(
+                   R.id.report_graphs,
+                   bundleOf(MC_UUID to mcUuid)
+                )
+                else appContext.toast("Не выбрано измерение для отображения")
             }
             clTables.setOnClickListener {
                 // TODO:
@@ -76,18 +88,5 @@ class NavReportFragment : Fragment() {
                 Log.d("Report", "Here's gonna be a report!")
             }
         }
-    }
-
-    companion object {
-        const val MC_UUID = "mc_uuid"
-
-        /*@JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NavReportFragment().apply {
-                arguments = Bundle().apply {
-                    *//*putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)*//*
-                }
-            }*/
     }
 }

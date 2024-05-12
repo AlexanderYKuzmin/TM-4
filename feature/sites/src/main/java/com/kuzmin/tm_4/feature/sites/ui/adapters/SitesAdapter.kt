@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.tm_4.common.extension.formatToDateString
 import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.ItemSiteSimpleBinding
-import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
 import com.squareup.picasso.Picasso
 
 class SitesAdapter(

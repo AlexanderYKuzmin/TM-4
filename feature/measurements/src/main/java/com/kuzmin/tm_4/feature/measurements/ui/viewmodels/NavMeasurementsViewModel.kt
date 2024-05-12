@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.util.CommonConstants
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
-import com.kuzmin.tm_4.feature.api.model.SiteDataStore
-import com.kuzmin.tm_4.feature.api.model.usecases.GetSiteByIdFullUseCase
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.*
+import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.usecases.GetSiteByIdFullUseCase
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
 import com.kuzmin.tm_4.feature.measurements.domain.usecases.GetMeasurementConstructionsBySiteIdUseCase
 import com.kuzmin.tm_4.feature.measurements.domain.usecases.SaveSiteToDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,11 +32,11 @@ class NavMeasurementsViewModel @Inject constructor(
 
     private var siteDataStore: SiteDataStore? = null
 
-    private val _measurementConstructionResult = MutableLiveData<MeasurementConstructionResult>()
-    val measurementConstructionResult: LiveData<MeasurementConstructionResult> get() = _measurementConstructionResult
+    private val _McAndCResult = MutableLiveData<McAndCResult>()
+    val mcAndCResult: LiveData<McAndCResult> get() = _McAndCResult
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _measurementConstructionResult.value = Error(throwable)
+        _McAndCResult.value = Error(throwable)
     }
 
     private val getAndSaveFullSiteExceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -61,7 +61,7 @@ class NavMeasurementsViewModel @Inject constructor(
             }.await()
 
             withContext(Dispatchers.Main) {
-                _measurementConstructionResult.value = SuccessMc(mcList)
+                _McAndCResult.value = SuccessMc(mcList)
             }
         }
     }

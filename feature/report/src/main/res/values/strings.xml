@@ -1,4 +1,15 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="graphs_names">
+        <item>XOZ</item>
+        <item>YOZ</item>
+        <item>XOY</item>
+    </string-array>
+
+    <string name="graths_title">Графики</string>
+    <string name="tables_title">Таблицы</string>
+    <string name="report_title">Отчет</string>
+
+    <string name="graphs_description">Графическое представление результатов разсчета в 3х проекциях</string>
+    <string name="tables_description">Табличное представление результатов расчета</string>
+    <string name="report_description">Формирование отчета в пользовательском формате</string>
 </resources>

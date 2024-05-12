@@ -77,13 +77,22 @@
             app:argType="string"
             android:defaultValue=""
             />
+        <action
+            android:id="@+id/action_report_nav_graph_to_report_graphs"
+            app:destination="@id/report_graphs" />
 
     </fragment>
 
     <fragment
         android:id="@id/report_graphs"
-
+        android:name="com.kuzmin.tm_4.feature.report.ui.ReportGraphsPagerFragment"
+        tools:layout="@layout/fragment_report_graphs_pager"
         >
+        <argument
+            android:name="mc_uuid"
+            app:argType="string"
+            android:defaultValue=""
+            />
 
     </fragment>
 

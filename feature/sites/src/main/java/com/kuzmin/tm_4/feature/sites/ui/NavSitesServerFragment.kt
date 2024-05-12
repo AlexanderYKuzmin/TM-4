@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.tm_4.common.R.id.site_nav_graph
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
-import com.kuzmin.tm_4.feature.api.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
 import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentNavSitesBinding
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Error

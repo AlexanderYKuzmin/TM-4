@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="iv_graph_icon" type="id">iv_graph_icon</item>
+    <item name="iv_graph_icon" type="id"/>
+    <item name="iv_table_icon" type="id"/>
+    <item name="iv_report_icon" type="id"/>
     <item name="tv_graphic_title" type="id"/>
+    <item name="tv_table_title" type="id"/>
+    <item name="tv_report_title" type="id"/>
     <item name="tv_graphic_description" type="id"/>
+    <item name="tv_table_description" type="id"/>
+    <item name="tv_report_description" type="id"/>
 
     <item name="cl_graphs" type="id"/>
     <item name="cl_tables" type="id"/>

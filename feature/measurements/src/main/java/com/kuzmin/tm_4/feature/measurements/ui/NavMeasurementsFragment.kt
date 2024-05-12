@@ -12,9 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kuzmin.tm_4.common.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentNavMeasurementsBinding
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Error
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Loading
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.SuccessMc
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Error
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Loading
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.SuccessMc
 import com.kuzmin.tm_4.feature.measurements.ui.adapters.MeasurementConstructionsAdapter
 import com.kuzmin.tm_4.feature.measurements.ui.model.McParent
 import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.NavMeasurementsViewModel
@@ -59,7 +59,7 @@ class NavMeasurementsFragment : Fragment() {
 
         navMeasurementsViewModel.getAndSaveFullSiteToDbAsTemp()
 
-        navMeasurementsViewModel.measurementConstructionResult.observe(viewLifecycleOwner) {
+        navMeasurementsViewModel.mcAndCResult.observe(viewLifecycleOwner) {
             when(it) {
                 is Loading -> TODO()
                 is SuccessMc -> {

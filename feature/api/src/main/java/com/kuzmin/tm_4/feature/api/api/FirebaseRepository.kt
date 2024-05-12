@@ -1,9 +1,9 @@
 package com.kuzmin.tm_4.feature.api.api
 
-import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
-import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
-import com.kuzmin.tm_4.feature.api.model.site.Photo
-import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 
 interface FirebaseRepository {
     suspend fun getAllSiteSamples(): List<SiteSample>

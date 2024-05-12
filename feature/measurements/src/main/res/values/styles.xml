@@ -23,7 +23,7 @@
         <item name="android:textSize">18dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textScaleX">1.5</item>
-        <item name="fontFamily">@font/local_titiles</item>
+        <item name="fontFamily">@font/local_titles</item>
         <item name="android:layout_gravity">start</item>
     </style>
 

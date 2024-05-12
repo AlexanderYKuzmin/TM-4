@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.kuzmin.tm_4.feature.api.model.site.Group
-import com.kuzmin.tm_4.feature.api.model.site.Measurement
-import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentTowerMeasureActionBinding
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
 import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.TowerMeasureActionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,13 +49,13 @@ class TowerMeasureActionFragment : Fragment() {
         towerMeasureActionViewModel.getConstructionFullFromDb(constructionUuid!!)
         towerMeasureActionViewModel.constructionResult.observe(viewLifecycleOwner) {
             when(it) {
-                is MeasurementConstructionResult.Loading -> {
+                is McAndCResult.Loading -> {
 
                 }
-                is MeasurementConstructionResult.SuccessC -> {
+                is McAndCResult.SuccessC -> {
                     binding.tvTower.populate(it.constructionFull, groupNum, mcUuid)
                 }
-                is MeasurementConstructionResult.Error -> {
+                is McAndCResult.Error -> {
                     Log.d("Constr", "ERROR has occurred while construction was getting ${it.throwable}")
                 }
                 else -> throw RuntimeException("Construction Result do not match to instance properly.")

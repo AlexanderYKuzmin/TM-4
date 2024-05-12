@@ -14,10 +14,10 @@ import com.kuzmin.tm_4.data.remote_fb.mapper.SiteDataFbDtoToSiteModelMapper
 import com.kuzmin.tm_4.data.remote_fb.mapper.SiteFbDtoToSiteSampleMapper
 import com.kuzmin.tm_4.data.remote_fb.model_fb.SiteDataFbDto
 import com.kuzmin.tm_4.feature.api.api.FirebaseRepository
-import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
-import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
-import com.kuzmin.tm_4.feature.api.model.site.Photo
-import com.kuzmin.tm_4.feature.api.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(

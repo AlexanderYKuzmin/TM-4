@@ -10,9 +10,9 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentTowerMeasurePagerBinding
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Error
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.Loading
-import com.kuzmin.tm_4.feature.measurements.domain.model.MeasurementConstructionResult.SuccessMc
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Error
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Loading
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.SuccessMc
 import com.kuzmin.tm_4.feature.measurements.ui.NavMeasurementsFragment.Companion.MC_UUID
 import com.kuzmin.tm_4.feature.measurements.ui.adapters.TowerMeasureTabAdapter
 import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.TmPagerViewModel

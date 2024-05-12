@@ -40,6 +40,10 @@ dependencies {
     implementation(Deps.appCompat)
     implementation(Deps.material)
 
+    implementation(LifeCycle.liveData)
+    implementation(LifeCycle.viewModel)
+    implementation(LifeCycle.service)
+
     implementation(DaggerHilt.hilt)
     kapt(DaggerHilt.hilt_compiler)
 

@@ -38,4 +38,12 @@ object CommonConstants {
     //Site durability
     const val CONST = "const"
     const val TEMP = "temp"
+
+    //features
+    const val MC_UUID = "mc_uuid"
+    const val GROUP_NUM = "group_num"
+
+    const val GROUP_ONE = 1
+    const val GROUP_TWO = 2
+    const val GROUP_ALL = 0
 }

@@ -6,10 +6,10 @@ import com.kuzmin.tm_4.core.network.model.preview.AddressSampleDto
 import com.kuzmin.tm_4.core.network.model.preview.ConstructionSampleDto
 import com.kuzmin.tm_4.core.network.model.preview.SiteSampleDto
 import com.kuzmin.tm_4.core.network.model.site.TenantDto
-import com.kuzmin.tm_4.feature.api.model.Tenant
-import com.kuzmin.tm_4.feature.api.model.sample.AddressSample
-import com.kuzmin.tm_4.feature.api.model.sample.ConstructionSample
-import com.kuzmin.tm_4.feature.api.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.Tenant
+import com.kuzmin.tm_4.feature.api.domain.model.sample.AddressSample
+import com.kuzmin.tm_4.feature.api.domain.model.sample.ConstructionSample
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
 
 class SitesSamplesDtoToModelMapper {
 

@@ -1,10 +1,10 @@
 package com.kuzmin.tm_4.data.local.mapper
 
 import com.kuzmin.tm_4.core.database.delivery.McDbFull
-import com.kuzmin.tm_4.feature.api.model.model_complex_obj.McFull
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McFull
 import javax.inject.Inject
 
-class MeasurementConstructionFullDbToMeasurementConstructionFullMapper @Inject constructor()
+open class MeasurementConstructionFullDbToMeasurementConstructionFullMapper @Inject constructor()
     : SiteDbToSiteModelMapper() {
     fun mapMcFullDbToMcFull(mcDbFull: McDbFull): McFull {
         return McFull(

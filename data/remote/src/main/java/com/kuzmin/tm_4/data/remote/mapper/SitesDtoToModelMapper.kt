@@ -18,19 +18,19 @@ import com.kuzmin.tm_4.core.network.model.site.SiteDto
 import com.kuzmin.tm_4.core.network.model.site.SiteEquipmentDto
 import com.kuzmin.tm_4.core.network.model.site.SiteParamsDto
 import com.kuzmin.tm_4.core.network.model.site.TenantDto
-import com.kuzmin.tm_4.feature.api.model.Tenant
-import com.kuzmin.tm_4.feature.api.model.site.Address
-import com.kuzmin.tm_4.feature.api.model.site.Construction
-import com.kuzmin.tm_4.feature.api.model.site.Group
-import com.kuzmin.tm_4.feature.api.model.site.Level
-import com.kuzmin.tm_4.feature.api.model.site.Measurement
-import com.kuzmin.tm_4.feature.api.model.site.MeasurementConstruction
-import com.kuzmin.tm_4.feature.api.model.site.Photo
-import com.kuzmin.tm_4.feature.api.model.site.Section
-import com.kuzmin.tm_4.feature.api.model.site.Site
-import com.kuzmin.tm_4.feature.api.model.site.SiteEquipment
-import com.kuzmin.tm_4.feature.api.model.site.SiteParams
-import com.kuzmin.tm_4.feature.api.model.site.Result
+import com.kuzmin.tm_4.feature.api.domain.model.Tenant
+import com.kuzmin.tm_4.feature.api.domain.model.site.Address
+import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
+import com.kuzmin.tm_4.feature.api.domain.model.site.Group
+import com.kuzmin.tm_4.feature.api.domain.model.site.Level
+import com.kuzmin.tm_4.feature.api.domain.model.site.Measurement
+import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site.Section
+import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site.SiteEquipment
+import com.kuzmin.tm_4.feature.api.domain.model.site.SiteParams
+import com.kuzmin.tm_4.feature.api.domain.model.site.Result
 
 import java.util.Date
 
