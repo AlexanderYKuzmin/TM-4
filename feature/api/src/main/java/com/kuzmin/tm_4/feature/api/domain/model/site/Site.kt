@@ -26,5 +26,7 @@ data class Site(
 
     val measurements: List<Measurement>? = null,
 
-    val results: List<Result>? = null
+    val results: List<Result>? = null,
+
+    val levelsInfo: List<McLevelInfo>? = null
 )

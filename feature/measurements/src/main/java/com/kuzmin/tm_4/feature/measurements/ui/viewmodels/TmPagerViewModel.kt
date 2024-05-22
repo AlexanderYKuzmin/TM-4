@@ -28,7 +28,7 @@ class TmPagerViewModel @Inject constructor(
     fun getMeasurementConstructionFromDb(mcUuid: String) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val mc = getMeasurementConstructionFromDbUseCase(mcUuid) ?: throw RuntimeException("Wrong mcUuid, there is no such mc in db.")
-            _mcResult.postValue(McAndCResult.SuccessMc(listOf(mc)))
+            _mcResult.postValue(McAndCResult.SuccessMc(mc))
         }
     }
 }

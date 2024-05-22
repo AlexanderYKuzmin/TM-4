@@ -6,4 +6,6 @@ interface SitePrefManager {
     suspend fun readSiteData(): SiteDataStore
 
     suspend fun writeSiteData(siteDataStore: SiteDataStore)
+
+    suspend fun writeMcUuid(mcUuid: String)
 }

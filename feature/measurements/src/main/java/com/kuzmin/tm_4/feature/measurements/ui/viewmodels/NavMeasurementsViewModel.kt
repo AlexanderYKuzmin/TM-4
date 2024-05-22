@@ -11,6 +11,7 @@ import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetSiteByIdFullUseCase
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
+import com.kuzmin.tm_4.feature.api.domain.usecases.GetAllMcFullFromDbUseCase
 import com.kuzmin.tm_4.feature.measurements.domain.usecases.GetMeasurementConstructionsBySiteIdUseCase
 import com.kuzmin.tm_4.feature.measurements.domain.usecases.SaveSiteToDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NavMeasurementsViewModel @Inject constructor(
     private val getMeasurementConstructionsBySiteIdUseCase: GetMeasurementConstructionsBySiteIdUseCase,
+    private val getAllMcFullFromDbUseCase: GetAllMcFullFromDbUseCase,
     private val getSiteByIdUseCase: GetSiteByIdFullUseCase,
     private val saveSiteToDbUseCase: SaveSiteToDbUseCase,
     private val sitePrefManager: SitePrefManager
@@ -56,12 +58,15 @@ class NavMeasurementsViewModel @Inject constructor(
 
             val mcList = async {
                 with(siteDataStore!!) {
-                    getMeasurementConstructionsBySiteIdUseCase(sUuid, cUuid)
+                    //getMeasurementConstructionsBySiteIdUseCase(sUuid, cUuid)
+                    getAllMcFullFromDbUseCase(sUuid, cUuid)
                 }
             }.await()
 
+            Log.d("mc", "Nav meas view model. mcList:")
+            mcList?.forEach { Log.d("mc", "${it.levelsInfo} :: ${it.results}") }
             withContext(Dispatchers.Main) {
-                _McAndCResult.value = SuccessMc(mcList)
+                _McAndCResult.value = SuccessMcFullList(mcList)
             }
         }
     }
@@ -76,6 +81,11 @@ class NavMeasurementsViewModel @Inject constructor(
              Log.d("MC", "Get site. Site: $site")
             saveSiteToDbUseCase(site, CommonConstants.TEMP)
          }
+    }
 
+    fun saveMcUuidToDatastore(mcUuid: String) {
+        viewModelScope.launch {
+            sitePrefManager.writeMcUuid(mcUuid)
+        }
     }
 }

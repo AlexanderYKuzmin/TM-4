@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentTowerMeasurePagerBinding
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Error
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Loading
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.SuccessMc
 import com.kuzmin.tm_4.feature.measurements.ui.NavMeasurementsFragment.Companion.MC_UUID
 import com.kuzmin.tm_4.feature.measurements.ui.adapters.TowerMeasureTabAdapter
 import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.TmPagerViewModel
@@ -55,7 +54,7 @@ class TowerMeasurePagerFragment : Fragment() {
                 is SuccessMc -> {
                     Log.d("MC", "Getting mc success!")
                     val adapter = TowerMeasureTabAdapter(this).apply {
-                        mc = it.measurementConstructionList.first()
+                        mc = it.mc
                     }
                     binding.vpTowerMeasures.adapter = adapter
                     attachTabLayoutMediator()
@@ -80,4 +79,8 @@ class TowerMeasurePagerFragment : Fragment() {
         }.attach()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

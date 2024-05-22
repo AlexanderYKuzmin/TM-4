@@ -57,8 +57,8 @@ class NavReportFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (mcUuid == null) {
+        Log.d("report", "NavReportFragment. onCreated. mcUuid: $mcUuid")
+        if (mcUuid.isNullOrBlank()) {
             navReportViewModel.getMcUuidFromDatastore()
         }
 

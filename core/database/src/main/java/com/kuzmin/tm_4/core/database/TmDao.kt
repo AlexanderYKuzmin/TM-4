@@ -1,5 +1,6 @@
 package com.kuzmin.tm_4.core.database
 
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -18,6 +19,7 @@ import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
 import com.kuzmin.tm_4.core.database.model.site.ResultDb
 import com.kuzmin.tm_4.core.database.delivery.SiteDb
+import com.kuzmin.tm_4.core.database.model.site.LevelDb
 import com.kuzmin.tm_4.core.database.model.site.SectionDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
 import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
@@ -73,6 +75,9 @@ interface TmDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addResults(results: List<ResultDb>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addLevelsInfo(levels: List<LevelDb>)
+
     /*@Transaction
     @Insert
     abstract suspend fun addMeasurementsConstructionsComplex(
@@ -98,6 +103,7 @@ interface TmDao {
             addGroups(groups)
             addMeasurements(measurements)
             addResults(results)
+            addLevelsInfo(levelsInfo)
         }
     }
 
@@ -121,6 +127,7 @@ interface TmDao {
     @Transaction
     suspend fun getMcAndConstructionByMcUuid(mcUuid: String): ConstructionAndMcFullSingle {
         val mc = getMcFull(mcUuid)
+        Log.d("report"," MC in tm dao: MC = $mc")
         val construction = getConstruction(mc.mcDb.constructionUuid)
         return ConstructionAndMcFullSingle(construction, mc)
     }
@@ -137,6 +144,10 @@ interface TmDao {
     @Transaction
     @Query("SELECT * FROM measurements_constructions WHERE mc_uuid = :mcUuid")
     suspend fun getMcFull(mcUuid: String): McDbFull
+
+    /*@Transaction
+    @Query("SELECT * FROM measurements_constructions WHERE mc_constr_uuid = :cUuid")
+    suspend fun getAllMcFullByConstruction(cUuid: String): List<McDbFull>*/
 
     @Query("SELECT * FROM measurements_constructions WHERE mc_uuid = :mcUuid" )
     suspend fun getMc(mcUuid: String): MeasurementConstructionDb

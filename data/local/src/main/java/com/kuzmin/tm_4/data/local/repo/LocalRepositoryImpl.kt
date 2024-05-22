@@ -51,7 +51,9 @@ class LocalRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMcAndConstruction(mcUuid: String): McAndConstruction {
+        Log.d("report", "Get MC and Construction. mcUuid: $mcUuid")
         val mcAndConstr = tmDao.getMcAndConstructionByMcUuid(mcUuid)
+        Log.d("report", "MC and Construction: ${mcAndConstr.constructionDb} :: ${mcAndConstr.mcDbFull}")
         return mcAndConDbToModelMapper.mapMcAndConDbToModel(mcAndConstr)
     }
 
@@ -64,6 +66,11 @@ class LocalRepositoryImpl @Inject constructor(
     override suspend fun getMcFull(mcUuid: String): McFull? {
         Log.d("db", "Measurement construction full: ${tmDao.getMcFull(mcUuid)}")
         return null
+    }
+
+    override suspend fun getAllMcFullByConstruction(sUuid: String, cUuid: String): List<McFull>? {
+        val mcDbFullList = tmDao.getMcFullListByConstructionUuid(cUuid)
+        return mcDbToModelMapper.mapMcDbFullListToMcFullList(mcDbFullList)
     }
 
     override suspend fun getGroupFull(groupMum: Int, mcUuid: String): GroupFull? {

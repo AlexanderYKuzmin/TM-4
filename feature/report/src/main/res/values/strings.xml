@@ -5,11 +5,31 @@
         <item>XOY</item>
     </string-array>
 
-    <string name="graths_title">Графики</string>
+    <string-array name="table_names">
+        <item>Группа 1</item>
+        <item>Группа 2</item>
+        <item>Сводная</item>
+    </string-array>
+
+    <string name="graphs_title">Графики</string>
     <string name="tables_title">Таблицы</string>
     <string name="report_title">Отчет</string>
 
     <string name="graphs_description">Графическое представление результатов разсчета в 3х проекциях</string>
     <string name="tables_description">Табличное представление результатов расчета</string>
     <string name="report_description">Формирование отчета в пользовательском формате</string>
+
+    <!--Axis names-->
+    <string name="x_axis_name">Смещение, мм</string>
+    <string name="y_axis_name">Отметка, м</string>
+
+    <!--Labels-->
+    <string name="construction">По факту</string>
+    <string name="limitation">Допуск</string>
+
+    <string name="altitude">Отметка</string>
+    <string name="left_kl">Лево,\u00b0</string>
+    <string name="right_kl">Право,\u00b0</string>
+    <string name="average_klkr">Среднее,\u00b0</string>
+    <string name="shift">Откл,мм</string>
 </resources>

@@ -17,6 +17,8 @@ interface LocalRepository {
 
     suspend fun getConstruction(cUuid: String): Construction?
 
+    suspend fun getAllMcFullByConstruction(sUuid: String, cUuid: String): List<McFull>?
+
     suspend fun getMcAndConstruction(mcUuid: String): McAndConstruction?
 
     suspend fun getMc(mcUuid: String): MeasurementConstruction?

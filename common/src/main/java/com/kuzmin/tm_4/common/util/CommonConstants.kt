@@ -8,6 +8,10 @@ object CommonConstants {
     const val MAST_RU = "Мачта"
     const val POLE_RU = "Столб"
 
+    const val TOWER = "tower"
+    const val MAST = "mast"
+    const val POLE = "pole"
+
     //Login constants
     const val NO_DATE = 0L
     const val NO_TOKEN = ""

@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
 import kotlinx.coroutines.CoroutineExceptionHandler
 
-abstract class ParentFeatureViewModel (
-    //private val getMeasurementConstructionFromDbUseCase: GetMeasurementConstructionFromDbUseCase
+abstract class FeatureViewModel (
 ) : ViewModel() {
     val _mcResult = MutableLiveData<McAndCResult>()
     val mcResult: LiveData<McAndCResult> get() = _mcResult

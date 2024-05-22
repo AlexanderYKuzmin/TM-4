@@ -11,9 +11,11 @@ import com.kuzmin.tm_4.core.database.model.site.PhotoDb
 import com.kuzmin.tm_4.core.database.model.site.ResultDb
 import com.kuzmin.tm_4.core.database.model.site.SectionDb
 import com.kuzmin.tm_4.core.database.delivery.SiteDb
+import com.kuzmin.tm_4.core.database.model.site.LevelDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
 import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
+import com.kuzmin.tm_4.feature.api.domain.model.site.McLevelInfo
 import com.kuzmin.tm_4.feature.api.domain.model.Tenant
 import com.kuzmin.tm_4.feature.api.domain.model.site.Address
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
@@ -55,7 +57,8 @@ class SiteModelToSiteDbMapper @Inject constructor(
                groups = mapGroupsToGroupsDb(measurementsGroups, siteParams.siteUuid),
                measurementsConstructions = mapMcsToMcsDb(measurementsConstructions, siteParams.siteUuid),
                measurements = mapMeasuresToMeasuresDb(measurements, siteParams.siteUuid, measurementsGroups),
-               results = mapResultsToResultsDb(results, siteParams.siteUuid, measurementsGroups)
+               results = mapResultsToResultsDb(results, siteParams.siteUuid, measurementsGroups),
+               levelsInfo = mapLevelsInfoToLevelsDb(levelsInfo)
            )
         }
     }
@@ -316,6 +319,26 @@ class SiteModelToSiteDbMapper @Inject constructor(
                 betaAverageRight = betaAverageRight,
                 betI = betI,
                 betaDelta = betaDelta
+            )
+        }
+    }
+
+    private fun mapLevelsInfoToLevelsDb(levels: List<McLevelInfo>?): List<LevelDb> {
+        if (levels.isNullOrEmpty()) return emptyList()
+
+        return levels.map { mapLevelToLevelDb(it) }
+    }
+
+    private fun mapLevelToLevelDb(level: McLevelInfo): LevelDb {
+        with(level) {
+            return LevelDb(
+                uuid = uuid,
+                levelNum = levelNum,
+                shift = shift,
+                isServiceable = isServiceable,
+                altitude = altitude,
+                mcUuid = mcUuid,
+                sUuid = sUuid
             )
         }
     }

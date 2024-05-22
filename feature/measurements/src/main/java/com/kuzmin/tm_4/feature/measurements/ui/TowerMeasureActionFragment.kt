@@ -63,6 +63,11 @@ class TowerMeasureActionFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     companion object {
         const val GROUP_UUID = "group_uuid"
         const val CONSTRUCTION_UUID = "construction_uuid"

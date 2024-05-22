@@ -5,6 +5,7 @@ import com.kuzmin.tm_4.core.database.delivery.SiteDb
 import com.kuzmin.tm_4.core.database.model.site.AddressDb
 import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.GroupDb
+import com.kuzmin.tm_4.core.database.model.site.LevelDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
@@ -17,6 +18,7 @@ import com.kuzmin.tm_4.feature.api.domain.model.Tenant
 import com.kuzmin.tm_4.feature.api.domain.model.site.Address
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
 import com.kuzmin.tm_4.feature.api.domain.model.site.Group
+import com.kuzmin.tm_4.feature.api.domain.model.site.McLevelInfo
 import com.kuzmin.tm_4.feature.api.domain.model.site.Measurement
 import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
@@ -45,7 +47,8 @@ open class SiteDbToSiteModelMapper @Inject constructor(
                 measurementsConstructions = mapMeasurementConstructionListDbToMeasurementConstructionList(measurementsConstructions),
                 measurementsGroups = mapGroupListDbToGroupList(groups),
                 measurements = mapMeasurementListDbToMeasurementList(measurements),
-                results = mapResultListDbToResultList(results)
+                results = mapResultListDbToResultList(results),
+                levelsInfo = mapLevelsInfoDbToLevelsInfo(levelsInfo)
             )
         }
     }
@@ -273,6 +276,27 @@ open class SiteDbToSiteModelMapper @Inject constructor(
                 betaDelta = betaDelta,
                 measurementUuid = measurementUuid,
                 measurementGroupUuid = measurementGroupUuid
+            )
+        }
+    }
+
+    fun mapLevelsInfoDbToLevelsInfo(levelsInfoDb: List<LevelDb>?): List<McLevelInfo>? {
+        if (levelsInfoDb.isNullOrEmpty()) return null
+        return levelsInfoDb.map {
+            mapLevelDbToLevel(it)
+        }
+    }
+
+    private fun mapLevelDbToLevel(levelDb: LevelDb): McLevelInfo {
+        with(levelDb) {
+            return McLevelInfo(
+                uuid = uuid,
+                levelNum = levelNum,
+                shift = shift,
+                isServiceable = isServiceable,
+                altitude = altitude,
+                mcUuid = mcUuid,
+                sUuid = sUuid
             )
         }
     }

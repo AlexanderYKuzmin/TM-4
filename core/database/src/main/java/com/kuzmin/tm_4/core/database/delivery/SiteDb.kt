@@ -5,6 +5,7 @@ import androidx.room.Relation
 import com.kuzmin.tm_4.core.database.model.site.AddressDb
 import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.GroupDb
+import com.kuzmin.tm_4.core.database.model.site.LevelDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
@@ -46,5 +47,8 @@ data class SiteDb(
     val measurements: List<MeasurementDb>,
 
     @Relation(parentColumn = "sp_site_uuid", entityColumn = "r_site_uuid")
-    val results: List<ResultDb>
+    val results: List<ResultDb>,
+
+    @Relation(parentColumn = "sp_site_uuid", entityColumn = "l_site_uuid")
+    val levelsInfo: List<LevelDb>
 )

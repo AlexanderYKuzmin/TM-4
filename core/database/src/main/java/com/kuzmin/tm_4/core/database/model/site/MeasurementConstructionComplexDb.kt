@@ -14,5 +14,8 @@ data class MeasurementConstructionComplexDb(
     val measurements: List<MeasurementDb>,
 
     @Relation(parentColumn = "uuid", entityColumn = "measurement_group_uuid")
-    val results: List<ResultDb>
+    val results: List<ResultDb>,
+
+    @Relation(parentColumn = "uuid", entityColumn = "mc_uuid")
+    val levelsInfo: List<LevelDb>
 )

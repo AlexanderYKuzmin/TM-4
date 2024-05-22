@@ -1,5 +1,6 @@
 package com.kuzmin.tm_4.feature.report.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ class NavReportViewModel @Inject constructor(
     val mcUuidLiveData: LiveData<String?> get() = _mcUuidLiveData
 
     fun getMcUuidFromDatastore() {
+        Log.d("report", "Get mc and c. Nav Report View model. Get UUID from datastore")
         viewModelScope.launch {
             _mcUuidLiveData.value = sitePrefManager.readSiteData().mcUuid
         }

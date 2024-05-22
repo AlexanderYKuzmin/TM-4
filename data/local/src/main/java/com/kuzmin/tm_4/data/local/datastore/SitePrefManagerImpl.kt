@@ -44,4 +44,10 @@ class SitePrefManagerImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun writeMcUuid(mcUuid: String) {
+        dataStore.edit { prefs ->
+            prefs[MEASUREMENT_CONSTRUCTION_UUID] = mcUuid
+        }
+    }
 }

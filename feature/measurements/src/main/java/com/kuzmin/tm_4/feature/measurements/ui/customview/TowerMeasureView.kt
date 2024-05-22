@@ -405,7 +405,7 @@ class TowerMeasureView @JvmOverloads constructor(
          }
     }
 
-    override fun onSaveInstanceState(): Parcelable {
+    /*override fun onSaveInstanceState(): Parcelable {
         val savedState = Toolbar.SavedState(super.onSaveInstanceState())
         //savedState.ssIsOpened = isOpened
         return savedState
@@ -413,11 +413,13 @@ class TowerMeasureView @JvmOverloads constructor(
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         super.onRestoreInstanceState(state)
-        /*if (state is SavedState) {
+        *//*if (state is SavedState) {
             _isOpened = state.ssIsOpened
-            visibility = if (isOpened) VISIBLE else GONE*/
+            visibility = if (isOpened) VISIBLE else GONE*//*
         //}
-    }
+    }*/
+
+
 
     private fun View.addRipple() = with(TypedValue()) {
         context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)

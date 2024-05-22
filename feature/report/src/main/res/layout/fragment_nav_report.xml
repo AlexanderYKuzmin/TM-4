@@ -34,8 +34,8 @@
             app:layout_constraintStart_toEndOf="@id/iv_graph_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/graths_title"
-            tools:text="@string/graths_title"
+            android:text="@string/graphs_title"
+            tools:text="@string/graphs_title"
             />
 
         <TextView

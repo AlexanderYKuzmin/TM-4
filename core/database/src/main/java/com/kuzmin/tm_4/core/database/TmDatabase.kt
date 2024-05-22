@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import com.kuzmin.tm_4.core.database.model.site.AddressDb
 import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.GroupDb
+import com.kuzmin.tm_4.core.database.model.site.LevelDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
@@ -28,9 +29,10 @@ import com.kuzmin.tm_4.core.database.model.site.TenantDb
         MeasurementConstructionDb::class,
         GroupDb::class,
         MeasurementDb::class,
-        ResultDb::class
+        ResultDb::class,
+        LevelDb::class
     ],
-    version = 3
+    version = 5
 )
 abstract class TmDatabase : RoomDatabase() {
     companion object {

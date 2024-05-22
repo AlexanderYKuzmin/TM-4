@@ -14,7 +14,7 @@ import com.kuzmin.tm_4.common.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentNavMeasurementsBinding
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Error
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Loading
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.SuccessMc
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.SuccessMcFullList
 import com.kuzmin.tm_4.feature.measurements.ui.adapters.MeasurementConstructionsAdapter
 import com.kuzmin.tm_4.feature.measurements.ui.model.McParent
 import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.NavMeasurementsViewModel
@@ -62,22 +62,21 @@ class NavMeasurementsFragment : Fragment() {
         navMeasurementsViewModel.mcAndCResult.observe(viewLifecycleOwner) {
             when(it) {
                 is Loading -> TODO()
-                is SuccessMc -> {
+                is SuccessMcFullList -> {
                     with(it) {
-                        measurementConstructionList.forEach {
-                            Log.d("MC", "${it.employeeName}")
+                        if (!mcFullList.isNullOrEmpty()) {
+                            adapter.submitList(
+                                mcFullList!!.map { mc ->
+                                    McParent(
+                                        uuid = mc.mc.uuid,
+                                        date = mc.mc.completedDate,
+                                        employee = mc.mc.employeeName,
+                                        isServiceable = mc.mc.isServiceable,
+                                        levelsInfo = mc.levelsInfo
+                                    )
+                                }
+                            )
                         }
-                        adapter.submitList(
-                            measurementConstructionList.map { mc ->
-                                McParent(
-                                    uuid = mc.uuid,
-                                    date = mc.completedDate,
-                                    employee = mc.employeeName,
-                                    isServiceable = mc.isServiceable,
-                                    levelsInfo = mc.levelsInfo
-                                )
-                            }
-                        )
                     }
                 }
                 is Error -> {
@@ -92,6 +91,7 @@ class NavMeasurementsFragment : Fragment() {
     private fun setAdapterItemClickAction(adapter: MeasurementConstructionsAdapter) {
         adapter.onItemClickListener = { mcUuid ->
             Log.d("MC", "On item click! ID: $mcUuid")
+            navMeasurementsViewModel.saveMcUuidToDatastore(mcUuid)
 
             navController.navigate(
                 R.id.measurement_view_nav_graph,

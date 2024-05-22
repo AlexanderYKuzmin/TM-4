@@ -1,4 +1,4 @@
-package com.kuzmin.tm_4.feature.report.domain.usecases
+package com.kuzmin.tm_4.feature.api.domain.usecases
 
 import com.kuzmin.tm_4.feature.api.api.LocalRepository
 import javax.inject.Inject

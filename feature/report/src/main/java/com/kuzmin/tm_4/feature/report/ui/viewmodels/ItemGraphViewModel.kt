@@ -1,25 +1,20 @@
 package com.kuzmin.tm_4.feature.report.ui.viewmodels
 
-import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
-import com.kuzmin.tm_4.feature.api.ui.ParentFeatureViewModel
-import com.kuzmin.tm_4.feature.report.domain.usecases.GetMcAndConstructionUseCase
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.usecases.GetMcAndConstructionUseCase
+import com.kuzmin.tm_4.feature.report.domain.model.ChartDataBuilder
+import com.kuzmin.tm_4.feature.report.domain.usecases.CreateChartDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 @HiltViewModel
 class ItemGraphViewModel @Inject constructor(
-    private val getMcAndConstructionUseCase: GetMcAndConstructionUseCase
-) : ParentFeatureViewModel() {
+    private val getMcAndConstructionUseCase: GetMcAndConstructionUseCase,
+    private val createChartDataUseCase: CreateChartDataUseCase
+) : ReportFeatureViewModel(getMcAndConstructionUseCase) {
 
-    fun getMcAndConstruction(mcUuid: String) {
-        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            val mcAndC = getMcAndConstructionUseCase(mcUuid) ?: throw IllegalStateException("Incorrect mc UUID")
 
-            _mcResult.postValue(McAndCResult.SuccessMcAndC(mcAndC))
-        }
+    fun getChartData(mvAndC: McAndConstruction, groupNum: Int): ChartDataBuilder {
+        return createChartDataUseCase.createChartData(mvAndC, groupNum)
     }
 }
