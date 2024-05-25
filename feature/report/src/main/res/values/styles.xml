@@ -21,6 +21,25 @@
         <item name="android:textScaleX">1.5</item>
         <item name="android:layout_gravity">start</item>
     </style>
+
+    <style name="TableRowTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textScaleX">0.7</item>
+
+    </style>
+
+    <style name="TableRow" parent="TableRowTitle">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>
 <!--
 <item name="android:fontFamily">@font/local_titles"</item>-->

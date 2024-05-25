@@ -12,6 +12,7 @@ import com.kuzmin.tm_4.feature.api.domain.model.site.Result
 import com.kuzmin.tm_4.feature.report.domain.model.ChartDataBuilder
 import com.kuzmin.tm_4.feature.report.domain.model.ChartDataBuilderXOY
 import com.kuzmin.tm_4.feature.report.domain.model.ChartDataBuilderXYProfile
+import com.kuzmin.tm_4.feature.report.util.ConstructionValues
 import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.pow
@@ -25,7 +26,7 @@ class CreateChartDataUseCase @Inject constructor(
 
     fun createChartData(mcAndC: McAndConstruction, groupNum: Int): ChartDataBuilder {
 
-        val limit = defineShiftLimits(
+        val limit = ConstructionValues.defineShiftLimits(
             mcAndC.construction.constructionType,
             mcAndC.construction.height
         )
@@ -151,15 +152,6 @@ class CreateChartDataUseCase @Inject constructor(
         height: Int
     ): Float {
         return height.toFloat()
-    }
-
-    private fun defineShiftLimits(constructionType: String, height: Int): Int {
-        return when (constructionType) {
-            TOWER -> height / 1000
-            MAST -> height / 1500
-            POLE -> height / 1000
-            else -> throw RuntimeException("Wrong construction type.")
-        }
     }
 
     companion object {

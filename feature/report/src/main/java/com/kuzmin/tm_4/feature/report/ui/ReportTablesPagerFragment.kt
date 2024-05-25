@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
+import com.kuzmin.tm_4.common.extension.toast
 import com.kuzmin.tm_4.common.util.CommonConstants
 import com.kuzmin.tm_4.common.util.CommonConstants.MC_UUID
 import com.kuzmin.tm_4.feature.report.R
 import com.kuzmin.tm_4.feature.report.databinding.FragmentReportGraphsPagerBinding
 import com.kuzmin.tm_4.feature.report.databinding.FragmentReportTablesPagerBinding
+import com.kuzmin.tm_4.feature.report.ui.adapters.ReportGraphsTabAdapter
+import com.kuzmin.tm_4.feature.report.ui.adapters.ReportTablesTabAdapter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -44,7 +47,13 @@ class ReportTablesPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        if (mcUuid != null) {
+            val adapter = ReportTablesTabAdapter(this, mcUuid!!)
+            binding.vpReportTables.adapter = adapter
+            attachTabLayoutMediator()
+        } else {
+            appContext.toast("Не выбрано измерение для отображения и расчета.")
+        }
     }
 
     private fun attachTabLayoutMediator() {

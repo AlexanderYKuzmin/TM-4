@@ -6,8 +6,8 @@
     </string-array>
 
     <string-array name="table_names">
-        <item>Группа 1</item>
-        <item>Группа 2</item>
+        <item>По X</item>
+        <item>По Y</item>
         <item>Сводная</item>
     </string-array>
 
@@ -27,9 +27,14 @@
     <string name="construction">По факту</string>
     <string name="limitation">Допуск</string>
 
+    <string name="pos">№пп</string>
     <string name="altitude">Отметка</string>
     <string name="left_kl">Лево,\u00b0</string>
     <string name="right_kl">Право,\u00b0</string>
     <string name="average_klkr">Среднее,\u00b0</string>
     <string name="shift">Откл,мм</string>
+
+    <string name="by_x">По X,мм</string>
+    <string name="by_y">По Y,мм</string>
+    <string name="counted">Расчетное,мм</string>
 </resources>

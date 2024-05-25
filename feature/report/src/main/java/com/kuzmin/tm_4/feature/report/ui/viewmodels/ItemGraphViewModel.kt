@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ItemGraphViewModel @Inject constructor(
-    private val getMcAndConstructionUseCase: GetMcAndConstructionUseCase,
+    getMcAndConstructionUseCase: GetMcAndConstructionUseCase,
     private val createChartDataUseCase: CreateChartDataUseCase
 ) : ReportFeatureViewModel(getMcAndConstructionUseCase) {
 

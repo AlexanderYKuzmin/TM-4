@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Messages-->
+    <string name="no_measurements">Не проведены измерения текущей конструкции</string>
+    <string name="no_table_data">Не получены табличные данные.</string>
+
+
+</resources>

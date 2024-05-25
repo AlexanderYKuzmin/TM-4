@@ -82,7 +82,12 @@ class NavReportFragment : Fragment() {
                 else appContext.toast("Не выбрано измерение для отображения")
             }
             clTables.setOnClickListener {
-                // TODO:
+                it.startAnimation(downAnim)
+                if (mcUuid != null) navController.navigate(
+                    R.id.report_tables,
+                    bundleOf(MC_UUID to mcUuid)
+                )
+                else appContext.toast("Не выбрано измерение для отображения")
             }
             clReport.setOnClickListener {
                 Log.d("Report", "Here's gonna be a report!")
