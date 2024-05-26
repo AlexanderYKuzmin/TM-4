@@ -31,12 +31,14 @@
     <string name="measure_satisfied_yes">Удовлетворительно</string>
     <string name="measure_satisfied_no">Неудовлетворительно</string>
 
-<!--status-->
+    <!--status-->
     <string name="unsatisfactory">Аварийное</string>
     <string name="satisfactory">Удовлетворительно</string>
     <string name="none">Измерения не проводились</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-<!--
+    <!--
     <string name="tower">Башня</string>
     <string name="mast">Мачта</string>
     <string name="pole">Столб</string>-->

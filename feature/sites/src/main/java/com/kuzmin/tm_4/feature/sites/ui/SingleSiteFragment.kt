@@ -21,6 +21,7 @@ import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.CONSTRU
 import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.SITE_UUID
 import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.STORAGE_TYPE
 import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.TITLE
+import com.kuzmin.tm_4.feature.sites.ui.adapters.PagerPhotoAdapter
 import com.kuzmin.tm_4.feature.sites.ui.adapters.PhotoAdapter
 import com.kuzmin.tm_4.feature.sites.ui.viewmodels.SiteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,8 +77,8 @@ class SingleSiteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val adapter = PhotoAdapter()
-        binding.rvSitePhotos.adapter = adapter
+        val adapter = PagerPhotoAdapter(this)
+        binding.vpSitePhotos.adapter = adapter
 
 
         //setOnAdapterItemClickActions(adapter)
@@ -87,7 +88,7 @@ class SingleSiteFragment : Fragment() {
                 is SiteResult.SuccessSingle -> {
                     Log.d("Site", "Successful Site loaded. site.construction: ${it.site.constructions.first().toString()}")
                     site = it.site
-                    adapter.submitList(it.site.photos)
+                    adapter.photos = it.site.photos
                     showSiteData()
                 }
                 is SiteResult.Error -> {
