@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.feature.site_filter.domain.model.SearchFilterDataResult
 import com.kuzmin.tm_4.feature.api.api.SearchFilterPrefManager
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
 import com.kuzmin.tm_4.feature.api.domain.model.search_filter.SearchFilterData
-import com.kuzmin.tm_4.feature.api.ui.FeatureViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -33,7 +31,7 @@ class SearchFilterViewModel @Inject constructor(
     private fun loadSearchFilterData() {
         viewModelScope.launch {
             _searchFilterDataResult.value =
-                SearchFilterDataResult.Succes(
+                SearchFilterDataResult.Success(
                     searchFilterPrefManager.readFilterData()
                 )
         }

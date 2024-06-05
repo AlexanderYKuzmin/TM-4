@@ -47,7 +47,7 @@ class SiteFilterFragment : Fragment(), OnClickListener {
 
         searchFilterViewModel.searchFilterDataResult.observe(viewLifecycleOwner) {
             when(it) {
-                is SearchFilterDataResult.Succes -> {
+                is SearchFilterDataResult.Success -> {
                     with(binding) {
                         with(it.searchFilterData) {
                             etStartDate.setText(dateStart.formatToDateString())
@@ -59,6 +59,7 @@ class SiteFilterFragment : Fragment(), OnClickListener {
                     }
                 }
                 is SearchFilterDataResult.Error -> {
+
                     // TODO
                 }
             }
