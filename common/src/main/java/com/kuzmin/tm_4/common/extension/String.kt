@@ -29,7 +29,7 @@ fun String.toSqlDate(): Date? {
 
 fun String.toDate(): java.util.Date? {
     try {
-        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this)
+        return SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).parse(this)
     } catch (e: Exception) {
         Log.d("Global", "Wrong date format to parse Date.")
         return null

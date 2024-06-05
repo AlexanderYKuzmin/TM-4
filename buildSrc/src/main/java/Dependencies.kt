@@ -25,6 +25,8 @@ object Version {
     const val room_version = "2.6.1"
 
     const val picasso_version = "2.71828"
+
+    const val support_lib_version = "28.0.0"
 }
 
 object Deps {
@@ -35,6 +37,15 @@ object Deps {
 
     const val fragment = "androidx.fragment:fragment-ktx:${Version.fragment_version}"
     const val activity = "androidx.activity:activity-ktx:${Version.activity_version}"
+}
+
+object Support {
+    // AppCompat
+    const val appCompat = "com.android.support:appcompat-v7:${Version.support_lib_version}"
+    // Design Support Library
+    const val design = "com.android.support:design:${Version.support_lib_version}"
+    // CardView
+    const val cardView = "com.android.support:cardview-v7:${Version.support_lib_version}"
 }
 
 object LifeCycle {

@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":feature:measurements"))
     implementation(project(":feature:report"))
     implementation(project(":feature:login"))
+    implementation(project(":feature:site_filter"))
 
     implementation(Deps.core)
     implementation(Deps.appCompat)

@@ -50,4 +50,7 @@ object CommonConstants {
     const val GROUP_ONE = 1
     const val GROUP_TWO = 2
     const val GROUP_ALL = 0
+
+    //filter
+    const val START_DATE_MILLIS_DEFAULT = 1117728581000
 }

@@ -2,9 +2,11 @@ package com.kuzmin.tm_4.data.local.di
 
 import android.content.Context
 import com.kuzmin.tm_4.data.local.datastore.PrefManagerImpl
+import com.kuzmin.tm_4.data.local.datastore.SearchFilterPrefManagerImpl
 import com.kuzmin.tm_4.data.local.datastore.SitePrefManagerImpl
 import com.kuzmin.tm_4.data.local.repo.LocalRepositoryImpl
 import com.kuzmin.tm_4.feature.api.api.LocalRepository
+import com.kuzmin.tm_4.feature.api.api.SearchFilterPrefManager
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
 import com.kuzmin.tm_4.feature.login.api.PrefManager
 import dagger.Binds
@@ -30,6 +32,11 @@ interface LocalDataProviderModule {
         @Provides
         fun provideSitePrefManager(@ApplicationContext appContext: Context): SitePrefManager {
             return SitePrefManagerImpl(appContext)
+        }
+
+        @Provides
+        fun provideSearchFilterPrefManager(@ApplicationContext appContext: Context): SearchFilterPrefManager {
+            return SearchFilterPrefManagerImpl(appContext)
         }
     }
 }

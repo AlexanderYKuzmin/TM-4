@@ -78,13 +78,16 @@ class FirebaseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMeasurementConstructionsBySiteId(sUuid: String, cUuid: String): List<MeasurementConstruction> {
-        return siteMapper.mapMeasurementConstructionFbDtoListToMeasurementConstruction(
+        val mcs = siteMapper.mapMeasurementConstructionFbDtoListToMeasurementConstruction(
             firebaseService.getMeasurementConstructionList(sUuid, cUuid).entries.associate { entry ->
                 entry.key to entry.value.mapNotNull {
                     it.toObject(MeasurementConstructionFbDto::class.java)
                 }
             }
         )
+
+        Log.d("MC", "Date completed: ${mcs.first().completedDate }}")
+        return mcs
     }
 
     override suspend fun getSiteById(uuid: String): Site {

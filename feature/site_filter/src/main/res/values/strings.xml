@@ -1,0 +1,15 @@
+<resources>
+    <!--Filter data-->
+    <string name="filter_title">Параметры поиска</string>
+    <string name="start_date">Начальная дата</string>
+    <string name="end_date">Конечная дата</string>
+    <string name="region">Регион</string>
+    <string name="city">Город</string>
+    <string name="site_name">Наименование сайта</string>
+    <string name="street">Улица</string>
+
+    <string name="search_btn">Поиск</string>
+    <string name="cancel_btn">Отмена</string>
+
+
+</resources>

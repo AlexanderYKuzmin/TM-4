@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnPreDrawListener
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.kuzmin.tm_4.feature.login.R
 import com.kuzmin.tm_4.feature.login.databinding.FragmentLoginBinding
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
 import com.kuzmin.tm_4.feature.login.domain.model.AuthUserResult.*
 import com.kuzmin.tm_4.feature.login.domain.model.User
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,9 +35,10 @@ class LoginFragment : Fragment(), OnClickListener {
     @Inject
     lateinit var navController: NavController*/
 
-
-
     private var loginListener: LoginListener? = null
+
+    lateinit var usernameOnPreDrawListener: OnPreDrawListener
+    lateinit var passwordOnPreDrawListener: OnPreDrawListener
 
     private var username: String? = null
 
@@ -62,7 +66,58 @@ class LoginFragment : Fragment(), OnClickListener {
         /*savedStateHandle = findNavController().previousBackStackEntry!!.savedStateHandle
         savedStateHandle[IS_AUTH_USER_DATA_CHANGED] = false*/
 
+
         with(binding) {
+            usernameOnPreDrawListener = createOnPreDrawListener(tilUsername, etUsername, USERNAME)
+                .also {
+                    if (tilUsername.height > 0) {
+                        tilUsername.viewTreeObserver.removeOnPreDrawListener(it)
+                }
+            }
+                    /*ViewTreeObserver.OnPreDrawListener {
+                if (tilUsername.height > 0) {
+                    tilUsername.viewTreeObserver.removeOnPreDrawListener(usernameOnPreDrawListener)
+                    updateHintPosition(
+                        etUsername.hasFocus(),
+                        !etUsername.text.isNullOrEmpty(),
+                        false,
+                        USERNAME
+                    )
+                    return@OnPreDrawListener false
+                }
+                true
+            }*/
+            tilUsername.viewTreeObserver.addOnPreDrawListener(usernameOnPreDrawListener)
+
+            passwordOnPreDrawListener = createOnPreDrawListener(tilPassword, etPassword, PASSWORD)
+                .also {
+                    if (tilPassword.height > 0) {
+                        tilPassword.viewTreeObserver.removeOnPreDrawListener(it)
+                    }
+                }
+                    /*ViewTreeObserver.OnPreDrawListener {
+                if (tilPassword.height > 0) {
+                    tilPassword.viewTreeObserver.removeOnPreDrawListener(passwordOnPreDrawListener)
+                    updateHintPosition(
+                        etPassword.hasFocus(),
+                        !etPassword.text.isNullOrEmpty(),
+                        false,
+                        PASSWORD
+                    )
+                    return@OnPreDrawListener false
+                }
+                true
+            }*/
+            tilPassword.viewTreeObserver.addOnPreDrawListener(passwordOnPreDrawListener)
+
+            etUsername.setOnFocusChangeListener { _, hasFocus ->
+                updateHintPosition(hasFocus, !etUsername.text.isNullOrEmpty(), false, USERNAME)
+            }
+
+            etPassword.setOnFocusChangeListener { _, hasFocus ->
+                updateHintPosition(hasFocus, !etPassword.text.isNullOrEmpty(), false, PASSWORD)
+            }
+
             btnLogin.setOnClickListener(this@LoginFragment)
             btnLoginCancel.setOnClickListener(this@LoginFragment)
         }
@@ -137,6 +192,47 @@ class LoginFragment : Fragment(), OnClickListener {
         }
     }
 
+    private fun createOnPreDrawListener(til: TextInputLayout, et: TextInputEditText, name: String): OnPreDrawListener {
+        return ViewTreeObserver.OnPreDrawListener {
+            if (til.height > 0) {
+                removeListener(name)
+                updateHintPosition(
+                    et.hasFocus(),
+                    !et.text.isNullOrEmpty(),
+                    false,
+                    name
+                )
+                return@OnPreDrawListener false
+            }
+            true
+        }
+    }
+
+    private fun updateHintPosition(hasFocus: Boolean, hasText: Boolean, isAnimated: Boolean, name: String) {
+        /*if (isAnimated) {
+            //TransitionManager.beginDelayedTransition(textInputLayout)
+            binding.tilUsername.animate()
+        }*/
+        if (hasFocus || hasText) {
+            if (name == USERNAME) binding.tilUsername.hint = appContext.getString(R.string.username_hint_small)
+            else binding.tilPassword.hint = appContext.getString(R.string.password_hint_small)
+        } else {
+            if (name == USERNAME) binding.tilUsername.hint = appContext.getString(R.string.username_hint)
+            else binding.tilPassword.hint = appContext.getString(R.string.password_hint)
+        }
+    }
+
+    private fun removeListener(name: String) {
+        when(name) {
+            USERNAME -> {
+                if (usernameOnPreDrawListener != null) {
+                    binding.tilUsername.viewTreeObserver.removeOnPreDrawListener(usernameOnPreDrawListener)
+                }
+            }
+            PASSWORD -> binding.tilUsername.viewTreeObserver.removeOnPreDrawListener(passwordOnPreDrawListener)
+        }
+    }
+
     private fun close(isOk: Boolean) {
         loginListener?.onAuthorizationCompleted(isOk)
         navController.popBackStack()
@@ -145,6 +241,11 @@ class LoginFragment : Fragment(), OnClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val USERNAME = "username"
+        const val PASSWORD = "password"
     }
 
     interface LoginListener {

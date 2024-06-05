@@ -9,7 +9,9 @@
 
     <string name="authorization">Авторизация</string>
     <string name="username_hint">Пользователь</string>
+    <string name="username_hint_small">\u0020\u0020\u0020\u0020Пользователь</string>
     <string name="password_hint">Пароль</string>
+    <string name="password_hint_small">\u0020\u0020\u0020\u0020Пароль</string>
     <string name="sign_in_button">Вход</string>
     <string name="cancel_button">Отмена</string>
 </resources>

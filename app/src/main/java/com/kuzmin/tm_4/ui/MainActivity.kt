@@ -20,6 +20,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kuzmin.feature.site_filter.ui.fragments.SiteFilterFragment
 import com.kuzmin.tm_4.R
 import com.kuzmin.tm_4.common.R.*
 import com.kuzmin.tm_4.common.R.id.*
@@ -40,7 +41,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity :
     AppCompatActivity(),
     LoginFragment.LoginListener,
-   SitesFragment.OnSitesAdapterClickListener
+    SitesFragment.OnSitesAdapterClickListener,
+    SiteFilterFragment.OnFilterSearchSubmitListener
 {
     private lateinit var _binding: ActivityMainBinding
 
@@ -260,12 +262,23 @@ class MainActivity :
         navController.navigate(login_nav_graph)
     }
 
+    private fun launchSiteFilterFragment() {
+        //TODO
+    }
+
     private fun launchSitesRemoteFragment(token: String) {
         //navController.navigate(R.id.sites_nav_graph, bundleOf(TOKEN to token))
     }
 
     private fun switchBottombarState(isActive: Boolean) {
-        _binding.navView.menu.setGroupEnabled(0, isActive)
+       // _binding.navView.menu.setGroupEnabled(0, isActive)
+
+       // _binding.navView.menu.setGroupVisible(0, false)
+        if (isActive) {
+            _binding.navView.visibility = View.VISIBLE
+        } else {
+            _binding.navView.visibility = View.GONE
+        }
     }
 
     /*private fun checkChildConsistent(clazz: Class<out View>): Int {
@@ -285,6 +298,10 @@ class MainActivity :
         viewModel.handleAuthResult(
             if (isClosed) AuthState.AUTHORIZED else AuthState.CANCELED
         )
+    }
+
+    override fun onFilterSearchSubmit(isFilterSet: Boolean) {
+        TODO("Not yet implemented")
     }
 
     override fun onItemSiteClick(name: String) {

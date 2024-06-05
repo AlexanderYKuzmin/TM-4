@@ -48,6 +48,10 @@ dependencies {
     implementation(Deps.activity)
     implementation(Deps.fragment)
 
+    //implementation(Support.appCompat)
+
+    //implementation(Support.cardView)
+
     implementation(LifeCycle.liveData)
     implementation(LifeCycle.viewModel)
     implementation(LifeCycle.service)
