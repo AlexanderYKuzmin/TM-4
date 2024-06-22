@@ -1,14 +1,16 @@
 package com.kuzmin.tm_4.feature.sites.ui.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.common.extension.isConsistentQuery
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
+import com.kuzmin.tm_4.feature.api.api.SearchFilterPrefManager
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
 import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.model.search_filter.SearchFilterData
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.SearchQuerySharedContainer
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
@@ -30,7 +32,8 @@ class SitesNavGraphViewModel @Inject constructor(
     private val getSitesByNameUseCase: GetSitesByNameUseCase,
     private val getAllSamplesUseCase: GetAllSamplesUseCase,
     private val searchQuerySharedContainer: SearchQuerySharedContainer,
-    private val sitePrefManager: SitePrefManager
+    private val sitePrefManager: SitePrefManager,
+    private val searchFilterPrefManager: SearchFilterPrefManager
 ) : ViewModel(){
 
     private val _siteResult = MutableLiveData<SiteResult>()
@@ -53,7 +56,24 @@ class SitesNavGraphViewModel @Inject constructor(
         TODO()
     }
 
-    fun observeQuery(context: LifecycleOwner) {
+    fun loadSites(storage: Int) {
+        Log.d("get All", "Load sites.")
+        viewModelScope.launch {
+            val searchFilter = searchFilterPrefManager.readFilterData()
+            Log.d("get All", "Search filter. ${searchFilter.toString()}")
+            when(storage) {
+                STORAGE_SERVER -> {
+                    //if (searchFilter.isEmpty()) getAllServer() else getSitesByFilterServer(searchFilter)
+                    getAllServer()
+                }
+                STORAGE_LOCAL -> {
+                    if (searchFilter.isEmpty()) getAllLocal() else getSitesByFilterLocal(searchFilter)
+                }
+            }
+        }
+    }
+
+    /*fun observeQuery(context: LifecycleOwner) {
         Log.d("MainActivity", "Search container: $searchQuerySharedContainer")
         Log.d("MainActivity", "Search container liveData: ${searchQuerySharedContainer.getData()}")
         searchQuerySharedContainer.getData().observe(context) {
@@ -64,9 +84,9 @@ class SitesNavGraphViewModel @Inject constructor(
                 getSitesByName(it)
             }
         }
-    }
+    }*/
 
-    private fun getAll() {
+    private fun getAllServer() {
         Log.d("MainActivity", "GET ALL")
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             //_siteResult.value = Loading
@@ -77,8 +97,6 @@ class SitesNavGraphViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 _siteResult.value = Success(
                     sitesDeferred.await().map {
-                        Log.d("getAll", "SiteSimple: $it")
-                        Log.d("getAll", "PhotoUrl: ${photoDeferred.await().values}")
                         it.copy(photoUrl = photoDeferred.await()[it.uuid + "_s.jpg"])
                     }
                 )
@@ -95,7 +113,11 @@ class SitesNavGraphViewModel @Inject constructor(
         }
     }
 
-    private fun getSitesByName(name: String) {
+    private fun getAllLocal() {
+        Log.d("Get All", "Get All Local")
+    }
+
+    /*private fun getSitesByName(name: String) {
         Log.d("MainActivity", "GET SITES BY NAMES")
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val sites = getSitesByNameUseCase(name)
@@ -103,5 +125,13 @@ class SitesNavGraphViewModel @Inject constructor(
                 _siteResult.value = Success(sites)
             }
         }
+    }*/
+
+    private fun getSitesByFilterServer(searchFilter: SearchFilterData) {
+        Log.d("Get All", "Get sites by filter server")
+    }
+
+    private fun getSitesByFilterLocal(searchFilter: SearchFilterData) {
+        Log.d("Get All", "Get sites by filter Local")
     }
 }

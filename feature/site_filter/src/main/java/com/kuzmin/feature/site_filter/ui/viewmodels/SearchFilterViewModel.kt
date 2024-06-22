@@ -1,5 +1,6 @@
 package com.kuzmin.feature.site_filter.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,9 +38,9 @@ class SearchFilterViewModel @Inject constructor(
         }
     }
 
-    fun saveSearchData(searchFilterData: SearchFilterData) {
-        viewModelScope.launch {
-            searchFilterPrefManager.writeFilterData(searchFilterData)
-        }
+    suspend fun saveSearchData(searchFilterData: SearchFilterData) {
+        Log.d("Get All", "Save Search Data")
+        searchFilterPrefManager.writeFilterData(searchFilterData)
+
     }
 }

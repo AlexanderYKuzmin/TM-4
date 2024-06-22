@@ -24,7 +24,7 @@
         android:icon="@drawable/ic_launcher"
         android:title="@string/main_menu_load_server"
         app:showAsAction="never|collapseActionView"
-        app:actionLayout="@layout/layout_search" />
+         />
 
     <item
         android:id="@+id/mm_save_local"

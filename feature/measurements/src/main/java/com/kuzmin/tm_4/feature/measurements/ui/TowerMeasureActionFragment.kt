@@ -53,6 +53,7 @@ class TowerMeasureActionFragment : Fragment() {
 
                 }
                 is McAndCResult.SuccessC -> {
+                    binding.tvTower.invalidate()
                     binding.tvTower.populate(it.constructionFull, groupNum, mcUuid)
                 }
                 is McAndCResult.Error -> {

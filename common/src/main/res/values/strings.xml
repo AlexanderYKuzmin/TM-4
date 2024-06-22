@@ -4,5 +4,12 @@
     <string name="no_measurements">Не проведены измерения текущей конструкции</string>
     <string name="no_table_data">Не получены табличные данные.</string>
 
+    <string name="error_site_loading">Ошибка загрузки с сервера</string>
 
+
+    <!--sites feature names -->
+    <string name="storage_type">storage</string>
+    <string name="site_uuid">s_uuid</string>
+    <string name="construction_uuid">c_uuid</string>
+    <string name="title">title</string>
 </resources>

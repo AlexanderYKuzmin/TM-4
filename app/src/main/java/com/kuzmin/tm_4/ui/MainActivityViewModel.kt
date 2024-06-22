@@ -117,6 +117,15 @@ class MainActivityViewModel @Inject constructor(
         )
     }
 
+    fun handleSearchFilterSubmit(isFilterSet: Boolean) {
+        _appState.value = appState.copy(
+            mode = when(isFilterSet) {
+                true -> ScreenMode.SEARCH_ON_SERVER
+                else -> ScreenMode.SEARCH_ON_LOCAL
+            }
+        )
+    }
+
     fun handleSearchQuery(query: String?) {
         val editedQuery = query?.replace("\u00A0", "") ?: ""
         searchQuerySharedContainer.setData(editedQuery)
@@ -124,5 +133,13 @@ class MainActivityViewModel @Inject constructor(
 
     fun handleSiteSelected(name: String) {
         _appState.value = appState.copy(mode = ScreenMode.SITE_SELECTED)
+    }
+
+    fun handleNew() {
+        _appState.value =
+            appState.copy(
+                mode = ScreenMode.SITE_CREATION,
+                currentSiteUuid = ""
+            )
     }
 }

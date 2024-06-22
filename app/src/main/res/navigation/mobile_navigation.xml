@@ -10,6 +10,10 @@
         android:id="@id/sites_nav_graph"
         android:name="com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment"
         tools:layout="@layout/fragment_nav_sites" >
+        <argument
+            android:name="@string/storage_type"
+            app:argType="integer"
+            android:defaultValue="5000"/>
         <action
             android:id="@id/action_sites_nav_graph_to_login_nav_graph"
             app:destination="@id/login_nav_graph" />
@@ -25,7 +29,8 @@
         <action
             android:id="@+id/action_sites_nav_graph_to_site_filter_nav_graph"
             app:destination="@id/site_filter_nav_graph"
-            app:popUpTo="@id/sites_nav_graph" />
+            app:popUpTo="@id/sites_nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -35,15 +40,19 @@
         android:label="{title}"
         >
         <argument
-            android:name="title"
+            android:name="@string/title"
             app:argType="string"
             android:defaultValue=""/>
         <argument
-            android:name="site_id"
+            android:name="@string/site_uuid"
             app:argType="string"
-            android:defaultValue="-1L" />
+            android:defaultValue="xxx" />
         <argument
-            android:name="storage"
+            android:name="@string/construction_uuid"
+            app:argType="string"
+            android:defaultValue="xxx" />
+        <argument
+            android:name="@string/storage_type"
             app:argType="integer"
             android:defaultValue="-1" />
 
@@ -119,14 +128,23 @@
         android:id="@id/login_nav_graph"
         android:name="com.kuzmin.tm_4.feature.login.ui.LoginFragment"
         tools:layout="@layout/fragment_login">
-
     </fragment>
 
     <fragment
         android:id="@id/site_filter_nav_graph"
         android:name="com.kuzmin.feature.site_filter.ui.fragments.SiteFilterFragment"
-        tools:layout="@layout/fragment_site_filter"
-        >
+        tools:layout="@layout/fragment_site_filter">
+    </fragment>
+
+    <fragment
+        android:id="@id/site_creation_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.site_creation.ui.SiteCreationMainFragment"
+        tools:layout="@layout/fragment_site_creation_main">
+        <argument
+            android:name="@string/site_uuid"
+            app:argType="string"
+            android:defaultValue=""
+            />
 
     </fragment>
 

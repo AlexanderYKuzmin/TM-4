@@ -6,4 +6,5 @@ data class AppState(
     val mode: ScreenMode = ScreenMode.HOME,
     val title: String,
     val searchQuery: String = "",
+    val currentSiteUuid: String = ""
 )

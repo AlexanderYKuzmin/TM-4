@@ -1,5 +1,6 @@
 package com.kuzmin.tm_4.ui
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -24,15 +25,14 @@ import com.kuzmin.feature.site_filter.ui.fragments.SiteFilterFragment
 import com.kuzmin.tm_4.R
 import com.kuzmin.tm_4.common.R.*
 import com.kuzmin.tm_4.common.R.id.*
+import com.kuzmin.tm_4.common.R.string.*
 import com.kuzmin.tm_4.common.extension.dpToIntPx
-import com.kuzmin.tm_4.common.extension.hideKeyboard
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
 import com.kuzmin.tm_4.databinding.ActivityMainBinding
 import com.kuzmin.tm_4.feature.login.ui.LoginFragment
-import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment
 import com.kuzmin.tm_4.feature.sites.ui.SitesFragment
 import com.kuzmin.tm_4.model.AppState
 import com.kuzmin.tm_4.model.AuthState
-import com.kuzmin.tm_4.model.ScreenMode
 import com.kuzmin.tm_4.model.ScreenMode.*
 import com.kuzmin.tm_4.model.ToolbarState
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,6 +82,8 @@ class MainActivity :
         val startFragmentBundle = bundleOf()
         navController.setGraph(navController.graph, startFragmentBundle)
 
+        setBottomNavListeners(navView)
+
         with(viewModel) {
             observeAppState(this@MainActivity, ::renderUi)
             observeToolbarState(this@MainActivity, ::renderUiToolbar)
@@ -91,7 +93,7 @@ class MainActivity :
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
 
-        searchView = menu?.findItem(R.id.mm_load_server)?.actionView as SearchView
+        /*searchView = menu?.findItem(R.id.mm_load_server)?.actionView as SearchView
         searchView.isSubmitButtonEnabled = true
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -106,7 +108,7 @@ class MainActivity :
                     searchView.setQuery("\u00A0", false)
                 return true
             }
-        })
+        })*/
         return true
     }
 
@@ -121,8 +123,7 @@ class MainActivity :
                 launchAuthFragment()
             }
             R.id.mm_new -> {
-                //supportFragmentManager.popBackStack()
-                // viewModel.handleSearchPanelOnShow()
+                viewModel.handleNew()
             }
             R.id.mm_load_local -> {
                 //supportFragmentManager.popBackStack()
@@ -130,7 +131,7 @@ class MainActivity :
             }
             R.id.mm_load_server -> {
                 Log.d(TAG, "OnOptionsItemSelected: ${item.itemId}")
-
+                launchSiteFilterFragment()
             }
             R.id.mm_save_local -> {
 
@@ -198,13 +199,23 @@ class MainActivity :
             }
             SEARCH_ON_SERVER -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                supportActionBar?.setDisplayShowHomeEnabled(true)
+                /*supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                supportActionBar?.setDisplayShowHomeEnabled(true)*/
+                //launchSiteFilterFragment()
+                launchSitesRemoteFragment(STORAGE_SERVER)
+            }
+            SEARCH_ON_LOCAL -> {
+                //TODO
             }
             SITE_SELECTED -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
                 //searchView.visibility = View.GONE
                 _binding.toolbar.collapseActionView()
+            }
+            SITE_CREATION -> {
+                //TODO change title to Creation
+                switchBottombarState(false)
+                launchSiteCreationFragment("")
             }
             else -> {
                 //supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -248,13 +259,15 @@ class MainActivity :
 
                 }
                 measurements_nav_graph -> {
-                    TODO()
+                    navController.popBackStack(measurements_nav_graph, true)
+                    navController.navigate(measurements_nav_graph)
                 }
                 report_nav_graph -> {
-                    TODO()
+                    navController.navigate(report_nav_graph)
                 }
                 else -> throw RuntimeException("Wrong MenuItem's Id!")
             }
+            true
         }
     }
 
@@ -263,11 +276,22 @@ class MainActivity :
     }
 
     private fun launchSiteFilterFragment() {
-        //TODO
+        navController.navigate(site_filter_nav_graph)
     }
 
-    private fun launchSitesRemoteFragment(token: String) {
+    private fun launchSitesRemoteFragment(storageType: Int) {
         //navController.navigate(R.id.sites_nav_graph, bundleOf(TOKEN to token))
+        navController.navigate(
+            sites_nav_graph,
+            bundleOf(getString(storage_type) to storageType)
+        )
+    }
+
+    private fun launchSiteCreationFragment(siteUuid: String) {
+        navController.navigate(
+            site_creation_nav_graph,
+            bundleOf(getString(site_uuid) to siteUuid)
+        )
     }
 
     private fun switchBottombarState(isActive: Boolean) {
@@ -300,8 +324,13 @@ class MainActivity :
         )
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onFilterSearchSubmit(isFilterSet: Boolean) {
-        TODO("Not yet implemented")
+        navController.popBackStack(sites_nav_graph, true)
+        navController.currentBackStack.value.forEach {
+            Log.d("MainActivity Search", "Entry: ${it.id}")
+        }
+        viewModel.handleSearchFilterSubmit(isFilterSet)
     }
 
     override fun onItemSiteClick(name: String) {

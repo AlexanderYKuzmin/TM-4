@@ -3,8 +3,6 @@
     <string name="measures_done_text">Измерения проведены:</string>
     <string name="measures_none">Нет</string>
 
-    <string name="error_site_loading">Ошибка загрузки с сервера</string>
-
     <!--Arguments-->
     <!--<string name="site_id">site_id</string>
     <string name="storage_posi"-->

@@ -1,13 +1,16 @@
 package com.kuzmin.feature.site_filter.ui.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kuzmin.feature.site_filter.databinding.FragmentSiteFilterBinding
 import com.kuzmin.feature.site_filter.domain.model.SearchFilterDataResult
@@ -17,6 +20,7 @@ import com.kuzmin.tm_4.common.extension.toDate
 import com.kuzmin.tm_4.common.util.CommonConstants.START_DATE_MILLIS_DEFAULT
 import com.kuzmin.tm_4.feature.api.domain.model.search_filter.SearchFilterData
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Date
 
 @AndroidEntryPoint
@@ -48,6 +52,11 @@ class SiteFilterFragment : Fragment(), OnClickListener {
         searchFilterViewModel.searchFilterDataResult.observe(viewLifecycleOwner) {
             when(it) {
                 is SearchFilterDataResult.Success -> {
+
+                    Log.d("Search_Filter", "SearchFilter Data: ${it.searchFilterData}")
+                    Log.d("Search_Filter", "SearchFilter startDate string: ${it.searchFilterData.dateStart.formatToDateString()}")
+                    Log.d("Search_Filter", "SearchFilter endDate string: ${it.searchFilterData.dateEnd.formatToDateString()}")
+
                     with(binding) {
                         with(it.searchFilterData) {
                             etStartDate.setText(dateStart.formatToDateString())
@@ -68,21 +77,25 @@ class SiteFilterFragment : Fragment(), OnClickListener {
 
     override fun onClick(v: View) {
         with(binding) {
-            when(v) {
-                btnSearchFilter -> {
-                    searchFilterViewModel.saveSearchData(
-                        SearchFilterData(
-                            dateStart = etStartDate.text.toString().toDate() ?: Date(START_DATE_MILLIS_DEFAULT),
-                            dateEnd = etEndDate.text.toString().toDate() ?: Date(),
-                            region = etRegionFilter.toString(),
-                            city = etCityFilter.toString(),
-                            siteName = etNameFilter.toString()
+            lifecycleScope.launch {
+                when(v) {
+                    btnSearchFilter -> {
+                        searchFilterViewModel.saveSearchData(
+                            SearchFilterData(
+                                dateStart = etStartDate.text.toString().toDate() ?: Date(START_DATE_MILLIS_DEFAULT),
+                                dateEnd = etEndDate.text.toString().toDate() ?: Date(),
+                                region = etRegionFilter.text.toString(),
+                                city = etCityFilter.text.toString(),
+                                siteName = etNameFilter.text.toString()
+                            )
                         )
-                    )
-                    close(true)
-                }
-                btnCancelFilter -> {
-                    close(false)
+                        close(true)
+                    }
+                    btnCancelFilter -> {
+                        close(false)
+                    }
+
+                    else -> {throw RuntimeException("Wrong Click view!")}
                 }
             }
         }
@@ -90,7 +103,6 @@ class SiteFilterFragment : Fragment(), OnClickListener {
 
     private fun close(isFilterSet: Boolean) {
         onFilterSearchSubmitListener?.onFilterSearchSubmit(isFilterSet)
-        navController.popBackStack()
     }
 
     override fun onAttach(context: Context) {

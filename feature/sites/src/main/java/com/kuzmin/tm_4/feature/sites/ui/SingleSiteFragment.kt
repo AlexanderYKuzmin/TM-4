@@ -10,19 +10,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.kuzmin.tm_4.common.R
 import com.kuzmin.tm_4.common.extension.formatToDateString
-import com.kuzmin.tm_4.feature.sites.R
-import com.kuzmin.tm_4.feature.sites.databinding.FragmentSiteBinding
-import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
 import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
-import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.CONSTRUCTION_UUID
-import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.SITE_UUID
-import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.STORAGE_TYPE
-import com.kuzmin.tm_4.feature.sites.ui.NavSitesServerFragment.Companion.TITLE
+import com.kuzmin.tm_4.feature.sites.databinding.FragmentSiteBinding
+import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.ui.adapters.PagerPhotoAdapter
-import com.kuzmin.tm_4.feature.sites.ui.adapters.PhotoAdapter
 import com.kuzmin.tm_4.feature.sites.ui.viewmodels.SiteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -62,10 +57,10 @@ class SingleSiteFragment : Fragment() {
         _binding = FragmentSiteBinding.inflate(inflater, container, false)
 
         arguments?.apply {
-            title = getString(TITLE)
-            siteUuid = getString(SITE_UUID)
-            constructionUuid = getString(CONSTRUCTION_UUID)
-            storage = getInt(STORAGE_TYPE)
+            title = getString(appContext.getString(R.string.title))
+            siteUuid = getString(appContext.getString(R.string.site_uuid))
+            constructionUuid = getString(appContext.getString(R.string.construction_uuid))
+            storage = getInt(appContext.getString(R.string.storage_type))
         }
 
         Log.d("MainActivity", "arguments: siteId: $siteUuid, storage: $storage")

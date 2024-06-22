@@ -34,6 +34,7 @@ object CommonConstants {
     const val STORAGE_LOCAL = 5000
     const val STORAGE_SERVER = 5001
 
+
     //datastore constants
     const val S = "site"
     const val C = "construction"
@@ -53,4 +54,5 @@ object CommonConstants {
 
     //filter
     const val START_DATE_MILLIS_DEFAULT = 1117728581000
+
 }

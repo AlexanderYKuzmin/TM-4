@@ -32,3 +32,7 @@ fun Date.formatToDateTimeUpToSeconds(): String {
 fun Date.hours(): Int {
     return (this.time / (3600 * 1000)).toInt()
 }
+
+fun Date.days(): Int {
+    return (time / (24 * 3600 * 1000)).toInt()
+}

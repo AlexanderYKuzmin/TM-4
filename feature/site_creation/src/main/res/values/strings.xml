@@ -1,0 +1,25 @@
+<resources>
+    <string name="site_address_hint">Адрес</string>
+    <string name="site_country_hint">Страна</string>
+    <string name="site_region_hint">Регион</string>
+    <string name="site_sub_region_hint">Район</string>
+    <string name="site_city_hint">Город</string>
+    <string name="site_street_hint">Улица</string>
+    <string name="site_building_hint">Строение</string>
+    <string name="site_postal_hint">Индекс</string>
+    <string name="site_region_code_hint">Код</string>
+
+    <string name="site_common_data">Общие данные</string>
+    <string name="site_name_hint">Наименование / Код сайта</string>
+    <string name="site_description_hint">Описание сайта</string>
+    <string name="site_type_hint">Тип</string>
+    <string name="site_type_description_hint">Описание типа сайта</string>
+
+    <string name="site_geo_hint">Гео</string>
+    <string name="site_altitude_hint">Широта(дес)</string>
+    <string name="site_longitude_hint">Долгота(дес)</string>
+
+
+    <string name="btn_add_construction">Добавить конструкцию</string>
+    <string name="btn_finish">Завершить</string>
+</resources>

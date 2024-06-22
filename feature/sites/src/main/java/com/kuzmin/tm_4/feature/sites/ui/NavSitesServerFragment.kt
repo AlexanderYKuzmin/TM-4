@@ -12,10 +12,17 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.kuzmin.tm_4.common.R.string.storage_type
+import com.kuzmin.tm_4.common.R.string.title
+import com.kuzmin.tm_4.common.R.string.site_uuid
+import com.kuzmin.tm_4.common.R.string.construction_uuid
+import com.kuzmin.tm_4.common.R.string.error_site_loading
 import com.kuzmin.tm_4.common.R.id.site_nav_graph
+import com.kuzmin.tm_4.feature.sites.R.drawable.save_to_db
+import com.kuzmin.tm_4.common.util.CommonConstants
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
 import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
-import com.kuzmin.tm_4.feature.sites.R
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentNavSitesBinding
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Error
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult.Loading
@@ -29,7 +36,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NavSitesServerFragment : SitesFragment() {
+class NavSitesServerFragment : SitesFragment() {  //Rename this class
 
     //private var onSitesAdapterClickListener: OnSitesAdapterClickListener? = null
 
@@ -48,6 +55,16 @@ class NavSitesServerFragment : SitesFragment() {
     }
 
     private val sitesNavGraphViewModel: SitesNavGraphViewModel by viewModels()
+
+    private var storageType: Int = STORAGE_LOCAL
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            storageType = it.getInt(appContext.getString(storage_type))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +85,9 @@ class NavSitesServerFragment : SitesFragment() {
 
         setAdapterItemClickAction(adapter)
 
-        sitesNavGraphViewModel.observeQuery(viewLifecycleOwner)
+        //sitesNavGraphViewModel.observeQuery(viewLifecycleOwner)
+        sitesNavGraphViewModel.loadSites(storageType)
+
         sitesNavGraphViewModel.siteResult.observe(viewLifecycleOwner) {
             when(it) {
                 is Success -> {
@@ -82,7 +101,7 @@ class NavSitesServerFragment : SitesFragment() {
                 is Error -> {
                     Toast.makeText(
                         appContext,
-                    getString(R.string.error_site_loading) + " " + it.throwable.toString(),
+                    getString(error_site_loading) + " " + it.throwable.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
                 Log.d("SitesFragment", "error: ${it.throwable}")}
@@ -105,7 +124,7 @@ class NavSitesServerFragment : SitesFragment() {
                 buffer.add(
                     ImageSaveButton(
                         "Сохранить",
-                        R.drawable.save_to_db,
+                        save_to_db,
                         30f,
                         Color.DKGRAY,
                         object : ImageSaveButtonClickListener {
@@ -132,10 +151,10 @@ class NavSitesServerFragment : SitesFragment() {
             )
             navController.navigate(site_nav_graph,
                 bundleOf(
-                    TITLE to name,
-                    SITE_UUID to siteUuid,
-                    CONSTRUCTION_UUID to constrUuid,
-                    STORAGE_TYPE to STORAGE_SERVER)
+                    appContext.getString(title) to name,
+                    appContext.getString(site_uuid) to siteUuid,
+                    appContext.getString(construction_uuid) to constrUuid,
+                    appContext.getString(storage_type) to STORAGE_SERVER)
             )
             onSitesAdapterClickListener?.onItemSiteClick("")
         }
@@ -144,9 +163,17 @@ class NavSitesServerFragment : SitesFragment() {
 
 
     companion object {
-        const val TITLE = "title"
-        const val SITE_UUID = "site_uuid"
-        const val CONSTRUCTION_UUID = "construction_uuid"
-        const val STORAGE_TYPE = "storage"
+        //const val TITLE = "title"
+        //const val SITE_UUID = "site_uuid"
+        //const val CONSTRUCTION_UUID = "construction_uuid"
+        //const val STORAGE_TYPE = "storage"
+
+        /*@JvmStatic
+        fun newInstance(storageType: Int) =
+            NavSitesServerFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(appContext.getString(storage_type), storageType)
+                }
+            }*/
     }
 }
