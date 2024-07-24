@@ -215,7 +215,7 @@ class MainActivity :
             SITE_CREATION -> {
                 //TODO change title to Creation
                 switchBottombarState(false)
-                launchSiteCreationFragment("")
+                launchSiteCreationFragment(appState.currentSiteUuid)
             }
             else -> {
                 //supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -287,7 +287,7 @@ class MainActivity :
         )
     }
 
-    private fun launchSiteCreationFragment(siteUuid: String) {
+    private fun launchSiteCreationFragment(siteUuid: String?) {
         navController.navigate(
             site_creation_nav_graph,
             bundleOf(getString(site_uuid) to siteUuid)

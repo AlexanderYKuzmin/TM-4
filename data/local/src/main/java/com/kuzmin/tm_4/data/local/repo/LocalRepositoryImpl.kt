@@ -2,16 +2,18 @@ package com.kuzmin.tm_4.data.local.repo
 
 import android.util.Log
 import com.kuzmin.tm_4.core.database.TmDao
-import com.kuzmin.tm_4.data.local.mapper.ConstructionFullDbToConstructionFullMapper
-import com.kuzmin.tm_4.data.local.mapper.McAndConToModelMapper
-import com.kuzmin.tm_4.data.local.mapper.MeasurementConstructionFullDbToMeasurementConstructionFullMapper
-import com.kuzmin.tm_4.data.local.mapper.SiteDbToSiteModelMapper
-import com.kuzmin.tm_4.data.local.mapper.SiteModelToSiteDbMapper
+import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.ConstructionFullDbToConstructionFullMapper
+import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.McAndConToModelMapper
+import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.MeasurementConstructionFullDbToMeasurementConstructionFullMapper
+import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.SiteDbToSiteModelMapper
+import com.kuzmin.tm_4.data.local.mapper.fromModelToDb.ConstructionAndSectionsToConstructionAndSectionsDbMapper
+import com.kuzmin.tm_4.data.local.mapper.fromModelToDb.SiteModelToSiteDbMapper
 import com.kuzmin.tm_4.feature.api.api.LocalRepository
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.ConstructionFull
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.GroupFull
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McAndConstruction
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McFull
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionFull
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.GroupFull
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McFull
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
 import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
@@ -23,13 +25,24 @@ class LocalRepositoryImpl @Inject constructor(
     private val siteDbToSiteMapper: SiteDbToSiteModelMapper,
     private val constructionFullDbToModelMapper: ConstructionFullDbToConstructionFullMapper,
     private val mcDbToModelMapper: MeasurementConstructionFullDbToMeasurementConstructionFullMapper,
-    private val mcAndConDbToModelMapper: McAndConToModelMapper
+    private val mcAndConDbToModelMapper: McAndConToModelMapper,
+    private val conAndSecsToConAndSecsDbMapper: ConstructionAndSectionsToConstructionAndSectionsDbMapper
 ) : LocalRepository {
     override suspend fun addSiteToDb(site: Site, durability: String) {
         Log.d("Db", "Add site to db. $site, mc: ${site.measurementsConstructions}")
         val siteDb = siteModelToDbMapper.mapSiteModelToSiteDb(site, durability)
         Log.d("Db", "Add site to db. Site DB: $siteDb, mc: ${siteDb.measurementsConstructions}")
         tmDao.addSite(siteDb)
+    }
+
+    override suspend fun addConstructionToDb(construction: Construction) {
+       // val constructionDb = constructionFull
+    }
+
+    override suspend fun addConstructionAndSectionsToDb(constructionAndSections: ConstructionAndSections) {
+        val constructionAndSectionsDb =
+            conAndSecsToConAndSecsDbMapper.mapConstructionAndSectionsToConstructionAndSectionsDb(constructionAndSections)
+        tmDao.addConstructionAndSections(constructionAndSectionsDb)
     }
 
     override suspend fun getSite(siteUuid: String): Site? {

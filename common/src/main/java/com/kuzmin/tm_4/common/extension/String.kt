@@ -45,3 +45,8 @@ fun String.getY(): Int {
     val xyArray = split("x")
     return xyArray[1].toInt()
 }
+
+fun String.isNotBlankNotEmpty(): Boolean {
+    return isNotEmpty() && isNotBlank()
+}
+

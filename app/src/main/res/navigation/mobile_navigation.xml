@@ -31,6 +31,9 @@
             app:destination="@id/site_filter_nav_graph"
             app:popUpTo="@id/sites_nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@id/action_sites_nav_graph_to_site_creation_nav_graph"
+            app:destination="@id/site_creation_nav_graph" />
     </fragment>
 
     <fragment
@@ -138,14 +141,32 @@
 
     <fragment
         android:id="@id/site_creation_nav_graph"
-        android:name="com.kuzmin.tm_4.feature.site_creation.ui.SiteCreationMainFragment"
+        android:name="com.kuzmin.tm_4.feature.site_creation.ui.fragments.SiteCreationMainFragment"
         tools:layout="@layout/fragment_site_creation_main">
         <argument
             android:name="@string/site_uuid"
             app:argType="string"
-            android:defaultValue=""
+            app:nullable="true"
+            android:defaultValue="@null"
             />
+        <action
+            android:id="@id/action_site_creation_nav_graph_to_site_construction_creation_nav_graph"
+            app:destination="@id/site_construction_creation_nav_graph"
+            app:popUpTo="@id/site_creation_nav_graph" />
 
+    </fragment>
+
+    <fragment
+        android:id="@id/site_construction_creation_nav_graph"
+        android:name="com.kuzmin.tm_4.feature.site_creation.ui.fragments.ConstructionCreationFragment"
+        tools:layout="@layout/fragment_construction_creation"
+        >
+        <argument
+            android:name="@string/site_uuid"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"
+            />
     </fragment>
 
     <fragment

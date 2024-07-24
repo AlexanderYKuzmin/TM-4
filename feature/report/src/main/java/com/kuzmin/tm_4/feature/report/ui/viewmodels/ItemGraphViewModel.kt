@@ -1,6 +1,6 @@
 package com.kuzmin.tm_4.feature.report.ui.viewmodels
 
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetMcAndConstructionUseCase
 import com.kuzmin.tm_4.feature.report.domain.model.ChartDataBuilder
 import com.kuzmin.tm_4.feature.report.domain.usecases.CreateChartDataUseCase

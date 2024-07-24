@@ -6,11 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.kuzmin.tm_4.core.database.delivery.ConstructionAndMcFullSingle
-import com.kuzmin.tm_4.core.database.delivery.ConstructionAndSectionsDb
-import com.kuzmin.tm_4.core.database.delivery.ConstructionFullDb
-import com.kuzmin.tm_4.core.database.delivery.GroupFullDb
-import com.kuzmin.tm_4.core.database.delivery.McDbFull
+import com.kuzmin.tm_4.core.database.model.delivery.ConstructionAndMcFullSingle
+import com.kuzmin.tm_4.core.database.model.delivery.ConstructionAndSectionsDb
+import com.kuzmin.tm_4.core.database.model.delivery.ConstructionFullDb
+import com.kuzmin.tm_4.core.database.model.delivery.GroupFullDb
+import com.kuzmin.tm_4.core.database.model.delivery.McDbFull
 import com.kuzmin.tm_4.core.database.model.site.AddressDb
 import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.GroupDb
@@ -18,7 +18,7 @@ import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.PhotoDb
 import com.kuzmin.tm_4.core.database.model.site.ResultDb
-import com.kuzmin.tm_4.core.database.delivery.SiteDb
+import com.kuzmin.tm_4.core.database.model.delivery.SiteDb
 import com.kuzmin.tm_4.core.database.model.site.LevelDb
 import com.kuzmin.tm_4.core.database.model.site.SectionDb
 import com.kuzmin.tm_4.core.database.model.site.SiteEquipmentDb
@@ -106,6 +106,30 @@ interface TmDao {
             addLevelsInfo(levelsInfo)
         }
     }
+
+    @Transaction
+    suspend fun addConstructionAndSections(constructionAndSectionsDb: ConstructionAndSectionsDb) {
+        addConstructions(listOf(constructionAndSectionsDb.constructionDb))
+        addSections(constructionAndSectionsDb.sections)
+    }
+
+    @Query(
+        "SELECT  *, *, * FROM site_params " +
+        "JOIN addresses ON sp_site_uuid = addr_site_uuid " +
+        "JOIN tenants ON sp_site_uuid = ten_site_uuid "
+    )
+    fun getAllSiteSimple(): List<SiteDb>
+
+    @Transaction
+    @Query(
+        "SELECT  *, *, * FROM site_params " +
+        "JOIN addresses ON sp_site_uuid = addr_site_uuid " +
+        "JOIN tenants ON sp_site_uuid = ten_site_uuid " +
+        "JOIN constructions ON sp_site_uuid = constr_site_uuid " +
+        "JOIN sections ON sp_site_uuid = s_site_uuid " +
+        "WHERE sp_site_uuid = :uuid"
+    )
+    fun getSiteByUuid(uuid: String): SiteDb
 
     @Transaction
     @Query("SELECT  *, *, * FROM site_params " +

@@ -12,6 +12,8 @@ object CommonConstants {
     const val MAST = "mast"
     const val POLE = "pole"
 
+    const val STATUS_ACTUAL = "actual"
+
     //Login constants
     const val NO_DATE = 0L
     const val NO_TOKEN = ""
@@ -55,4 +57,8 @@ object CommonConstants {
     //filter
     const val START_DATE_MILLIS_DEFAULT = 1117728581000
 
+    const val MAX_HEIGHT_MM = 500000
+    const val MIN_HEIGHT_MM = 10000
+    const val MIN_SECTION_NUMBER = 1
+    const val MAX_SECTION_NUMBER = 30
 }

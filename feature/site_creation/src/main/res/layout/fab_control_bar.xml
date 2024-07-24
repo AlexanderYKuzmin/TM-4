@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_fab_group_creation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="end"
+    >
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_clean_creation"
+        android:src="@drawable/clear2"
+        style="@style/FabSiteCreation"
+        app:rippleColor="@color/color_container"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_exit_creation"
+        android:src="@drawable/exit"
+        style="@style/FabSiteCreation"
+        app:rippleColor="@color/color_container"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_ok_creation"
+        android:src="@drawable/ok2"
+        style="@style/FabSiteCreation"
+        app:tint="@color/color_well_done"
+        app:rippleColor="@color/color_container"
+        />
+</LinearLayout>

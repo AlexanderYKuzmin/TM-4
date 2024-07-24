@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/ll_construction_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_construction_common_data"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/addr_bgd_creation"
+            >
+
+            <TextView
+                style="@style/HintBorderTextView"
+                android:text="@string/site_common_data"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputSiteCreation"
+                android:id="@+id/til_construction_date_creation"
+                android:layout_marginTop="24dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_construction_date_creation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:maxLength="10"
+                    android:inputType="date"
+                    android:fontFamily="@font/naga"
+                    android:hint="@string/construction_date_hint"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputSiteCreation"
+                android:id="@+id/til_construction_description_creation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_construction_date_creation"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_construction_description_creation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:maxLength="240"
+                    android:fontFamily="@font/naga"
+                    android:hint="@string/construction_description_hint"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputSpinnerCreation"
+                android:id="@+id/til_construction_type_creation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/til_construction_height_creation"
+                app:layout_constraintTop_toBottomOf="@id/til_construction_description_creation"
+                app:layout_constraintHorizontal_weight="3"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/atv_construction_type_creation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:hint="@string/construction_type_hint"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputSiteCreation"
+                android:id="@+id/til_construction_height_creation"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toEndOf="@id/til_construction_type_creation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/til_construction_type_creation"
+                app:layout_constraintBottom_toBottomOf="@id/til_construction_type_creation"
+                app:layout_constraintHorizontal_weight="2"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_construction_height_creation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:inputType="numberDecimal"
+                    android:fontFamily="@font/naga"
+                    android:hint="@string/construction_height_hint"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputSpinnerCreation"
+                android:id="@+id/til_construction_config_creation"
+                android:layout_marginBottom="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/til_construction_q_sections_creation"
+                app:layout_constraintTop_toBottomOf="@id/til_construction_type_creation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="3"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/atv_construction_config_creation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:hint="@string/construction_config_hint"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputSiteCreation"
+                android:id="@+id/til_construction_q_sections_creation"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toEndOf="@id/til_construction_config_creation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/til_construction_config_creation"
+                app:layout_constraintBottom_toBottomOf="@id/til_construction_config_creation"
+                app:layout_constraintHorizontal_weight="2"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_construction_q_sections_creation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/naga"
+                    android:hint="@string/construction_quantity_sections_hint"
+                    android:inputType="numberDecimal"
+                    android:maxLength="2"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/cl_construction_sections_data"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/addr_bgd_creation"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_section_title"
+                style="@style/HintBorderTextView"
+                android:layout_marginBottom="6dp"
+                android:text="@string/construction_sections_data"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_fab_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            >
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_double_creation"
+                android:src="@drawable/baseline_content_copy_24"
+                style="@style/FabSiteCreation"
+                app:rippleColor="@color/color_container"
+                />
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_fab_group_construction_creation"
+                layout="@layout/fab_control_bar"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>

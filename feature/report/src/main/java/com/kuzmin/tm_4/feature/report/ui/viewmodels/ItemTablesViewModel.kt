@@ -2,7 +2,7 @@ package com.kuzmin.tm_4.feature.report.ui.viewmodels
 
 import android.util.Log
 import com.kuzmin.tm_4.common.util.CommonConstants.GROUP_ALL
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetMcAndConstructionUseCase
 import com.kuzmin.tm_4.feature.report.domain.model.sealed.ReportTable
 import com.kuzmin.tm_4.feature.report.domain.usecases.CreateProfileTableDataUseCase

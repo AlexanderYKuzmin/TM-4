@@ -17,7 +17,7 @@ import com.github.mikephil.charting.data.ScatterData
 import com.kuzmin.tm_4.common.util.CommonConstants.GROUP_ALL
 import com.kuzmin.tm_4.common.util.CommonConstants.GROUP_NUM
 import com.kuzmin.tm_4.common.util.CommonConstants.MC_UUID
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
 import com.kuzmin.tm_4.feature.report.R
 import com.kuzmin.tm_4.feature.report.databinding.FragmentSingleGraphBinding

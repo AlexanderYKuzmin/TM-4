@@ -13,7 +13,7 @@ import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetAllMcFullFromDbUseCase
 import com.kuzmin.tm_4.feature.measurements.domain.usecases.GetMeasurementConstructionsBySiteIdUseCase
-import com.kuzmin.tm_4.feature.measurements.domain.usecases.SaveSiteToDbUseCase
+import com.kuzmin.tm_4.feature.api.domain.usecases.SaveSiteToDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

@@ -1,8 +1,8 @@
 package com.kuzmin.tm_4.feature.api.domain.model.sealed
 
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.ConstructionFull
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McAndConstruction
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McFull
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionFull
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McFull
 import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
 
 sealed class McAndCResult {

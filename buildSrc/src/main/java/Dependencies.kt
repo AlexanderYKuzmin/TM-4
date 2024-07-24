@@ -27,6 +27,25 @@ object Version {
     const val picasso_version = "2.71828"
 
     const val support_lib_version = "28.0.0"
+
+    const val junit4_version = "4.13.2"
+
+    const val ext_junit_version = "1.1.5"
+
+    const val espresso_core_version = "3.5.1"
+    const val espresso_contrib_version = "3.1.0-alpha3"
+
+    const val coroutine_test_version = "1.6.1"
+
+    const val arch_core_version = "2.2.0"
+
+    const val robolectric_version = "4.8"
+
+    const val fragment_testing_version = "1.4.1"
+
+    const val mockito_core_version = "5.11.0"
+    const val mockito_kotlin_version = "4.1.0"
+    const val mockito_inline_version = "5.2.0"
 }
 
 object Deps {
@@ -104,4 +123,28 @@ object DataBase {
 
 object Picasso {
     const val picasso = "com.squareup.picasso:picasso:${Version.picasso_version}"
+}
+
+object Robolectric {
+    const val robolectric = "org.robolectric:robolectric:${Version.robolectric_version}"
+}
+
+object Test {
+    const val junit4 = "junit:junit:${Version.junit4_version}"
+    const val mockito_kotlin = "org.mockito.kotlin:mockito-kotlin:${Version.mockito_kotlin_version}"
+    const val mockito_inline = "org.mockito:mockito-inline:${Version.mockito_inline_version}"
+    const val coroutine_test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.coroutine_test_version}"
+    const val arch_core_test = "androidx.arch.core:core-testing:${Version.arch_core_version}"
+
+    const val fragment_test = "androidx.fragment:fragment-testing:${Version.fragment_testing_version}"
+}
+
+object AndroidTest {
+    const val extJunit4 = "androidx.test.ext:junit:${Version.ext_junit_version}"
+    const val espresso = "androidx.test.espresso:espresso-core:${Version.espresso_core_version}"
+    const val espresso_idling = "androidx.test.espresso:espresso-idling-resource:${Version.espresso_core_version}"
+    const val espresso_contrib = "androidx.test.espresso:espresso-contrib:${Version.espresso_contrib_version}"
+
+    const val mockito_android = "org.mockito:mockito-android:${Version.mockito_core_version}"
+    const val coroutine_test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.coroutine_test_version}"
 }

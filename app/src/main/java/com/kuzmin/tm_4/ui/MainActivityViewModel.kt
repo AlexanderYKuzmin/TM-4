@@ -139,7 +139,7 @@ class MainActivityViewModel @Inject constructor(
         _appState.value =
             appState.copy(
                 mode = ScreenMode.SITE_CREATION,
-                currentSiteUuid = ""
+                currentSiteUuid = null
             )
     }
 }

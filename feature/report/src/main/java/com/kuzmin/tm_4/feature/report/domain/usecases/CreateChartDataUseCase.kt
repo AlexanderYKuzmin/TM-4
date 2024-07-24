@@ -3,10 +3,7 @@ package com.kuzmin.tm_4.feature.report.domain.usecases
 import android.util.Log
 import com.kuzmin.tm_4.common.util.CommonConstants.GROUP_ALL
 import com.kuzmin.tm_4.common.util.CommonConstants.GROUP_ONE
-import com.kuzmin.tm_4.common.util.CommonConstants.MAST
-import com.kuzmin.tm_4.common.util.CommonConstants.POLE
-import com.kuzmin.tm_4.common.util.CommonConstants.TOWER
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex_obj.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.site.McLevelInfo
 import com.kuzmin.tm_4.feature.api.domain.model.site.Result
 import com.kuzmin.tm_4.feature.report.domain.model.ChartDataBuilder

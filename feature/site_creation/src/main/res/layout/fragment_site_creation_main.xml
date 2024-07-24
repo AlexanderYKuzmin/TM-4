@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.SiteCreationMainFragment">
+    tools:context=".ui.fragments.SiteCreationMainFragment">
 
     <ScrollView
         android:id="@+id/sv_site_creation"
@@ -19,6 +19,7 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_all_site_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -85,7 +86,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/til_site_type_description_creation"
                     app:layout_constraintTop_toBottomOf="@id/til_site_description_creation"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -95,6 +95,7 @@
                         android:textSize="16dp"
                         android:fontFamily="@font/naga"
                         android:hint="@string/site_type_hint"
+                        android:inputType="numberDecimal"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,7 +107,6 @@
                     app:layout_constraintStart_toEndOf="@id/til_site_type_creation"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/til_site_description_creation"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -115,7 +115,27 @@
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
                         android:fontFamily="@font/naga"
-                        android:hint="@string/site_description_hint"
+                        android:hint="@string/site_type_description_hint"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputSiteCreation"
+                    android:id="@+id/til_site_tenant_name_creation"
+                    android:layout_marginBottom="6dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_site_type_description_creation"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_site_tenant_name_creation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/naga"
+                        android:hint="@string/site_tenant_name_hint"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,55 +159,62 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="@string/site_address_hint"
                     />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputSiteCreation"
-                    android:id="@+id/til_country_creation"
-                    android:layout_marginTop="24dp"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/til_region_creation"
+                <LinearLayout
+                    android:id="@+id/ll_country_region_creation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent"
-                    >
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_country_creation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:fontFamily="@font/naga"
-                        android:hint="@string/site_country_hint"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputSiteCreation"
-                    android:id="@+id/til_region_creation"
-                    android:layout_marginTop="24dp"
-                    app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintStart_toEndOf="@id/til_country_creation"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/til_sub_region_creation"
                     >
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputSiteCreation"
+                        android:id="@+id/til_country_creation"
+                        android:layout_marginTop="24dp"
+                        android:layout_weight="2"
+                        >
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_region_creation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:fontFamily="@font/naga"
-                        android:hint="@string/site_region_hint"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_country_creation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:fontFamily="@font/naga"
+                            android:hint="@string/site_country_hint"
+                            android:maxLines="1"
+                            android:maxLength="10"
+                            />
 
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputSiteCreation"
+                        android:id="@+id/til_region_creation"
+                        android:layout_marginTop="24dp"
+                        android:layout_weight="5"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_region_creation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:fontFamily="@font/naga"
+                            android:hint="@string/site_region_hint"
+                            android:maxLength="120"
+                            android:maxLines="2"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputSiteCreation"
                     android:id="@+id/til_sub_region_creation"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til_region_creation"
+                    app:layout_constraintTop_toBottomOf="@id/ll_country_region_creation"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -279,6 +306,8 @@
                         android:textSize="16dp"
                         android:fontFamily="@font/naga"
                         android:hint="@string/site_postal_hint"
+                        android:inputType="numberDecimal"
+                        android:maxLength="6"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -300,6 +329,8 @@
                         android:textSize="16dp"
                         android:fontFamily="@font/naga"
                         android:hint="@string/site_region_code_hint"
+                        android:inputType="numberDecimal"
+                        android:maxLength="3"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -326,7 +357,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/TextInputSiteCreation"
-                android:id="@+id/til_site_altitude_creation"
+                android:id="@+id/til_site_latitude_creation"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="6dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -336,12 +367,14 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_site_altitude_creation"
+                    android:id="@+id/et_site_latitude_creation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:fontFamily="@font/naga"
                     android:hint="@string/site_altitude_hint"
+                    android:inputType="numberDecimal"
+                    android:maxLength="8"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -350,7 +383,7 @@
                 android:id="@+id/til_site_longitude_creation"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="6dp"
-                app:layout_constraintStart_toEndOf="@id/til_site_altitude_creation"
+                app:layout_constraintStart_toEndOf="@id/til_site_latitude_creation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -363,14 +396,16 @@
                     android:textSize="16dp"
                     android:fontFamily="@font/naga"
                     android:hint="@string/site_longitude_hint"
+                    android:inputType="numberDecimal"
+                    android:maxLength="8"
                     />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_add_constr_creation"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:scaleType="fitCenter"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="6dp"
@@ -379,44 +414,31 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_geo_data" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_add_photo_creation"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/btn_selector"
+                android:src="@drawable/add_photo2"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toEndOf="@id/btn_add_constr_creation"
+                app:layout_constraintTop_toBottomOf="@id/cl_geo_data" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/ll_fab_group_creation"
+    <include
+        android:id="@+id/ll_fab_group_site_creation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/sv_site_creation"
-        >
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_clean_creation"
-            android:src="@drawable/clear2"
-            style="@style/FabSiteCreation"
-            app:rippleColor="@color/color_container"
-            />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_exit_creation"
-            android:src="@drawable/exit"
-            style="@style/FabSiteCreation"
-            app:rippleColor="@color/color_container"
-            />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_ok_creation"
-            android:src="@drawable/ok2"
-            style="@style/FabSiteCreation"
-            app:tint="@color/color_well_done"
-            app:rippleColor="@color/color_container"
-            />
-
-    </LinearLayout>
-
-
+        layout="@layout/fab_control_bar"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
