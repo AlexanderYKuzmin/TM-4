@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -30,7 +31,7 @@ import com.kuzmin.tm_4.common.extension.dpToIntPx
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
 import com.kuzmin.tm_4.databinding.ActivityMainBinding
 import com.kuzmin.tm_4.feature.login.ui.LoginFragment
-import com.kuzmin.tm_4.feature.sites.ui.SitesFragment
+import com.kuzmin.tm_4.feature.sites.ui.fragments.SitesFragment
 import com.kuzmin.tm_4.model.AppState
 import com.kuzmin.tm_4.model.AuthState
 import com.kuzmin.tm_4.model.ScreenMode.*
@@ -132,12 +133,6 @@ class MainActivity :
             R.id.mm_load_server -> {
                 Log.d(TAG, "OnOptionsItemSelected: ${item.itemId}")
                 launchSiteFilterFragment()
-            }
-            R.id.mm_save_local -> {
-
-            }
-            R.id.mm_save_server -> {
-
             }
             R.id.mm_sync -> {
 
@@ -283,14 +278,17 @@ class MainActivity :
         //navController.navigate(R.id.sites_nav_graph, bundleOf(TOKEN to token))
         navController.navigate(
             sites_nav_graph,
-            bundleOf(getString(storage_type) to storageType)
+            bundleOf(getString(storage_type) to storageType),
         )
     }
 
     private fun launchSiteCreationFragment(siteUuid: String?) {
         navController.navigate(
             site_creation_nav_graph,
-            bundleOf(getString(site_uuid) to siteUuid)
+            bundleOf(getString(site_uuid) to siteUuid),
+            navOptions {
+                launchSingleTop = true
+            }
         )
     }
 

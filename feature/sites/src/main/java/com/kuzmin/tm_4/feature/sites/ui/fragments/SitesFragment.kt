@@ -1,10 +1,7 @@
-package com.kuzmin.tm_4.feature.sites.ui
+package com.kuzmin.tm_4.feature.sites.ui.fragments
 
 import android.content.Context
-import android.util.Log
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.kuzmin.tm_4.common.R
 
 abstract class SitesFragment : Fragment() {
 

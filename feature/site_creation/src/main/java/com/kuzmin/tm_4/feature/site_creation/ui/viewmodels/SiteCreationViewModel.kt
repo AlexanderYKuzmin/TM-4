@@ -1,22 +1,21 @@
 package com.kuzmin.tm_4.feature.site_creation.ui.viewmodels
 
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
-import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetSiteByIdFullUseCase
-import com.kuzmin.tm_4.feature.api.domain.usecases.SaveConstructionAndSectionsToDbUseCase
 import com.kuzmin.tm_4.feature.api.domain.usecases.SaveSiteToDbUseCase
+import com.kuzmin.tm_4.feature.site_creation.domain.model.SiteCreationStateData
 import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.CreationState
-import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.ValidatorState
 import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.Validator
-import com.kuzmin.tm_4.feature.site_creation.ui.fragments.SiteCreationMainFragment
+import com.kuzmin.tm_4.feature.site_creation.ui.fragments.SiteCreationMainFragment.Companion.SITE_CREATION_STATE_REQUEST
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,6 +23,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class SiteCreationViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val saveSiteToDbUseCase: SaveSiteToDbUseCase,
 
     private val getSiteByIdFullUseCase: GetSiteByIdFullUseCase,
@@ -35,11 +35,18 @@ class SiteCreationViewModel @Inject constructor(
     protected override var _creationState = MutableLiveData<CreationState>()
     val creationState: LiveData<CreationState> get() = _creationState
 
+    val stateData: LiveData<SiteCreationStateData> =
+        savedStateHandle.getLiveData<SiteCreationStateData>(SITE_CREATION_STATE_REQUEST)
+
+    fun setState(state: Parcelable) {
+        Log.d("Restore", "save state data")
+        savedStateHandle[SITE_CREATION_STATE_REQUEST] = state
+    }
+
     fun saveSiteToDb(site: Site, launchFlag: Int) {
         Log.d("Creation", "Save site to DB")
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            //saveSiteToDbUseCase(site) TODO
-            Log.d("Creation", "Save site. site uuid = ${site.siteParams.siteUuid}")
+            saveSiteToDbUseCase(site)
             _creationState.postValue(
                 CreationState.SuccessSavedToDb(site.siteParams.siteUuid, launchFlag)
             )

@@ -118,7 +118,7 @@ class ConstructionCreationFragment : Fragment() {
             with(atvConstructionTypeCreation) {
                 setAdapter(adapterHelperTypes.getTypes(appContext))
                 setDropDownBackgroundResource(com.kuzmin.tm_4.common.R.color.pop_up_background)
-                setText(resources.getStringArray(R.array.construction_types)[0],false)
+                setText(resources.getStringArray(R.array.construction_types)[0], false)
             }
 
             with(atvConstructionConfigCreation) {
@@ -162,15 +162,19 @@ class ConstructionCreationFragment : Fragment() {
                 }
 
                 is CreationState.ValidationStatus -> {
-
+                    if (it.isValid) {
+                        appContext.toast(getString(R.string.construction_success))
+                    } else {
+                        appContext.toast(getString(R.string.construction_fault))
+                    }
                 }
 
                 is CreationState.SuccessSavedToDb -> {
-                    /*if (it.constructionUuid != null) {
+                    if (it.uuid != null) {
                         appContext.toast(getString(construction_saved_local))
                     } else {
                         appContext.toast(getString(R.string.construction_fault))
-                    }*/
+                    }
                 }
 
                 else -> throw RuntimeException("Wrong population result in ConstructionCreationFragment")
@@ -234,7 +238,11 @@ class ConstructionCreationFragment : Fragment() {
                 binding.clConstructionSectionsData.clearEditTextFields()
             }
             fabOkCreation.setOnClickListener {
-                //constructionCreationViewModel.validateConstructionFieldData(binding.llConstructionAll)
+                if (constructionCreationViewModel.resultValidation()) {
+                    constructionCreationViewModel.saveConstructionToDb(
+                        collectConstructionAndSections()
+                    )
+                }
             }
             fabExitCreation.setOnClickListener {
                 close()
@@ -251,7 +259,9 @@ class ConstructionCreationFragment : Fragment() {
     }
 
     private fun collectConstructionAndSections(): ConstructionAndSections {
-        return ConstructionAndSections(collectConstruction(), collectSections())
+        val construction = collectConstruction().also { constructioUuid = it.uuid }
+        val sections = collectSections(construction.uuid)
+        return ConstructionAndSections(construction, sections)
     }
 
     private fun collectConstruction(): Construction {
@@ -266,36 +276,41 @@ class ConstructionCreationFragment : Fragment() {
                 constructionType = atvConstructionTypeCreation.text.toString(),
                 config = atvConstructionConfigCreation.text.toString(),
                 measureLevels = null,
-                siteUuid = siteUuid ?: ""
+                siteUuid = siteUuid
+                    ?: throw RuntimeException("Site uuid in Construction Fragment is null")
             )
         }
     }
 
-    private fun collectSections(): List<Section> {
+    private fun collectSections(constructionUuid: String): List<Section> {
         val sections = mutableListOf<Section>()
         for (i in 0 until sectionViews.size) {
-            val wBottom =
-                sectionViews[i].findViewById<EditText>(R.id.et_section_bottom_creation)
-                    .toIntOrZero()
-            val wTop =
-                sectionViews[i].findViewById<EditText>(R.id.et_section_top_creation)
-                    .toIntOrZero()
-            val height =
-                sectionViews[i].findViewById<EditText>(R.id.et_section_height_creation)
-                    .toIntOrZero()
+            with(sectionViews[i]) {
+                val wBottom =
+                    findViewById<EditText>(R.id.et_section_bottom_creation.transformId(id))
+                        .toIntOrZero()
+                val wTop =
+                    findViewById<EditText>(R.id.et_section_top_creation.transformId(id))
+                        .toIntOrZero()
+                val height =
+                    findViewById<EditText>(R.id.et_section_height_creation.transformId(id))
+                        .toIntOrZero()
 
-            sections.add(
-                Section(
-                    uuid = if (siteUuid.isNullOrEmpty()) Generator.generateUuid() else "",
-                    number = i,
-                    wBottom = wBottom,
-                    wTop = wTop,
-                    height = height,
-                    level = null,
-                    status = CommonConstants.STATUS_ACTUAL,
-                    constructionUuid = constructioUuid ?: ""
+                sections.add(
+                    Section(
+                        uuid =
+                        if (siteUuid.isNullOrEmpty()) throw RuntimeException("Site uuid in Construction Fragment is null")
+                        else Generator.generateUuid(),
+                        number = i,
+                        wBottom = wBottom,
+                        wTop = wTop,
+                        height = height,
+                        level = null,
+                        status = CommonConstants.STATUS_ACTUAL,
+                        constructionUuid = constructionUuid
+                    )
                 )
-            )
+            }
         }
         return sections
     }
@@ -336,7 +351,7 @@ class ConstructionCreationFragment : Fragment() {
         if (!idCheckList.containsKey(id)) return
 
         val defaultId = id
-        if (parentId.isSectionId()) id += parentId * 3
+        if (parentId.isSectionId()) id.transformId(parentId)
         constructionCreationViewModel.registerViewInValidator(
             id,
             parentId,
@@ -344,7 +359,7 @@ class ConstructionCreationFragment : Fragment() {
         )
         setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) return@setOnFocusChangeListener
-
+            setSelection(0)                                  //set cursor to start of the word
             constructionCreationViewModel.validate(id, text.toString())
         }
 
@@ -383,38 +398,40 @@ class ConstructionCreationFragment : Fragment() {
     }
 
     private fun showSectionViewError(errorInfo: ErrorInfo) {
-        val etSectionParameter = binding.clConstructionSectionsData.findViewById<EditText>(errorInfo.viewId)
+        val etSectionParameter =
+            binding.clConstructionSectionsData.findViewById<EditText>(errorInfo.viewId)
         if (errorInfo.isCorrect) {
             etSectionParameter.apply {
                 setTextColor(getColorById(color_on_surface))
             }
         } else {
             etSectionParameter.apply {
-                    if (text.isNullOrEmpty()) {
-                        setText("0")
-                    }
-                    setTextColor(getColorById(color_danger))
+                if (text.isNullOrEmpty()) {
+                    setText("0")
                 }
+                setTextColor(getColorById(color_danger))
+            }
         }
     }
 
     @SuppressLint("SuspiciousIndentation")
     private fun showCommonConstructionDataError(errorInfo: ErrorInfo) {
-        val textInputLayout = binding.clConstructionCommonData.findViewById<TextInputLayout>(errorInfo.parentId)
-            ?: throw RuntimeException("Found ID is not TextInputLayout's")
+        val textInputLayout =
+            binding.clConstructionCommonData.findViewById<TextInputLayout>(errorInfo.parentId)
+                ?: throw RuntimeException("Found ID is not TextInputLayout's")
 
-            if (errorInfo.isCorrect) {
-                textInputLayout.isErrorEnabled = false
-            } else {
-                textInputLayout.error = getString(
-                    if (textInputLayout.width > binding.clConstructionCommonData.width / 2) {
-                        errorInfo.errorHelpTextId
-                    } else {
-                        errorInfo.errorHelpTextShortId
-                    }
-                        ?: throw RuntimeException("Error help text needed.")
-                )
-            }
+        if (errorInfo.isCorrect) {
+            textInputLayout.isErrorEnabled = false
+        } else {
+            textInputLayout.error = getString(
+                if (textInputLayout.width > binding.clConstructionCommonData.width / 2) {
+                    errorInfo.errorHelpTextId
+                } else {
+                    errorInfo.errorHelpTextShortId
+                }
+                    ?: throw RuntimeException("Error help text needed.")
+            )
+        }
 
     }
 

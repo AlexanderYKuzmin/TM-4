@@ -1,10 +1,12 @@
 package com.kuzmin.tm_4.feature.site_creation.di
 
+import com.kuzmin.tm_4.feature.site_creation.domain.validators.ConstructionStructureValidator
 import com.kuzmin.tm_4.feature.site_creation.domain.validators.ConstructionValidator
 import com.kuzmin.tm_4.feature.site_creation.domain.validators.ErrorContainerConstruction
 import com.kuzmin.tm_4.feature.site_creation.domain.validators.SiteValidator
 import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.ErrorContainer
 import com.kuzmin.tm_4.feature.site_creation.domain.validators.ErrorContainerSite
+import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.StructureValidator
 import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.Validator
 import dagger.Binds
 import dagger.Module
@@ -25,12 +27,8 @@ interface ValidationModule {
     @Named("Construction")
     fun bindOnConstructionValidator(constructionValidator: ConstructionValidator): Validator
 
-    /*@Binds
-    @Named("Site")
-    fun bindOnEmptyFieldValidator(siteValidator: SiteValidator): OnEmptyFieldValidator*/
-
-    /*@Binds
-    fun bindOnGeoFieldValidator(siteValidator: SiteValidator): OnGeoFieldValidator*/
+    @Binds
+    fun bindStructureValidator(constructionStructureValidator: ConstructionStructureValidator): StructureValidator
 
     @Binds
     @Singleton

@@ -1,4 +1,4 @@
-package com.kuzmin.tm_4.feature.sites.ui
+package com.kuzmin.tm_4.feature.sites.ui.fragments
 
 import android.content.Context
 import android.graphics.Color
@@ -19,7 +19,6 @@ import com.kuzmin.tm_4.common.R.string.construction_uuid
 import com.kuzmin.tm_4.common.R.string.error_site_loading
 import com.kuzmin.tm_4.common.R.id.site_nav_graph
 import com.kuzmin.tm_4.feature.sites.R.drawable.save_to_db
-import com.kuzmin.tm_4.common.util.CommonConstants
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
 import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore

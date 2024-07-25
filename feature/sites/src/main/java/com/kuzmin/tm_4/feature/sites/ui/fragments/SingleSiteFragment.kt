@@ -1,4 +1,4 @@
-package com.kuzmin.tm_4.feature.sites.ui
+package com.kuzmin.tm_4.feature.sites.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -49,21 +49,23 @@ class SingleSiteFragment : Fragment() {
 
     private val siteViewModel: SiteViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentSiteBinding.inflate(inflater, container, false)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         arguments?.apply {
             title = getString(appContext.getString(R.string.title))
             siteUuid = getString(appContext.getString(R.string.site_uuid))
             constructionUuid = getString(appContext.getString(R.string.construction_uuid))
             storage = getInt(appContext.getString(R.string.storage_type))
-        }
 
-        Log.d("MainActivity", "arguments: siteId: $siteUuid, storage: $storage")
+            Log.d("MainActivity", "arguments: siteId: $siteUuid, storage: $storage")
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSiteBinding.inflate(inflater, container, false)
 
         return binding.root
     }

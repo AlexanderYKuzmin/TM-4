@@ -2,16 +2,16 @@ package com.kuzmin.tm_4.feature.site_creation.ui.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.kuzmin.tm_4.common.extension.formatToDateString
+import androidx.lifecycle.viewModelScope
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
 import com.kuzmin.tm_4.feature.api.domain.usecases.SaveConstructionAndSectionsToDbUseCase
-import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.CreationConstructionState
 import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.CreationState
-import com.kuzmin.tm_4.feature.site_creation.domain.validators.ConstructionFieldDataValidator
-import com.kuzmin.tm_4.feature.site_creation.domain.validators.ConstructionStructureValidator
+import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.StructureValidator
 import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.Validator
+import com.kuzmin.tm_4.feature.site_creation.ui.fragments.SiteCreationMainFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Date
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -19,13 +19,12 @@ import javax.inject.Named
 class ConstructionCreationViewModel @Inject constructor(
     private val saveConstructionAndSectionsToDbUseCase: SaveConstructionAndSectionsToDbUseCase,
     @Named("Construction")
-    override val validator: Validator
+    override val validator: Validator,
+    private val structureValidator: StructureValidator
 ) : CreationViewModel() {
 
     protected override var _creationState = MutableLiveData<CreationState>()
     val creationState: LiveData<CreationState> get() = _creationState
-
-
 
     fun populateConstructionCreation(siteUuid: String?) {
         populateDefaultConstruction()
@@ -41,35 +40,16 @@ class ConstructionCreationViewModel @Inject constructor(
         //TODO()
     }
 
-    /*fun saveConstructionToDb(constructionAndSections: ConstructionAndSections) {
-        if (validateConstructionStructure(constructionAndSections)) {
+    fun saveConstructionToDb(constructionAndSections: ConstructionAndSections) {
+        if (structureValidator.validateStructure(constructionAndSections)) {
             viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
                 saveConstructionAndSectionsToDbUseCase(constructionAndSections)
-                _creationSiteState.postValue(
-                    CreationSiteState.SuccessConstructionSaved(constructionAndSections.construction.uuid)
+                _creationState.postValue(
+                    CreationState.SuccessSavedToDb(constructionAndSections.construction.uuid, SiteCreationMainFragment.SAVE_NOT_LAUNCH)
                 )
             }
         } else {
-            _creationSiteState.value = CreationSiteState.SuccessConstructionSaved(null)
-        }
-    }*/
-
-    //TODO Change all of this about construction
-    /*fun setConstructionFieldDataValidator(
-        v: ViewGroup,
-        getString: (Int) -> String,
-        getColorById: (Int) -> Int
-    ) {
-        constructionFieldDataValidator.setTextChangedListener(v, getString, getColorById)
-    }
-
-    fun validateConstructionFieldData(v: ViewGroup) {
-        with(constructionFieldDataValidator) {
-            _creationSiteState.value = CreationSiteState.ValidationConstructionStatus(validateAll(v))
+            _creationState.value = CreationState.ValidationStatus(false)
         }
     }
-
-    private fun validateConstructionStructure(constructionAndSections: ConstructionAndSections): Boolean {
-        return constructionStructureValidator.validateAll(constructionAndSections)
-    }*/
 }

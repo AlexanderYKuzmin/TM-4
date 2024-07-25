@@ -180,7 +180,7 @@
                             android:id="@+id/et_country_creation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16dp"
+                            android:textSize="16sp"
                             android:fontFamily="@font/naga"
                             android:hint="@string/site_country_hint"
                             android:maxLines="1"

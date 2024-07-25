@@ -1,6 +1,7 @@
 package com.kuzmin.tm_4.feature.site_creation.domain.validators
 
 import android.util.Log
+import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
 import com.kuzmin.tm_4.feature.site_creation.R
 import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition
 import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition.DATE
@@ -10,6 +11,7 @@ import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition.SECTION_HEIG
 import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition.SECTION_WIDTH_OR_TOP
 import com.kuzmin.tm_4.feature.site_creation.domain.model.ErrorInfo
 import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.ErrorContainer
+import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.StructureValidator
 import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.Validator
 import javax.inject.Inject
 import javax.inject.Named

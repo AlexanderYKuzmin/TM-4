@@ -9,27 +9,11 @@
     android:orientation="vertical"
     app:layoutDescription="@xml/fragment_site_scene">
 
-    <!--<androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_site_photos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/scrollView"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp"
-        android:layout_weight="3"
-        tools:listitem="@layout/item_site_photo" />-->
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_site_photos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tl_site_parameters"
         />
 
     <!--<androidx.core.widget.NestedScrollView
@@ -43,16 +27,13 @@
         <TableLayout
             android:id="@+id/tl_site_parameters"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:shrinkColumns="1"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_weight="1"
             android:background="@drawable/site_background"
             android:minHeight="36dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp_site_photos"
-            app:layout_constraintBottom_toBottomOf="parent"
             >
             <TableRow
                 android:layout_marginStart="1dp"

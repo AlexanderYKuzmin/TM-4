@@ -2,6 +2,8 @@ package com.kuzmin.tm_4.feature.site_creation.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,9 +13,12 @@ import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.kuzmin.tm_4.common.R.id.site_construction_creation_nav_graph
+import com.kuzmin.tm_4.common.R.id.site_creation_nav_graph
+import com.kuzmin.tm_4.common.R.id.sites_nav_graph
 import com.kuzmin.tm_4.common.R.string.error
 import com.kuzmin.tm_4.common.extension.toIntOrZero
 import com.kuzmin.tm_4.common.extension.toast
@@ -32,6 +37,7 @@ import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.CreationState.S
 import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.CreationState.SuccessGetByUuid
 import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.CreationState.SuccessGetDefault
 import com.kuzmin.tm_4.feature.site_creation.domain.model.ErrorInfo
+import com.kuzmin.tm_4.feature.site_creation.domain.model.SiteCreationStateData
 import com.kuzmin.tm_4.feature.site_creation.ui.viewmodels.SiteCreationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -56,7 +62,11 @@ class SiteCreationMainFragment : Fragment() {
     lateinit var appContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        /*if (savedInstanceState == null && isFragmentInBackStack(site_creation_nav_graph)) {
+            navController.popBackStack(site_creation_nav_graph, false)
+        }*/
         super.onCreate(savedInstanceState)
+        Log.d("Restore", "On create Site Fragment. SavedInstanceState: $savedInstanceState")
         arguments?.let {
             siteUuid = it.getString(getString(com.kuzmin.tm_4.common.R.string.site_uuid))
         }
@@ -81,6 +91,10 @@ class SiteCreationMainFragment : Fragment() {
 
         setFieldValidator(binding.clAllSiteData)
 
+        siteCreationViewModel.stateData.observe(viewLifecycleOwner) {
+            binding.etSiteNameCreation.setText(it.siteName)
+        }
+
         siteCreationViewModel.creationState.observe(viewLifecycleOwner) {
             Log.d("Creation", "Site CreationState: $it")
             when (it) {
@@ -101,7 +115,6 @@ class SiteCreationMainFragment : Fragment() {
                 }
 
                 is CreationState.ValidationField -> {
-                    Log.d("Creation", "Validation field")
                     if (it.errorInfo == null) return@observe
                     showError(it.errorInfo)
                 }
@@ -109,7 +122,7 @@ class SiteCreationMainFragment : Fragment() {
                 is CreationState.ValidationStatus -> {
                     if (it.isValid) {
                         Log.d("Creation", "Permitted")
-                        //appContext.toast()
+                        appContext.toast(getString(R.string.site_success))
                     } else {
                         siteUuid = null
                         appContext.toast(getString(R.string.wrong_site_data))
@@ -145,7 +158,6 @@ class SiteCreationMainFragment : Fragment() {
     }
 
     private fun launchConstructionCreationFragment(siteUuid: String?) {
-        Log.d("Creation", "Launch construction")
         if (siteUuid.isNullOrEmpty()) appContext.toast(getString(R.string.wrong_site_data))
         else {
             navController.navigate(
@@ -231,7 +243,7 @@ class SiteCreationMainFragment : Fragment() {
     }
 
     private fun close() {
-       // navController.popBackStack()
+        navController.popBackStack(sites_nav_graph, false)
     }
 
     private fun EditText.setValidator(parentId: Int) {
@@ -243,7 +255,7 @@ class SiteCreationMainFragment : Fragment() {
         )
         setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) return@setOnFocusChangeListener
-
+            setSelection(0)
             siteCreationViewModel.validate(id, text.toString())
         }
     }
@@ -253,9 +265,54 @@ class SiteCreationMainFragment : Fragment() {
         siteCreationViewModel.setToDefaultState()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        siteCreationViewModel.setState(
+            SiteCreationStateData(siteName = binding.etSiteNameCreation.text.toString())
+        )
+    }
+
+    /*fun NavController.isFragmentInBackStack(destinationId: Int) =
+        try {
+            getBackStackEntry(destinationId)
+            true
+        } catch (e: Exception) {
+            false
+        }
+
+    fun Fragment.isFragmentInBackStack(destinationId: Int) =
+        try {
+            findNavController().getBackStackEntry(destinationId)
+            true
+        } catch (e: Exception) {
+            false
+        }*/
+    /*if (isFragmentInBackStack(R.id.myFragment)){
+        findNavController().popBackStack(R.id.myFragment,false)
+    } else {
+        val action = MyCurrentFragmentDirections.actionToMyFragment()
+        findNavController().navigateSafe(action)
+    }*/
+
+    /*override fun onSaveInstanceState(): Parcelable {
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.ssIsOpened = isOpened
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        super.onRestoreInstanceState(state)
+        if (state is SavedState) {
+            _isOpened = state.ssIsOpened
+            visibility = if (isOpened) View.VISIBLE else View.GONE
+        }
+    }*/
+
     companion object {
         const val SAVE_FOR_LAUNCH = 1
         const val SAVE_NOT_LAUNCH = 0
+
+        const val SITE_CREATION_STATE_REQUEST = "state_req"
 
         val idCheckList = mapOf(
             R.id.et_site_name_creation to FOR_EMPTY,

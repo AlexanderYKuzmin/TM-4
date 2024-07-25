@@ -7,7 +7,8 @@
         <Constraint
             android:id="@+id/vp_site_photos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            motion:layout_constraintVertical_weight="3"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintBottom_toTopOf="@id/tl_site_parameters"
             motion:layout_constraintTop_toTopOf="parent"
@@ -19,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:minHeight="56dp"
+            motion:layout_constraintVertical_weight="1"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/vp_site_photos"

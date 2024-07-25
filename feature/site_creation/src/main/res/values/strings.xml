@@ -29,7 +29,7 @@
     <string name="construction_date_hint">Дата</string>
     <string name="construction_type_hint">Тип конструкции</string>
     <string name="construction_height_hint">Высота(мм)</string>
-    <string name="construction_config_hint">Конфигурация</string>
+    <string name="construction_config_hint">Сечение</string>
     <string name="construction_quantity_sections_hint">Кол-во секций</string>
 
     <!--Sections-->
@@ -48,8 +48,8 @@
 
     <!-- Construction config array for drop down-->
     <string-array name="construction_configs">
-        <item>Четырехгранная</item>
-        <item>Трехгранная</item>
+        <item>4x гран</item>
+        <item>3х гран</item>
         <item>Круг</item>
     </string-array>
 

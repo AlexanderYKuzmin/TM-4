@@ -10,6 +10,5 @@ class SaveSiteToDbUseCase @Inject constructor(
     private val localRepository: LocalRepository
 ) {
     suspend operator fun invoke(site: Site, durability: String = CommonConstants.CONST) =
-        //localRepository.addSiteToDb(site, durability)
-        Log.d("Creation", "Site Saved")
+        localRepository.addSiteToDb(site, durability)
 }

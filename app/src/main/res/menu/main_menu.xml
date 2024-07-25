@@ -26,13 +26,13 @@
         app:showAsAction="never|collapseActionView"
          />
 
-    <item
+    <!--<item
         android:id="@+id/mm_save_local"
         android:title="@string/main_menu_save_local"/>
 
     <item
         android:id="@+id/mm_save_server"
-        android:title="@string/main_menu_save_server"/>
+        android:title="@string/main_menu_save_server"/>-->
 
     <item
         android:id="@+id/mm_pref"
