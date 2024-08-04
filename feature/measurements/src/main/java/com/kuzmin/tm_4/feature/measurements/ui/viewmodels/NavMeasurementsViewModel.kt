@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.util.CommonConstants
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
-import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetSiteByIdFullUseCase
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
 import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
@@ -32,7 +32,7 @@ class NavMeasurementsViewModel @Inject constructor(
     private val sitePrefManager: SitePrefManager
 ) : ViewModel() {
 
-    private var siteDataStore: SiteDataStore? = null
+    private var siteTinyData: SiteTinyData? = null
 
     private val _McAndCResult = MutableLiveData<McAndCResult>()
     val mcAndCResult: LiveData<McAndCResult> get() = _McAndCResult
@@ -47,17 +47,17 @@ class NavMeasurementsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            siteDataStore = sitePrefManager.readSiteData()
+            siteTinyData = sitePrefManager.readSiteData()
             delay(50)
         }
     }
 
     fun getAllMeasurementConstructions() {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            if (siteDataStore == null) delay(100)
+            if (siteTinyData == null) delay(100)
 
             val mcList = async {
-                with(siteDataStore!!) {
+                with(siteTinyData!!) {
                     //getMeasurementConstructionsBySiteIdUseCase(sUuid, cUuid)
                     getAllMcFullFromDbUseCase(sUuid, cUuid)
                 }
@@ -75,7 +75,7 @@ class NavMeasurementsViewModel @Inject constructor(
          Log.d("MC", "Measurement View model. Get full site from firestore and save site to db.")
          viewModelScope.launch(Dispatchers.IO + getAndSaveFullSiteExceptionHandler) {
              val site = async {
-                getSiteByIdUseCase.invoke(siteDataStore!!.sUuid)
+                getSiteByIdUseCase.invoke(siteTinyData!!.sUuid)
              }.await()
 
              Log.d("MC", "Get site. Site: $site")

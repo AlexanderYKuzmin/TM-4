@@ -35,7 +35,7 @@ class LoginFragment : Fragment(), OnClickListener {
     @Inject
     lateinit var navController: NavController*/
 
-    private var loginListener: LoginListener? = null
+    private var onLoginActionListener: OnLoginActionListener? = null
 
     lateinit var usernameOnPreDrawListener: OnPreDrawListener
     lateinit var passwordOnPreDrawListener: OnPreDrawListener
@@ -154,8 +154,8 @@ class LoginFragment : Fragment(), OnClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is LoginListener) {
-            loginListener = context
+        if (context is OnLoginActionListener) {
+            onLoginActionListener = context
         } else {
             throw RuntimeException("Activity must implement OnDeviceItemClickListener")
         }
@@ -234,7 +234,7 @@ class LoginFragment : Fragment(), OnClickListener {
     }
 
     private fun close(isOk: Boolean) {
-        loginListener?.onAuthorizationCompleted(isOk)
+        onLoginActionListener?.onAuthorizationCompleted(isOk)
         navController.popBackStack()
     }
 
@@ -248,7 +248,7 @@ class LoginFragment : Fragment(), OnClickListener {
         const val PASSWORD = "password"
     }
 
-    interface LoginListener {
+    interface OnLoginActionListener {
         fun onAuthorizationCompleted(isOk: Boolean)
     }
 }

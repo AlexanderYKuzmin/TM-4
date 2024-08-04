@@ -22,15 +22,20 @@ import com.kuzmin.tm_4.common.R.color.color_on_surface
 import com.kuzmin.tm_4.common.R.string.construction_saved_local
 import com.kuzmin.tm_4.common.R.string.error
 import com.kuzmin.tm_4.common.extension.formatToDateString
+import com.kuzmin.tm_4.common.extension.toDate
 import com.kuzmin.tm_4.common.extension.toIntOrZero
 import com.kuzmin.tm_4.common.extension.toast
 import com.kuzmin.tm_4.common.util.CommonConstants
+import com.kuzmin.tm_4.common.util.CommonConstants.MAST
+import com.kuzmin.tm_4.common.util.CommonConstants.POLE
+import com.kuzmin.tm_4.common.util.CommonConstants.TOWER
 import com.kuzmin.tm_4.common.util.Generator
 import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
 import com.kuzmin.tm_4.feature.api.domain.model.site.Section
 import com.kuzmin.tm_4.feature.api.extension.clearEditTextFields
 import com.kuzmin.tm_4.feature.site_creation.R
+import com.kuzmin.tm_4.feature.site_creation.R.array.construction_configs
 import com.kuzmin.tm_4.feature.site_creation.databinding.FragmentConstructionCreationBinding
 import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition
 import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition.DATE
@@ -124,7 +129,7 @@ class ConstructionCreationFragment : Fragment() {
             with(atvConstructionConfigCreation) {
                 setAdapter(adapterHelperConfigures.getConfigures(appContext))
                 setDropDownBackgroundResource(com.kuzmin.tm_4.common.R.color.pop_up_background)
-                setText(resources.getStringArray(R.array.construction_configs)[0], false)
+                setText(resources.getStringArray(construction_configs)[0], false)
             }
 
             /*siteCreationViewModel.setConstructionFieldDataValidator(
@@ -273,11 +278,13 @@ class ConstructionCreationFragment : Fragment() {
                 status = CommonConstants.STATUS_ACTUAL,
                 numOfSections = etConstructionQSectionsCreation.toIntOrZero(),
                 height = etConstructionHeightCreation.toIntOrZero(),
-                constructionType = atvConstructionTypeCreation.text.toString(),
-                config = atvConstructionConfigCreation.text.toString(),
+                constructionType = atvConstructionTypeCreation.text.toString().toConsistentType(),
+                config = atvConstructionConfigCreation.text.toString().toConsistentConfig(),
                 measureLevels = null,
                 siteUuid = siteUuid
-                    ?: throw RuntimeException("Site uuid in Construction Fragment is null")
+                    ?: throw RuntimeException("Site uuid in Construction Fragment is null"),
+                cDate = etConstructionDateCreation.text.toString().toDate()
+                    ?: throw RuntimeException("Wrong Construction creation date format"),
             )
         }
     }
@@ -351,7 +358,7 @@ class ConstructionCreationFragment : Fragment() {
         if (!idCheckList.containsKey(id)) return
 
         val defaultId = id
-        if (parentId.isSectionId()) id.transformId(parentId)
+        if (parentId.isSectionId()) id = id.transformId(parentId)
         constructionCreationViewModel.registerViewInValidator(
             id,
             parentId,
@@ -437,6 +444,38 @@ class ConstructionCreationFragment : Fragment() {
 
     private fun getColorById(colorId: Int): Int {
         return ContextCompat.getColor(appContext, colorId)
+    }
+
+    private fun String.toConsistentConfig(): String {
+        val configStringArray = resources.getStringArray(construction_configs)
+        return when(this) {
+            configStringArray[0] -> {
+               "4"
+            }
+            configStringArray[1] -> {
+                "3"
+            }
+            configStringArray[2] -> {
+                "0"
+            }
+            else -> throw RuntimeException("Wrong config name.")
+        }
+    }
+
+    private fun String.toConsistentType(): String {
+        val typeStringArray = resources.getStringArray(R.array.construction_types)
+        return when(this) {
+            typeStringArray[0] -> {
+                MAST
+            }
+            typeStringArray[1] -> {
+                TOWER
+            }
+            typeStringArray[2] -> {
+                POLE
+            }
+            else -> throw RuntimeException("Wrong type name.")
+        }
     }
 
     private fun close() {

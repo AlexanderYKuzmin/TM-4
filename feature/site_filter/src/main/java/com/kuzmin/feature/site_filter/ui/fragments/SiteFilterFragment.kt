@@ -1,6 +1,5 @@
 package com.kuzmin.feature.site_filter.ui.fragments
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.kuzmin.feature.site_filter.databinding.FragmentSiteFilterBinding
 import com.kuzmin.feature.site_filter.domain.model.SearchFilterDataResult
 import com.kuzmin.feature.site_filter.ui.viewmodels.SearchFilterViewModel
+import com.kuzmin.tm_4.common.R.string.storage_type
 import com.kuzmin.tm_4.common.extension.formatToDateString
 import com.kuzmin.tm_4.common.extension.toDate
 import com.kuzmin.tm_4.common.util.CommonConstants.START_DATE_MILLIS_DEFAULT
@@ -26,7 +26,9 @@ import java.util.Date
 @AndroidEntryPoint
 class SiteFilterFragment : Fragment(), OnClickListener {
 
-    private var onFilterSearchSubmitListener: OnFilterSearchSubmitListener? = null
+    private var storage: Int = -1
+
+    private var onFilterSubmitListener: OnFilterSubmitListener? = null
 
     private lateinit var _binding: FragmentSiteFilterBinding
     private val binding: FragmentSiteFilterBinding get() = _binding
@@ -34,6 +36,11 @@ class SiteFilterFragment : Fragment(), OnClickListener {
     private val searchFilterViewModel: SearchFilterViewModel by viewModels()
 
     private val navController by lazy { findNavController() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        storage = arguments?.getInt(getString(storage_type)) ?: throw RuntimeException("Storage type can not be null")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,13 +109,13 @@ class SiteFilterFragment : Fragment(), OnClickListener {
     }
 
     private fun close(isFilterSet: Boolean) {
-        onFilterSearchSubmitListener?.onFilterSearchSubmit(isFilterSet)
+        onFilterSubmitListener?.onFilterSearchSubmit(isFilterSet, storage)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFilterSearchSubmitListener) {
-            onFilterSearchSubmitListener = context
+        if (context is OnFilterSubmitListener) {
+            onFilterSubmitListener = context
         } else {
             throw RuntimeException("Activity must implement OnFilterSearchSubmitListener")
         }
@@ -119,7 +126,7 @@ class SiteFilterFragment : Fragment(), OnClickListener {
         fun newInstance() = SiteFilterFragment()
     }
 
-    interface OnFilterSearchSubmitListener {
-        fun onFilterSearchSubmit(isFilterSet: Boolean)
+    interface OnFilterSubmitListener {
+        fun onFilterSearchSubmit(isFilterSet: Boolean, storage: Int)
     }
 }

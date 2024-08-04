@@ -32,6 +32,9 @@ class SiteCreationViewModel @Inject constructor(
     override val validator: Validator
 ) : CreationViewModel() {
 
+    private var _site: Site? = null
+    val site: Site? get() = _site
+
     protected override var _creationState = MutableLiveData<CreationState>()
     val creationState: LiveData<CreationState> get() = _creationState
 

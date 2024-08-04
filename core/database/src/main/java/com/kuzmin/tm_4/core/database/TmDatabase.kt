@@ -32,7 +32,7 @@ import com.kuzmin.tm_4.core.database.model.site.TenantDb
         ResultDb::class,
         LevelDb::class
     ],
-    version = 5
+    version = 6
 )
 abstract class TmDatabase : RoomDatabase() {
     companion object {

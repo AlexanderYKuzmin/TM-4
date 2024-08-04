@@ -104,6 +104,7 @@ class SiteCreationMainFragment : Fragment() {
 
                 is SuccessGetByUuid -> {
                     Log.d("Creation", "Success get by id")
+                    //TODO fill fields
                 }
 
                 is SuccessSavedToDb -> {
@@ -186,6 +187,7 @@ class SiteCreationMainFragment : Fragment() {
     }
 
     private fun collectSite(): Site {
+        val site = siteCreationViewModel.site
         with(binding) {
             return Site(
                 SiteParams(
@@ -198,12 +200,12 @@ class SiteCreationMainFragment : Fragment() {
                     siteTypeDescription = etSiteTypeDescriptionCreation.text.toString(),
                 ),
                 Tenant(
-                    uuid = "", //It'll be generated in data module
+                    uuid = site?.tenant?.uuid ?: Generator.generateUuid(),
                     name = etSiteTenantNameCreation.text.toString(),
                     null
                 ),
                 Address(
-                    uuid = "", //It'll be generated in data module
+                    uuid = site?.address?.uuid ?: Generator.generateUuid(),
                     country = etCountryCreation.text.toString(),
                     region = etRegionCreation.text.toString(),
                     regionCode = etCodeCreation.toIntOrZero(),

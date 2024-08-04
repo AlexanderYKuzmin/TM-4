@@ -1,5 +1,7 @@
 package com.kuzmin.tm_4.feature.api.domain.model.site
 
+import java.util.Date
+
 data class Construction(
 
     val uuid: String,
@@ -20,5 +22,7 @@ data class Construction(
 
     val measureLevels: Int?,
 
-    val siteUuid: String
+    val siteUuid: String,
+
+    val cDate: Date
 )

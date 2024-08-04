@@ -44,4 +44,7 @@ data class PhotoDb(
 
     @ColumnInfo("ph_thumb_dimen")
     val thumbnailDim: String?,
+
+    @ColumnInfo("ph_local_path")
+    val localPath: String?
 )

@@ -4,11 +4,10 @@
     <string name="no_measurements">Не проведены измерения текущей конструкции</string>
     <string name="no_table_data">Не получены табличные данные.</string>
 
-    <string name="error_site_loading">Ошибка загрузки с сервера</string>
+    <string name="error_site_loading">Ошибка загрузки списка</string>
     <string name="error">Ошибка: </string>
 
     <string name="inappropriate_field">Inappropriate input field</string>
-
 
     <string name="site_saved_local">Сайт сохранен на устройство</string>
     <string name="construction_saved_local">Конструкция сохранена на устройство</string>

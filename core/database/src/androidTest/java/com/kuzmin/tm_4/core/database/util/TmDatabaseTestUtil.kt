@@ -18,24 +18,59 @@ import com.kuzmin.tm_4.core.database.model.site.TenantDb
 
 object TmDatabaseTestUtil {
 
-    const val TEST_SITE_UUID = "4758c533-70d3-4429-8c6e-661617958b44"
+    const val SINGLE_SITE_UUID_TEST = "4758c533-70d3-4429-8c6e-000000000001"
 
-    const val TEST_SINGLE_CONSTRUCTION_UUID = "adff1f64-09bc-4d11-be88-000000000001"
+    const val SINGLE_CONSTRUCTION_UUID_TEST = "adff1f64-09bc-4d11-be88-000000000001"
+
+    const val SITE_BASE_UUID_TEST = "4758c533-70d3-4429-8c6e-"
+
+    const val TENANT_BASE_UUID_TEST = "3462ab26-8b23-4021-afd1-"
+
+    const val CONSTRUCTION_BASE_UUID_TEST = "adff1f64-09bc-4d11-be88-"
+
+    const val SECTION_BASE_UUID_TEST = "09e1e378-d030-4fb9-931c-"
+
+    //UUID formats:
+    // SITE: siteA
+    // CONSTRUCTION: siteA-constructionB
+    // SECTION: siteA-constructionB-sectionC
+    // TENANT: siteA-tenantB
+    // ADDRESS: siteA-addressB
+
+    /*val siteUuidList = listOf<String>(
+        "site" + "0",
+        "site" + "1",
+    )
+
+    val constructionUuidList = listOf<String>(
+        CONSTRUCTION_BASE_UUID_TEST + "0" + "0",
+        CONSTRUCTION_BASE_UUID_TEST + "0" + "1",
+        CONSTRUCTION_BASE_UUID_TEST + "1" + "0",
+        CONSTRUCTION_BASE_UUID_TEST + "1" + "1"
+    )*/
+
+
+    fun createTestSiteDbList(): List<SiteDb> {
+        return listOf(
+            createTestSite(0),
+            createTestSite(1)
+        )
+    }
 
     fun createConstructionAndSections(): ConstructionAndSectionsDb {
-        val construction = createConstructionDb("actual", "000000000001")
-        val sections = createSections(listOf(construction))
+        val construction = createConstructionDb("actual", 0, 0)
+        val sections = createSections(0, listOf(construction))
         return ConstructionAndSectionsDb(
             construction,
             sections
         )
     }
 
-    fun createTestBareSite(): SiteDb {
+    fun createTestBareSite(siteIndex: Int): SiteDb {
         return SiteDb(
-            siteParamsDb = createSiteParamsDb(),
-            tenantDb = createTenantDb(),
-            addressDb = createAddressDb(),
+            siteParamsDb = createSiteParamsDb(siteIndex),
+            tenantDb = createTenantDb(siteIndex),
+            addressDb = createAddressDb(siteIndex),
             siteEquipments = createSiteEquipmentsDb(),
             photos = createPhotos(),
             listOf(),
@@ -48,15 +83,15 @@ object TmDatabaseTestUtil {
         )
     }
 
-    fun createTestSite(): SiteDb {
+    fun createTestSite(siteIndex: Int): SiteDb {
         return SiteDb(
-            siteParamsDb = createSiteParamsDb(),
-            tenantDb = createTenantDb(),
-            addressDb = createAddressDb(),
+            siteParamsDb = createSiteParamsDb(siteIndex),
+            tenantDb = createTenantDb(siteIndex),
+            addressDb = createAddressDb(siteIndex),
             siteEquipments = createSiteEquipmentsDb(),
             photos = createPhotos(),
-            constructions = createConstructions(),
-            sections = createSections(createConstructions()),
+            constructions = createConstructions(siteIndex),
+            sections = createSections(siteIndex, createConstructions(siteIndex)),
             groups = createGroups(),
             measurementsConstructions = createMeasurementsConstructions(),
             measurements = createMeasurements(),
@@ -65,11 +100,11 @@ object TmDatabaseTestUtil {
         )
     }
 
-    private fun createSiteParamsDb(): SiteParamsDb {
+    private fun createSiteParamsDb(index: Int): SiteParamsDb {
         return SiteParamsDb(
-            uuid = "4758c533-70d3-4429-8c6e-661617958b44",
-            siteUuid = "4758c533-70d3-4429-8c6e-661617958b44",
-            name = "BS-TEST-DB",
+            uuid = "site$index",
+            siteUuid = "site$index",
+            name = "BS-TEST-DB-$index",
             description = "BS-TEST-DB",
             latitude = 10.5555,
             longitude = 100.5555,
@@ -79,19 +114,19 @@ object TmDatabaseTestUtil {
         )
     }
 
-    private fun createTenantDb(): TenantDb {
+    private fun createTenantDb(index: Int): TenantDb {
         return TenantDb(
-            uuid = "3462ab26-8b23-4021-afd1-7f76cc02e796",
+            uuid = "site$index-tenant0",
             name = "TEST-Tenant",
             logo = null,
-            siteUuid = "4758c533-70d3-4429-8c6e-661617958b44"
+            siteUuid = "site$index"
         )
     }
 
-    private fun createAddressDb(): AddressDb {
+    private fun createAddressDb(index: Int): AddressDb {
         return AddressDb(
-            uuid = "e3bf9611-dbd4-45f4-b31c-59a72b8e2905",
-            siteUuid = "4758c533-70d3-4429-8c6e-661617958b44",
+            uuid = "site${index}-address0",
+            siteUuid = "site$index",
             country = "РФ-тест",
             region = "Коми тест",
             regionCode = null,
@@ -111,39 +146,40 @@ object TmDatabaseTestUtil {
         return listOf()
     }
 
-    private fun createConstructions(): List<ConstructionDb> {
+    private fun createConstructions(siteIndex: Int): List<ConstructionDb> {
         return listOf(
-            createConstructionDb("depricated", "000000000000"),
-            createConstructionDb("actual", "000000000001")
+            createConstructionDb("depricated", siteIndex, 0 ),
+            createConstructionDb("actual", siteIndex, 1)
         )
     }
 
-    private fun createConstructionDb(status: String, suffix: String): ConstructionDb {
+    private fun createConstructionDb(status: String, siteIndex: Int, constructionIndex: Int): ConstructionDb {
         return ConstructionDb(
-            uuid = "adff1f64-09bc-4d11-be88-$suffix",
+            uuid = "site$siteIndex-construction$constructionIndex",
             version = 1,
-            description = "Тест-конструкция",
+            description = "Тест-конструкция-$constructionIndex",
             status = status,
             numOfSections = 5,
             height = 50,
             constructionType = "tower",
             config = "4",
             measureLevels = null,
-            siteUuid = "4758c533-70d3-4429-8c6e-661617958b44"
+            siteUuid = "site$siteIndex",
+            cDate = "11.11.2011"
         )
     }
 
-    private fun createSections(constructions: List<ConstructionDb>): List<SectionDb> {
+    private fun createSections(siteIndex: Int, constructions: List<ConstructionDb>): List<SectionDb> {
         val sections = mutableListOf<SectionDb>()
         constructions.forEach {
-            val cSuf = it.uuid.last()
             for (i in 0 until it.numOfSections) {
                 sections.add(
                     createSectionDb(
+                        sUuid= "site$siteIndex",
                         cUuid = it.uuid,
                         number = i + 1,
                         status = it.status ,
-                        suffix = "0000000000$cSuf$i"
+                        suffix = "section$i"
                     )
                 )
             }
@@ -151,10 +187,10 @@ object TmDatabaseTestUtil {
         return sections
     }
 
-    private fun createSectionDb(cUuid: String, number: Int, status: String, suffix: String): SectionDb {
+    private fun createSectionDb(sUuid: String, cUuid: String, number: Int, status: String, suffix: String): SectionDb {
         return SectionDb(
-            uuid = "09e1e378-d030-4fb9-931c-$suffix",
-            siteUuid = "4758c533-70d3-4429-8c6e-661617958b44",
+            uuid = "$cUuid-$suffix",
+            siteUuid = sUuid,
             constructionUuid = cUuid,
             number = number,
             wBottom = 700,

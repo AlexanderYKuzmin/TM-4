@@ -94,7 +94,8 @@ class SitesDtoToModelMapper {
                 constructionType = constructionType,
                 config = config,
                 measureLevels = measureLevels,
-                siteUuid = siteUuid
+                siteUuid = siteUuid,
+                cDate = cDate.toDate() ?: throw RuntimeException("Wrong Construction creation date format."),
             )
         }
     }

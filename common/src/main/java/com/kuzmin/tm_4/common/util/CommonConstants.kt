@@ -34,8 +34,7 @@ object CommonConstants {
     const val STORAGE_POS_FLAG = "storage_position"*/
 
     const val STORAGE_LOCAL = 5000
-    const val STORAGE_SERVER = 5001
-
+    const val STORAGE_REMOTE = 5001
 
     //datastore constants
     const val S = "site"
@@ -53,6 +52,9 @@ object CommonConstants {
     const val GROUP_ONE = 1
     const val GROUP_TWO = 2
     const val GROUP_ALL = 0
+
+    const val SAMPLE_PHOTO_NAME_SUFFIX_SERVER = "_s.jpg"
+    const val PHOTO_NAME_SUFFIX_SERVER = ".jpg"
 
     //filter
     const val START_DATE_MILLIS_DEFAULT = 1117728581000

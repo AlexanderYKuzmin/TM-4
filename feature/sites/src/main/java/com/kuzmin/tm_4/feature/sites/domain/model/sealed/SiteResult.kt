@@ -4,7 +4,7 @@ import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 
 sealed class SiteResult {
-    class Success(val sites: List<SiteSample>): SiteResult()
+    class Success(val siteList: List<SiteSample>): SiteResult()
 
     class SuccessSingle(val site: Site): SiteResult()
     class Error(val throwable: Throwable): SiteResult()

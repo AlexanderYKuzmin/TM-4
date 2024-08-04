@@ -41,4 +41,9 @@
 
     <!--title color-->
     <color name="color_title">#5C3904</color>
+
+
+    <!--Background buttons colors-->
+    <color name="save_btn_color">#81C784</color>
+    <color name="delete_btn_color">#E57373</color>
 </resources>

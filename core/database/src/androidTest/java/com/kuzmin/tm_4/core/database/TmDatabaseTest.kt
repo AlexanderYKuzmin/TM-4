@@ -5,10 +5,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kuzmin.tm_4.core.database.util.TmDatabaseTestUtil
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -31,23 +29,23 @@ class TmDatabaseTest {
 
     @Test
     fun addSiteTest() = runTest {
-        val expected = TmDatabaseTestUtil.createTestSite()
+        val expected = TmDatabaseTestUtil.createTestSite(0)
         tmDao.addSite(expected)
 
-        val actual = tmDao.getSiteByUuid(TmDatabaseTestUtil.TEST_SITE_UUID)
+        val actual = tmDao.getSiteByUuid("site0")
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun addSiteNoConstruction() = runTest {
-        val expected = TmDatabaseTestUtil.createTestBareSite()
+        val expected = TmDatabaseTestUtil.createTestBareSite(0)
 
         tmDao.addSite(expected)
 
-        val actual = tmDao.getAllSiteSimple().first()
+        val actual = tmDao.getAllSiteSimple()
 
-        assertEquals(expected, actual)
+        assertEquals(expected, actual.first())
     }
 
     @Test
@@ -57,10 +55,15 @@ class TmDatabaseTest {
         tmDao.addConstructionAndSections(expected)
 
         val actual = tmDao.getConstructionAndSections(
-            TmDatabaseTestUtil.TEST_SINGLE_CONSTRUCTION_UUID
+            "site0-construction0"
         )
 
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun getAllSiteSample() = runTest {
+        TODO()
     }
 
     @After
@@ -68,6 +71,4 @@ class TmDatabaseTest {
     fun closeDb() {
         db.close()
     }
-
-
 }

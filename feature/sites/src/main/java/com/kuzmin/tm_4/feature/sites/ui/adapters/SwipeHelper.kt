@@ -1,6 +1,5 @@
 package com.kuzmin.tm_4.feature.sites.ui.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -19,40 +18,33 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.tm_4.feature.sites.R
-import com.kuzmin.tm_4.feature.sites.ui.helpers.ImageSaveButtonClickListener
+import com.kuzmin.tm_4.feature.sites.ui.custom.ImageBgdClickListener
 import java.util.LinkedList
 import java.util.Queue
 
-@SuppressLint("ClickableViewAccessibility")
-abstract class SwipeToSaveHelper(
+//@SuppressLint("ClickableViewAccessibility")
+abstract class SwipeHelper(
     val context: Context,
     private val recyclerView: RecyclerView,
-    val buttonWidth: Int
     ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    private val gestureDetector: GestureDetector by lazy { GestureDetector(context, gestureListener) }
-
-    //val buttonWidth: Int = -1
-    private lateinit var imageSaveButton: ImageSaveButton
+    private val buttonWidth: Int = 250
 
     private var swipePos: Int = -1
 
     private var _swipeThreshold: Float = 0.5f
     val swipeThreshold: Float get() = _swipeThreshold
 
-    private val buttonBuffer: MutableMap<Int, MutableList<ImageSaveButton>> = mutableMapOf()
-    private var buttonList = mutableListOf<ImageSaveButton>()
+    private val buttonBuffer: MutableMap<Int, MutableList<ImageBgdButton>> = mutableMapOf()
+    private var buttonList = mutableListOf<ImageBgdButton>()
+
     private val removerQueue: Queue<Int> = object : LinkedList<Int>() {
         override fun add(element: Int): Boolean {
             return if (contains(element)) false else super.add(element)
         }
-
     }
 
-    private val saveToDbIcon = getDrawable(context, R.drawable.save_to_db)
-    private val intrinsicWidth = saveToDbIcon!!.intrinsicWidth
-    private val intrinsicHeight = saveToDbIcon!!.intrinsicHeight
-
+    private val gestureDetector: GestureDetector by lazy { GestureDetector(context, gestureListener) }
     private val gestureListener = object : GestureDetector.SimpleOnGestureListener() {
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             for (button in buttonList) {
@@ -86,9 +78,13 @@ abstract class SwipeToSaveHelper(
                 }
             }
         }
-
         return@OnTouchListener false
     }
+
+    abstract fun instantiateImageSaveButton(
+        viewHolder: RecyclerView.ViewHolder,
+        buffer: MutableList<ImageBgdButton>
+    )
 
     init {
         recyclerView.setOnTouchListener(onTouchListener)
@@ -108,73 +104,6 @@ abstract class SwipeToSaveHelper(
 
     private fun attachSwipe() {
         ItemTouchHelper(this).attachToRecyclerView(recyclerView)
-    }
-
-    inner class ImageSaveButton(
-        private val text: String,
-        private val imageResId: Int,
-        private val textSize: Float,
-        val color: Int,
-        private val listener: ImageSaveButtonClickListener,
-        val context: Context
-    ) {
-
-        private var clickRegion: RectF? = null
-        private var pos: Int = -1
-
-        private val resources = context.resources
-
-        private val paint = Paint().apply {
-            color = this@ImageSaveButton.color
-        }
-
-        private val txtPaint = Paint().apply {
-            color = Color.WHITE
-            textSize = this@ImageSaveButton.textSize
-            textAlign = Paint.Align.LEFT
-        }
-
-        private val txtRect = Rect()
-
-        fun onClick(x: Float, y: Float): Boolean {
-            if (clickRegion != null && clickRegion!!.contains(x,y)) {
-                listener.onClick(pos)
-                return true
-            }
-            return false
-        }
-
-        fun onDraw(c: Canvas, rectF: RectF, pos: Int) {
-            c.drawRect(rectF, paint)
-
-            val cHeight = rectF.height()
-            val cWidth = rectF.width()
-
-            txtPaint.getTextBounds(text, 0, text.length, txtRect)
-            var x = 0f
-            var y = 0f
-
-            if (imageResId == 0) {
-                x = cWidth / 2 - txtRect.width() / 2f - txtRect.left
-                y = cHeight / 2 - txtRect.height() / 2f - txtRect.bottom
-                c.drawText(text, rectF.left + x, rectF.top + y, txtPaint)
-            } else {
-                val bitmap = drawableToBitmap(saveToDbIcon!!)
-                c.drawBitmap(bitmap, (rectF.left + rectF.right) / 2 - bitmap.width / 2, (rectF.top + rectF.bottom) / 2 - bitmap.height / 2, txtPaint)
-            }
-            clickRegion = rectF
-            this.pos = pos
-        }
-    }
-
-    private fun drawableToBitmap(drawable: Drawable): Bitmap {
-        if (drawable is BitmapDrawable) return drawable.bitmap
-
-        val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
     }
 
     override fun onMove(
@@ -225,7 +154,7 @@ abstract class SwipeToSaveHelper(
         }
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (dX < 0) {
-                var buffer = mutableListOf<ImageSaveButton>()
+                var buffer = mutableListOf<ImageBgdButton>()
                 if (!buttonBuffer.containsKey(pos)) {
                     instantiateImageSaveButton(viewHolder, buffer)
                     buttonBuffer[pos] = buffer
@@ -242,7 +171,7 @@ abstract class SwipeToSaveHelper(
     private fun drawButton(
         c: Canvas,
         itemView: View,
-        buffer: MutableList<ImageSaveButton>,
+        buffer: MutableList<ImageBgdButton>,
         pos: Int,
         translationX: Float
     ) {
@@ -259,12 +188,73 @@ abstract class SwipeToSaveHelper(
         }
     }
 
-    abstract fun instantiateImageSaveButton(
-        viewHolder: RecyclerView.ViewHolder,
-        buffer: MutableList<ImageSaveButton>
-    )
+    inner class ImageBgdButton(
+        private val text: String,
+        private val imageResId: Int,
+        private val textSize: Float,
+        val color: Int,
+        private val listener: ImageBgdClickListener,
+        val context: Context
+    ) {
 
+        private var clickRegion: RectF? = null
+        private var pos: Int = -1
 
+        private val paint = Paint().apply {
+            color = this@ImageBgdButton.color
+        }
 
+        private val txtPaint = Paint().apply {
+            color = Color.WHITE
+            textSize = this@ImageBgdButton.textSize
+            textAlign = Paint.Align.LEFT
+        }
 
+        private val txtRect = Rect()
+
+        fun onClick(x: Float, y: Float): Boolean {
+            if (clickRegion != null && clickRegion!!.contains(x,y)) {
+                listener.onClick(pos)
+                return true
+            }
+            return false
+        }
+
+        fun onDraw(c: Canvas, rectF: RectF, pos: Int) {
+            c.drawRect(rectF, paint)
+
+            val cHeight = rectF.height()
+            val cWidth = rectF.width()
+
+            txtPaint.getTextBounds(text, 0, text.length, txtRect)
+            var x = 0f
+            var y = 0f
+
+            if (imageResId == 0) {
+                x = cWidth / 2 - txtRect.width() / 2f - txtRect.left
+                y = cHeight / 2 - txtRect.height() / 2f - txtRect.bottom
+                c.drawText(text, rectF.left + x, rectF.top + y, txtPaint)
+            } else {
+                val drawable = getDrawable(context, imageResId) ?: throw RuntimeException("No drawable in resources.")
+                val bitmap = drawableToBitmap(drawable)
+                c.drawBitmap(bitmap, (rectF.left + rectF.right) / 2 - bitmap.width / 2, (rectF.top + rectF.bottom) / 2 - bitmap.height / 2, txtPaint)
+            }
+            clickRegion = rectF
+            this.pos = pos
+        }
+
+        private fun drawableToBitmap(drawable: Drawable): Bitmap {
+            if (drawable is BitmapDrawable) return drawable.bitmap
+
+            val bitmap = Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            return bitmap
+        }
+    }
 }

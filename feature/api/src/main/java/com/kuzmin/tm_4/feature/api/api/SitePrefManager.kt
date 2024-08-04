@@ -1,11 +1,11 @@
 package com.kuzmin.tm_4.feature.api.api
 
-import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
 
 interface SitePrefManager {
-    suspend fun readSiteData(): SiteDataStore
+    suspend fun readSiteData(): SiteTinyData
 
-    suspend fun writeSiteData(siteDataStore: SiteDataStore)
+    suspend fun writeSiteData(siteTinyData: SiteTinyData)
 
     suspend fun writeMcUuid(mcUuid: String)
 }

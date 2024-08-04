@@ -6,6 +6,7 @@ import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.ConstructionFullDbToConst
 import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.McAndConToModelMapper
 import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.MeasurementConstructionFullDbToMeasurementConstructionFullMapper
 import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.SiteDbToSiteModelMapper
+import com.kuzmin.tm_4.data.local.mapper.fromDbToModel.SiteDbToSiteSampleMapper
 import com.kuzmin.tm_4.data.local.mapper.fromModelToDb.ConstructionAndSectionsToConstructionAndSectionsDbMapper
 import com.kuzmin.tm_4.data.local.mapper.fromModelToDb.SiteModelToSiteDbMapper
 import com.kuzmin.tm_4.feature.api.api.LocalRepository
@@ -14,8 +15,10 @@ import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionFull
 import com.kuzmin.tm_4.feature.api.domain.model.model_complex.GroupFull
 import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McFull
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
 import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import javax.inject.Inject
 
@@ -26,7 +29,8 @@ class LocalRepositoryImpl @Inject constructor(
     private val constructionFullDbToModelMapper: ConstructionFullDbToConstructionFullMapper,
     private val mcDbToModelMapper: MeasurementConstructionFullDbToMeasurementConstructionFullMapper,
     private val mcAndConDbToModelMapper: McAndConToModelMapper,
-    private val conAndSecsToConAndSecsDbMapper: ConstructionAndSectionsToConstructionAndSectionsDbMapper
+    private val conAndSecsToConAndSecsDbMapper: ConstructionAndSectionsToConstructionAndSectionsDbMapper,
+    private val siteDbToSiteSampleMapper: SiteDbToSiteSampleMapper
 ) : LocalRepository {
     override suspend fun addSiteToDb(site: Site, durability: String) {
         Log.d("Db", "Add site to db. $site, mc: ${site.measurementsConstructions}")
@@ -43,6 +47,18 @@ class LocalRepositoryImpl @Inject constructor(
         val constructionAndSectionsDb =
             conAndSecsToConAndSecsDbMapper.mapConstructionAndSectionsToConstructionAndSectionsDb(constructionAndSections)
         tmDao.addConstructionAndSections(constructionAndSectionsDb)
+    }
+
+    override suspend fun getAllSiteSamples(): List<SiteSample> {
+        Log.d("Get all", "get all samples.")
+        val siteDbList = tmDao.getAllSiteSimple()
+
+        Log.d("Get all", "SiteDbList size = ${siteDbList.size}")
+        return siteDbToSiteSampleMapper.mapSiteDbListToSiteSampleList(siteDbList)
+    }
+
+    override suspend fun getAllPhotoSamples(): List<Photo> {
+        return emptyList() //TODO
     }
 
     override suspend fun getSite(siteUuid: String): Site? {

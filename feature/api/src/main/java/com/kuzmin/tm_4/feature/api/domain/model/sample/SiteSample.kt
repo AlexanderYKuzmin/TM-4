@@ -3,8 +3,6 @@ package com.kuzmin.tm_4.feature.api.domain.model.sample
 import com.kuzmin.tm_4.feature.api.domain.model.Tenant
 
 data class SiteSample(
-    val remoteId: Long,
-
     val uuid: String,
 
     val name: String,

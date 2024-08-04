@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
 import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
@@ -39,7 +39,7 @@ class SiteViewModel @Inject constructor(
             val siteDeferred: Deferred<Site>
             val photosDeferred: Deferred<List<Photo>>
 
-            if (storage == STORAGE_SERVER) {
+            if (storage == STORAGE_REMOTE) {
                 siteDeferred = async { getSiteByIdNoSectionsUseCase(sUuid, cUuid) }
                 photosDeferred = async { getSitePhotosUseCase(sUuid) }
             } else {

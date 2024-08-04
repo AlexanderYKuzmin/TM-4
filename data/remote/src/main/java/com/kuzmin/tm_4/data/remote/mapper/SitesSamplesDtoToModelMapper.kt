@@ -16,7 +16,6 @@ class SitesSamplesDtoToModelMapper {
     private fun mapSiteSampleDtoToSiteSample(siteSampleDto: SiteSampleDto): SiteSample {
         with(siteSampleDto) {
             return SiteSample(
-                remoteId = id,
                 uuid = uuid,
                 name = name,
                 type = type,

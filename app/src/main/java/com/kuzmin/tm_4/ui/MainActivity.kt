@@ -28,10 +28,11 @@ import com.kuzmin.tm_4.common.R.*
 import com.kuzmin.tm_4.common.R.id.*
 import com.kuzmin.tm_4.common.R.string.*
 import com.kuzmin.tm_4.common.extension.dpToIntPx
-import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_SERVER
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
 import com.kuzmin.tm_4.databinding.ActivityMainBinding
 import com.kuzmin.tm_4.feature.login.ui.LoginFragment
-import com.kuzmin.tm_4.feature.sites.ui.fragments.SitesFragment
+import com.kuzmin.tm_4.feature.sites.ui.fragments.SiteListFragment
 import com.kuzmin.tm_4.model.AppState
 import com.kuzmin.tm_4.model.AuthState
 import com.kuzmin.tm_4.model.ScreenMode.*
@@ -41,9 +42,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity :
     AppCompatActivity(),
-    LoginFragment.LoginListener,
-    SitesFragment.OnSitesAdapterClickListener,
-    SiteFilterFragment.OnFilterSearchSubmitListener
+    LoginFragment.OnLoginActionListener,
+    SiteListFragment.OnItemClickListener,
+    SiteFilterFragment.OnFilterSubmitListener
 {
     private lateinit var _binding: ActivityMainBinding
 
@@ -52,8 +53,6 @@ class MainActivity :
     private val navController: NavController by lazy {
         findNavController(R.id.nav_host_fragment_activity_main)
     }
-    /*@Inject
-    lateinit var navController: NavController*/
 
     private lateinit var searchView: SearchView
 
@@ -64,8 +63,6 @@ class MainActivity :
 
         window.statusBarColor = ContextCompat.getColor(this, color.color_primary_dark)
         setupToolbar()
-        //setMainMenu()
-
 
         val navView = _binding.navView
         //navView.isActivated = false
@@ -93,23 +90,6 @@ class MainActivity :
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-
-        /*searchView = menu?.findItem(R.id.mm_load_server)?.actionView as SearchView
-        searchView.isSubmitButtonEnabled = true
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d(TAG, "OnQueryTextSubmitted")
-                viewModel.handleSearchQuery(query)
-                hideKeyboard(_binding.root)
-                return true
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Log.d(TAG, "OnQueryTextChanged")
-                if(newText.isNullOrEmpty())
-                    searchView.setQuery("\u00A0", false)
-                return true
-            }
-        })*/
         return true
     }
 
@@ -127,12 +107,11 @@ class MainActivity :
                 viewModel.handleNew()
             }
             R.id.mm_load_local -> {
-                //supportFragmentManager.popBackStack()
-                //viewModel.handleNew()
+                launchSiteFilterFragment(STORAGE_LOCAL)
             }
             R.id.mm_load_server -> {
                 Log.d(TAG, "OnOptionsItemSelected: ${item.itemId}")
-                launchSiteFilterFragment()
+                launchSiteFilterFragment(STORAGE_REMOTE)
             }
             R.id.mm_sync -> {
 
@@ -143,26 +122,6 @@ class MainActivity :
         }
         return true
     }
-
-   /* override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-        Log.d(TAG, "On menu action Expand. Menu Item: $item")
-        when(item) {
-            menuItemLoadRemote -> {
-                //viewModel.handleScreenMode(SEARCH_ON_SERVER)
-                Log.d(TAG, "Menu Item Load Remote")
-            }
-            //menuItemLoadLocal -> viewModel.handleSearchMode(SEARCH_ON_LOCAL)
-            else -> throw RuntimeException("No such item to expand")
-        }
-        return true
-    }
-
-    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-        Log.d("MainActivity", "Collapse")
-        navController.popBackStack()
-        //viewModel.handleScreenMode(HOME)
-        return true
-    }*/
 
     private fun renderUiToolbar(toolbarState: ToolbarState) {
         val imageView = _binding.toolbar.getChildAt(3) as ImageView
@@ -192,15 +151,15 @@ class MainActivity :
                 switchBottombarState(true)
                 //binding.navView.visibility = View.VISIBLE
             }
-            SEARCH_ON_SERVER -> {
+            SHOW_ON_SERVER -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
                 /*supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 supportActionBar?.setDisplayShowHomeEnabled(true)*/
                 //launchSiteFilterFragment()
-                launchSitesRemoteFragment(STORAGE_SERVER)
+                launchSitesRemoteFragment()
             }
-            SEARCH_ON_LOCAL -> {
-                //TODO
+            SHOW_ON_LOCAL -> {
+                launchSitesLocalFragment()
             }
             SITE_SELECTED -> {
                 Log.d("Navigation", "mode = ${appState.mode.name}")
@@ -233,8 +192,6 @@ class MainActivity :
             it.marginEnd = dpToIntPx(16)
             logo.layoutParams = it
         }
-
-        //supportActionBar?.setLogo(R.drawable.cell_tower_icon_3_round)
 
         val title = _binding.toolbar.getChildAt(0) as TextView
         val titleTypeFace: Typeface = Typeface.createFromAsset(assets, "fonts/gost_clan_gradient.ttf")
@@ -270,16 +227,22 @@ class MainActivity :
         navController.navigate(login_nav_graph)
     }
 
-    private fun launchSiteFilterFragment() {
-        navController.navigate(site_filter_nav_graph)
+    private fun launchSiteFilterFragment(storage: Int) {
+        navController.navigate(
+            site_filter_nav_graph,
+            bundleOf(
+                getString(storage_type) to storage
+            )
+        )
     }
 
-    private fun launchSitesRemoteFragment(storageType: Int) {
+    private fun launchSitesRemoteFragment() {
         //navController.navigate(R.id.sites_nav_graph, bundleOf(TOKEN to token))
-        navController.navigate(
-            sites_nav_graph,
-            bundleOf(getString(storage_type) to storageType),
-        )
+        navController.navigate(sites_nav_graph)
+    }
+
+    private fun launchSitesLocalFragment() {
+        navController.navigate(sites_local_nav_graph)
     }
 
     private fun launchSiteCreationFragment(siteUuid: String?) {
@@ -323,12 +286,12 @@ class MainActivity :
     }
 
     @SuppressLint("RestrictedApi")
-    override fun onFilterSearchSubmit(isFilterSet: Boolean) {
-        navController.popBackStack(sites_nav_graph, true)
+    override fun onFilterSearchSubmit(isFilterSet: Boolean, storage: Int) {
+        navController.popBackStack(home_nav_graph, true)
         navController.currentBackStack.value.forEach {
-            Log.d("MainActivity Search", "Entry: ${it.id}")
+            Log.d("Filter", "Entry: ${it.id}")
         }
-        viewModel.handleSearchFilterSubmit(isFilterSet)
+        viewModel.handleSearchFilterSubmit(isFilterSet, storage)
     }
 
     override fun onItemSiteClick(name: String) {

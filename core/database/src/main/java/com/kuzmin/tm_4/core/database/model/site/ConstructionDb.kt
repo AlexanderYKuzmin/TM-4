@@ -44,5 +44,8 @@ data class ConstructionDb(
     val measureLevels: Int?,
 
     @ColumnInfo("constr_site_uuid")
-    val siteUuid: String
+    val siteUuid: String,
+
+    @ColumnInfo("constr_c_date")
+    val cDate: String
 )

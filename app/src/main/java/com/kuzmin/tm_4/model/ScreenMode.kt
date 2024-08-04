@@ -4,8 +4,8 @@ enum class ScreenMode {
     HOME,
     AUTHORIZATION,
     SITE_CREATION,
-    SEARCH_ON_SERVER,
-    SEARCH_ON_LOCAL,
+    SHOW_ON_SERVER,
+    SHOW_ON_LOCAL,
     MEASURE,
     REPORT,
     SITE_SELECTED

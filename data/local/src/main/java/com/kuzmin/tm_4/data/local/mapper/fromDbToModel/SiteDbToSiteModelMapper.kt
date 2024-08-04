@@ -68,7 +68,7 @@ open class SiteDbToSiteModelMapper @Inject constructor(
         }
     }
 
-    private fun mapTenantDbToTenant(tenantDb: TenantDb): Tenant {
+    protected fun mapTenantDbToTenant(tenantDb: TenantDb): Tenant {
         with(tenantDb) {
             return Tenant(
                uuid = uuid,
@@ -114,7 +114,8 @@ open class SiteDbToSiteModelMapper @Inject constructor(
                 dimensionXPx = null,
                 dimensionYPx = null,
                 thumbnailDimXPx = null,
-                thumbnailDimYPx = null
+                thumbnailDimYPx = null,
+                localPath = localPath
             )
         }
     }
@@ -155,7 +156,8 @@ open class SiteDbToSiteModelMapper @Inject constructor(
                 constructionType = constructionType,
                 config = config,
                 measureLevels = measureLevels,
-                siteUuid = siteUuid
+                siteUuid = siteUuid,
+                cDate = cDate.toDate() ?: throw RuntimeException("Wrong Construction creation date format."),
             )
         }
     }

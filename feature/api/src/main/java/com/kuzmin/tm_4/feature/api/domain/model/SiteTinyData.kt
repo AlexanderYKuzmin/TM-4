@@ -1,6 +1,6 @@
 package com.kuzmin.tm_4.feature.api.domain.model
 
-data class SiteDataStore(
+data class SiteTinyData(
     val sUuid: String = "",
 
     val sName: String = "",

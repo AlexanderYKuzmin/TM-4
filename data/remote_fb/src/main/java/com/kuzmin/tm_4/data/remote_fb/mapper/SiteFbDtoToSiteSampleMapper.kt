@@ -22,7 +22,6 @@ class SiteFbDtoToSiteSampleMapper @Inject constructor() {
     fun mapSiteFbDtoToSiteSample(siteFbDto: SiteFbDto, constructionsFbDto: List<ConstructionFbDto>): SiteSample {
         with(siteFbDto) {
             return SiteSample(
-                remoteId = -1L,
                 uuid = uuid,
                 name = name,
                 type = type.toInt(),

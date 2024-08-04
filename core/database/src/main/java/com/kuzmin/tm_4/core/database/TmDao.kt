@@ -114,9 +114,10 @@ interface TmDao {
     }
 
     @Query(
-        "SELECT  *, *, * FROM site_params " +
+        "SELECT  *, *, *, * FROM site_params " +
         "JOIN addresses ON sp_site_uuid = addr_site_uuid " +
-        "JOIN tenants ON sp_site_uuid = ten_site_uuid "
+        "JOIN tenants ON sp_site_uuid = ten_site_uuid " //+
+        //"JOIN measurements_constructions ON sp_site_uuid = mc_site_uuid"
     )
     fun getAllSiteSimple(): List<SiteDb>
 

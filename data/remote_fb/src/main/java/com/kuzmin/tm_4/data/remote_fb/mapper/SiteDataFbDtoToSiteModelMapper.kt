@@ -114,7 +114,8 @@ class SiteDataFbDtoToSiteModelMapper @Inject constructor(
                 constructionType = type,
                 config = config,
                 measureLevels = qLevels,
-                siteUuid = siteUuid
+                siteUuid = siteUuid,
+                cDate = Date(cDate)
             )
         }
     }

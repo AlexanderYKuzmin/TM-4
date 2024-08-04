@@ -33,8 +33,10 @@
     <string name="unsatisfactory">Аварийное</string>
     <string name="satisfactory">Удовлетворительно</string>
     <string name="none">Измерения не проводились</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Buttons names child recycler view-->
+    <string name="btn_bgd_save">Сохранить</string>
+    <string name="btn_bgd_delete">Удалить</string>
 
     <!--
     <string name="tower">Башня</string>

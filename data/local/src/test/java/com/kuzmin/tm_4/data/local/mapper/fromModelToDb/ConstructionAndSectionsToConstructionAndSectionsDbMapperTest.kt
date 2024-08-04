@@ -18,16 +18,16 @@ class ConstructionAndSectionsToConstructionAndSectionsDbMapperTest {
     @Before
     fun setUp() {
         constructionAndSections = ConstructionAndSections(
-            ConstructionTestData.createTestConstruction(),
-            SectionTestData.createTestSections()
+            ConstructionTestData.createTestConstruction(0, 0),
+            SectionTestData.createTestSectionList(0, listOf(0), 3, "actual")
         )
     }
 
     @Test
     fun mapConstructionAndSectionsToConstructionAndSectionsDb() {
         val expected = ConstructionAndSectionsDb(
-            ConstructionTestData.createTestConstructionDb(),
-            SectionTestData.createTestSectionsDb()
+            ConstructionTestData.createTestConstructionDb(0, 0),
+            SectionTestData.createTestSectionDbList(0, listOf(0), 3, "actual")
         )
 
         val actual = constructionAndSectionsToConstructionAndSectionsDbMapper

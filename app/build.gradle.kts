@@ -63,6 +63,8 @@ dependencies {
     implementation(Navigation.nav_ui_ktx)
 
     implementation(DaggerHilt.hilt)
+    testImplementation(project(":core:database"))
+    testImplementation(project(":feature:api"))
     kapt(DaggerHilt.hilt_compiler)
 
     implementation(platform(FireBase.firebase_platform))

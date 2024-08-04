@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.util.CommonConstants.APP_TITLE
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
 import com.kuzmin.tm_4.feature.login.domain.AuthManager
 import com.kuzmin.tm_4.feature.login.domain.usecases.ReadAuthUserDatastoreUseCase
 import com.kuzmin.tm_4.feature.sites.domain.model.SearchQuerySharedContainer
@@ -117,11 +119,12 @@ class MainActivityViewModel @Inject constructor(
         )
     }
 
-    fun handleSearchFilterSubmit(isFilterSet: Boolean) {
+    fun handleSearchFilterSubmit(isFilterSet: Boolean, storage: Int) {
         _appState.value = appState.copy(
-            mode = when(isFilterSet) {
-                true -> ScreenMode.SEARCH_ON_SERVER
-                else -> ScreenMode.SEARCH_ON_LOCAL
+            mode = when(storage) {
+                STORAGE_REMOTE -> ScreenMode.SHOW_ON_SERVER
+                STORAGE_LOCAL -> ScreenMode.SHOW_ON_LOCAL
+                else -> throw RuntimeException("Wrong storage type")
             }
         )
     }

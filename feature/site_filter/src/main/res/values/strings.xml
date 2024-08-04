@@ -11,5 +11,7 @@
     <string name="search_btn">Поиск</string>
     <string name="cancel_btn">Отмена</string>
 
+    <!--<string name="storage_type">storage_type</string>-->
+
 
 </resources>

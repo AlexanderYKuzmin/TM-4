@@ -24,5 +24,7 @@ data class Photo (
 
     val thumbnailDimXPx: Int? = null,
 
-    val thumbnailDimYPx: Int? = null
+    val thumbnailDimYPx: Int? = null,
+
+    val localPath: String? = null
 )

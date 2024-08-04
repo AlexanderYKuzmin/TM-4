@@ -5,8 +5,10 @@ import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionFull
 import com.kuzmin.tm_4.feature.api.domain.model.model_complex.GroupFull
 import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McFull
+import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
 import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
 
 interface LocalRepository {
@@ -15,6 +17,10 @@ interface LocalRepository {
     suspend fun addConstructionToDb(construction: Construction)
 
     suspend fun addConstructionAndSectionsToDb(constructionAndSections: ConstructionAndSections)
+
+    suspend fun getAllSiteSamples(): List<SiteSample>
+
+    suspend fun getAllPhotoSamples(): List<Photo>
 
     suspend fun getSite(siteUuid: String): Site?
 

@@ -10,7 +10,7 @@ import com.kuzmin.tm_4.data.local.datastore.SiteScheme.CONSTRUCTION_UUID
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.MEASUREMENT_CONSTRUCTION_UUID
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_NAME
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_UUID
-import com.kuzmin.tm_4.feature.api.domain.model.SiteDataStore
+import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -23,19 +23,19 @@ class SitePrefManagerImpl @Inject constructor(
 ) : SitePrefManager{
     private val dataStore = appContext.dataStoreSite
 
-    override suspend fun readSiteData(): SiteDataStore {
+    override suspend fun readSiteData(): SiteTinyData {
         return dataStore.data.map { prefs ->
             val sUuid = prefs[SITE_UUID] ?: ""
             val sName = prefs[SITE_NAME] ?: ""
             val cUuid = prefs[CONSTRUCTION_UUID] ?: ""
             val mcUuid = prefs[MEASUREMENT_CONSTRUCTION_UUID] ?: ""
 
-            SiteDataStore(sUuid, sName, cUuid, mcUuid)
+            SiteTinyData(sUuid, sName, cUuid, mcUuid)
         }.first()
     }
 
-    override suspend fun writeSiteData(siteDataStore: SiteDataStore) {
-        with(siteDataStore) {
+    override suspend fun writeSiteData(siteTinyData: SiteTinyData) {
+        with(siteTinyData) {
             dataStore.edit { prefs ->
                 prefs[SITE_UUID] = sUuid
                 prefs[SITE_NAME] = sName
