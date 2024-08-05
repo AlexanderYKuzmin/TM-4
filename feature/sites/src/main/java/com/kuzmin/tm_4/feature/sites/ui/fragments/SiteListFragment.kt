@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -28,6 +30,8 @@ abstract class SiteListFragment : Fragment() {
     private var _binding: FragmentNavSitesBinding? = null
     protected val binding get() = _binding!!
 
+    protected var isFilterSet = false
+
     protected abstract val viewModel: SiteListViewModel
 
     protected abstract val appContext: Context
@@ -36,7 +40,17 @@ abstract class SiteListFragment : Fragment() {
         findNavController()
     }
 
+    private var removeActionbarBackArrow: (() -> Unit)? = null
+
     protected abstract val siteListAdapter: SiteListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        isFilterSet = arguments?.getBoolean(
+            getString(R.string.filter)
+        ) ?: false
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +63,9 @@ abstract class SiteListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        if (context is AppCompatActivity) removeActionbarBackArrow = {
+            context.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
         if (context is OnItemClickListener) {
             onItemClickListener = context
         } else {
@@ -58,19 +75,10 @@ abstract class SiteListFragment : Fragment() {
 
     protected fun setAdapterItemClickAction(adapter: SiteListAdapter) {
         adapter.onItemClickListener = { siteUuid, name, cUuid ->
-            viewModel.storeSiteData(
-                SiteTinyData(siteUuid, name, cUuid)
-            )
-            navController.navigate(
-                R.id.site_nav_graph,
-                bundleOf(
-                    appContext.getString(R.string.title) to name,
-                    appContext.getString(R.string.site_uuid) to siteUuid,
-                    appContext.getString(R.string.construction_uuid) to cUuid,
-                    appContext.getString(R.string.storage_type) to CommonConstants.STORAGE_REMOTE
-                )
-            )
-            onItemClickListener?.onItemSiteClick(name)
+            val siteTinyData = SiteTinyData(siteUuid, name, cUuid)
+            viewModel.storeSiteData(siteTinyData)
+            launchSelectedSiteFragment(siteTinyData)
+            onItemClickListener?.onSiteSelected(siteTinyData.sName)
         }
     }
 
@@ -124,7 +132,26 @@ abstract class SiteListFragment : Fragment() {
         }
     }
 
+    private fun launchSelectedSiteFragment(siteTinyData: SiteTinyData) {
+        with(siteTinyData) {
+            navController.navigate(
+                R.id.site_nav_graph,
+                bundleOf(
+                    appContext.getString(R.string.title) to sName,
+                    appContext.getString(R.string.site_uuid) to sUuid,
+                    appContext.getString(R.string.construction_uuid) to cUuid,
+                    appContext.getString(R.string.storage_type) to CommonConstants.STORAGE_REMOTE
+                )
+            )
+        }
+    }
+
+    override fun onResume() {
+        removeActionbarBackArrow?.invoke()
+        super.onResume()
+    }
+
     interface OnItemClickListener {
-        fun onItemSiteClick(name: String)
+        fun onSiteSelected(siteName: String?)
     }
 }

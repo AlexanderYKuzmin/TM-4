@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kuzmin.tm_4.common.R
 import com.kuzmin.tm_4.common.extension.formatToDateString
+import com.kuzmin.tm_4.feature.api.api.FeatureIsActiveListener
 import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
 import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
 import com.kuzmin.tm_4.feature.api.domain.model.site.Site
@@ -25,16 +27,17 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SingleSiteFragment : Fragment() {
+
+    private var featureIsActiveListener: FeatureIsActiveListener? = null
+
+    private var removeActionbarBackArrow: (() -> Unit)? = null
+
     private var _binding: FragmentSiteBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     @ApplicationContext
     lateinit var appContext: Context
-
-    private val navController by lazy {
-        findNavController()
-    }
 
     private var title: String? = null
     private var siteUuid: String? = null
@@ -49,6 +52,18 @@ class SingleSiteFragment : Fragment() {
 
     private val siteViewModel: SiteViewModel by viewModels()
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is FeatureIsActiveListener) {
+            featureIsActiveListener = context
+        } else {
+            throw RuntimeException("Activity must implement FeatureIsActiveListener")
+        }
+        if (context is AppCompatActivity) removeActionbarBackArrow = {
+            context.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.apply {
@@ -56,8 +71,6 @@ class SingleSiteFragment : Fragment() {
             siteUuid = getString(appContext.getString(R.string.site_uuid))
             constructionUuid = getString(appContext.getString(R.string.construction_uuid))
             storage = getInt(appContext.getString(R.string.storage_type))
-
-            Log.d("MainActivity", "arguments: siteId: $siteUuid, storage: $storage")
         }
     }
 
@@ -77,13 +90,10 @@ class SingleSiteFragment : Fragment() {
         val adapter = PagerPhotoAdapter(this)
         binding.vpSitePhotos.adapter = adapter
 
-
-        //setOnAdapterItemClickActions(adapter)
         siteViewModel.getSiteByIdNoSections(siteUuid, constructionUuid, storage)
         siteViewModel.siteResult.observe(viewLifecycleOwner) {
             when(it) {
                 is SiteResult.SuccessSingle -> {
-                    Log.d("Site", "Successful Site loaded. site.construction: ${it.site.constructions.first().toString()}")
                     site = it.site
                     adapter.photos = it.site.photos
                     showSiteData()
@@ -106,10 +116,8 @@ class SingleSiteFragment : Fragment() {
     }
 
     private fun showSiteData() {
-        Log.d("Site", "---seeking logs_1---")
         with(binding) {
             with(site!!) {
-                Log.d("Site", "---seeking logs_2---")
                 tvAddressSite.text = address.toString()
                 tvPositionSite.text = siteParams.coordinates
                 tvSiteType.text =
@@ -157,6 +165,13 @@ class SingleSiteFragment : Fragment() {
             }
         }
     }
+
+    override fun onResume() {
+        removeActionbarBackArrow?.invoke()
+        featureIsActiveListener?.onFeatureIsActive(R.id.site_nav_graph)
+        super.onResume()
+    }
+
     companion object {
         private const val ACTUAL = "actual"
     }

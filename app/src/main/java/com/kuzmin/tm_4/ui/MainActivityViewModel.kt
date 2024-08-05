@@ -2,19 +2,17 @@ package com.kuzmin.tm_4.ui
 
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.common.util.CommonConstants.APP_TITLE
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
 import com.kuzmin.tm_4.feature.login.domain.AuthManager
 import com.kuzmin.tm_4.feature.login.domain.usecases.ReadAuthUserDatastoreUseCase
 import com.kuzmin.tm_4.feature.sites.domain.model.SearchQuerySharedContainer
-import com.kuzmin.tm_4.model.AppState
-import com.kuzmin.tm_4.model.AuthState
 import com.kuzmin.tm_4.model.ScreenMode
-import com.kuzmin.tm_4.model.ToolbarState
+import com.kuzmin.tm_4.model.sealed.AppState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val readAuthUserDatastoreUseCase: ReadAuthUserDatastoreUseCase,
-    private val searchQuerySharedContainer: SearchQuerySharedContainer,
     private val authManager: AuthManager
 ) : ViewModel() {
 
@@ -33,116 +30,80 @@ class MainActivityViewModel @Inject constructor(
         Log.d("MainActivity", "Exception handler throwable: $throwable")
     }
 
-    //private val _authorization = MutableLiveData<Boolean>()
-    //val authorization: LiveData<Boolean> get() = _authorization
+    private var _toolbarState: AppState.ToolbarState? = null
+    private val toolbarState: AppState.ToolbarState get() = _toolbarState!!
 
-    private val _appState = MutableLiveData(AppState(ScreenMode.HOME, APP_TITLE))
-    val appState: AppState get() = _appState.value!!
-
-    private val _toolbarState = MutableLiveData(ToolbarState())
-    val toolbarState: ToolbarState get() = _toolbarState.value!!
+    private val _appState = MutableLiveData<AppState>()
+    private val appState: LiveData<AppState> = _appState
 
     init {
         checkAuthorization()
     }
 
-    fun observeAppState(context: LifecycleOwner, updateState: (appState: AppState) -> Unit) {
-        _appState.observe(context) {
-            updateState(it)
+    fun observeAppState(lifecycleOwner: LifecycleOwner, action: (AppState) -> Unit) {
+        appState.observe(lifecycleOwner) {
+            action.invoke(it)
         }
     }
 
-    fun observeToolbarState(
-        context: LifecycleOwner,
-        updateState: (toolbarState: ToolbarState) -> Unit
-    ) {
-        _toolbarState.observe(context) {
-            updateState(it)
-        }
+    fun initAuthorization() {
+        _appState.value = AppState.LoginState
     }
 
-    /*private fun readAuthUser() {
-        viewModelScope.launch(Dispatchers.IO + authExceptionHandler) {
-            val auth = readAuthUserDatastoreUseCase()
-            if (auth.isValid()) _authUser.value = AuthResult.Success(auth)
-            Log.d("MainActivity", "Init authuser: $_authUser")
-        }
-    }*/
-    //fun checkAuthUser(context: Context, launchFragment: (username: String) -> Unit) {
-        /*_appState.value = appState.value!!.copy(
-            mode = ScreenMode.AUTHORIZATION
-        )*/  // Update State отдельный метод надо на прверку и апдейт
-        /*viewModelScope.launch {
-            val job = launch {
-                val newDate = Date()
-                val time = newDate.time - 100000
-                setUserToDataStoreUseCase(AuthUser(
-                    username = "admin",
-                    password = "any456",
-                    token = "token",
-                    dateToken = time,
-                    remoteId = 12,
-                    firstName = "Vasya",
-                    lastName = "Gegrby"
-                ))
-            }
-            job.join()
-            _authUser = getUserFromDataStoreUseCase()
-            if (AuthValidation.isAuthUserValid(authUser)) {
-                //application.toast("Юзер валидный")
-                RequestInterceptor.token = authUser.token
-            } else {
-                (context as AppCompatActivity).runOnUiThread { launchFragment(authUser.username) }
-            }
-        }*/
-    fun checkAuthorization() {
+    fun initSiteList(storage: Int) {
+        _appState.value = AppState.SiteListSate(
+            storage,
+            false
+        )
+    }
+
+    fun initNew() {
+        _appState.value = AppState.SiteCreationState(null)
+    }
+
+    fun initSearchFilter() {
+        _appState.value
+    }
+
+    private fun checkAuthorization() {
         viewModelScope.launch(Dispatchers.IO + authExceptionHandler) {
             Log.d("MainActivity", "Launch check authorization ${this.coroutineContext}")
             val isAuth = authManager.isUserAuthorized()
             withContext(Dispatchers.Main) {
-                handleAuthResult(if (isAuth) AuthState.AUTHORIZED else AuthState.NOT_AUTHORIZED)
+                if (isFirstStart()) _appState.value = AppState.LoginState
+                else handleLogin(isAuth)
             }
         }
     }
 
-    fun handleAuthResult(authState: AuthState) {
-        Log.d("MainActivity", "HandleAuthResult")
-        _toolbarState.value = toolbarState.copy(
-            isAuthorized = (authState == AuthState.AUTHORIZED)
-        )
-        _appState.value = appState.copy(
-            mode = when (authState) {
-                AuthState.AUTHORIZED -> ScreenMode.HOME
-                AuthState.NOT_AUTHORIZED -> ScreenMode.AUTHORIZATION
-                AuthState.CANCELED -> ScreenMode.HOME
-            }
-        )
+    fun handleLogin(isAuthOk: Boolean) {
+        _toolbarState = if (_toolbarState == null) {
+            AppState.ToolbarState(false, null)
+        }
+        else {
+            toolbarState.copy(isLoginCompleted = isAuthOk)
+        }
+
+        _appState.value = toolbarState
     }
 
-    fun handleSearchFilterSubmit(isFilterSet: Boolean, storage: Int) {
-        _appState.value = appState.copy(
-            mode = when(storage) {
-                STORAGE_REMOTE -> ScreenMode.SHOW_ON_SERVER
-                STORAGE_LOCAL -> ScreenMode.SHOW_ON_LOCAL
-                else -> throw RuntimeException("Wrong storage type")
-            }
-        )
+    fun handleFilter(isFilterSet: Boolean, storage: Int) {
+        _appState.value = AppState.SiteListSate(storage, isFilterSet)
     }
 
-    fun handleSearchQuery(query: String?) {
-        val editedQuery = query?.replace("\u00A0", "") ?: ""
-        searchQuerySharedContainer.setData(editedQuery)
-    }
-
-    fun handleSiteSelected(name: String) {
-        _appState.value = appState.copy(mode = ScreenMode.SITE_SELECTED)
+    fun handleSiteSelected(name: String?) {
+        _appState.value = toolbarState.copy(appTitle = name)
     }
 
     fun handleNew() {
-        _appState.value =
+        /*_appStateOld.value =
             appState.copy(
                 mode = ScreenMode.SITE_CREATION,
                 currentSiteUuid = null
-            )
+            )*/
+    }
+
+    private fun isFirstStart(): Boolean {
+        return _toolbarState == null
     }
 }

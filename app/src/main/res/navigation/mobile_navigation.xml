@@ -32,6 +32,10 @@
         android:id="@id/sites_nav_graph"
         android:name="com.kuzmin.tm_4.feature.sites.ui.fragments.SiteListRemoteFragment"
         tools:layout="@layout/fragment_nav_sites" >
+        <argument
+            android:name="@string/filter"
+            app:argType="boolean"
+            android:defaultValue="false"/>
         <action
             android:id="@id/action_sites_nav_graph_to_report_nav_graph"
             app:destination="@id/report_nav_graph" />
@@ -50,7 +54,10 @@
         android:name="com.kuzmin.tm_4.feature.sites.ui.fragments.SiteListLocalFragment"
         tools:layout="@layout/fragment_nav_sites"
         >
-
+        <argument
+            android:name="@string/filter"
+            app:argType="boolean"
+            android:defaultValue="false"/>
         <action
             android:id="@id/action_sites_local_nav_graph_to_site_nav_graph"
             app:destination="@id/site_nav_graph" />

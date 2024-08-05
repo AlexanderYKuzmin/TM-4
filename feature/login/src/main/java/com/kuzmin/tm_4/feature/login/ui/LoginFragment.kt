@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnPreDrawListener
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -31,9 +32,8 @@ class LoginFragment : Fragment(), OnClickListener {
     @Inject
     @ApplicationContext
     lateinit var appContext: Context
-/*
-    @Inject
-    lateinit var navController: NavController*/
+
+    private var removeActionbarBackArrow: (() -> Unit)? = null
 
     private var onLoginActionListener: OnLoginActionListener? = null
 
@@ -159,6 +159,10 @@ class LoginFragment : Fragment(), OnClickListener {
         } else {
             throw RuntimeException("Activity must implement OnDeviceItemClickListener")
         }
+
+        if (context is AppCompatActivity) removeActionbarBackArrow = {
+            context.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
     }
 
     override fun onClick(v: View) {
@@ -236,6 +240,11 @@ class LoginFragment : Fragment(), OnClickListener {
     private fun close(isOk: Boolean) {
         onLoginActionListener?.onAuthorizationCompleted(isOk)
         navController.popBackStack()
+    }
+
+    override fun onResume() {
+        removeActionbarBackArrow?.invoke()
+        super.onResume()
     }
 
     override fun onDestroyView() {

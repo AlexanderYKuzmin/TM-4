@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":data:remote_fb"))
     implementation(project(":data:local"))
 
+    implementation(project(":feature:api"))
     implementation(project(":feature:sites"))
     implementation(project(":feature:measurements"))
     implementation(project(":feature:report"))

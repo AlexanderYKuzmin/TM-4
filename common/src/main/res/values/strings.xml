@@ -13,9 +13,10 @@
     <string name="construction_saved_local">Конструкция сохранена на устройство</string>
 
 
-    <!--sites feature names -->
+    <!--sites feature arg names -->
     <string name="storage_type">storage</string>
     <string name="site_uuid">s_uuid</string>
     <string name="construction_uuid">c_uuid</string>
     <string name="title">title</string>
+    <string name="filter">is filter set</string>
 </resources>

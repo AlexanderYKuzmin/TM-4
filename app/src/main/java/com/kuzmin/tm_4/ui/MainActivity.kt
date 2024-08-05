@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -31,21 +32,21 @@ import com.kuzmin.tm_4.common.extension.dpToIntPx
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
 import com.kuzmin.tm_4.databinding.ActivityMainBinding
+import com.kuzmin.tm_4.feature.api.api.FeatureIsActiveListener
 import com.kuzmin.tm_4.feature.login.ui.LoginFragment
 import com.kuzmin.tm_4.feature.sites.ui.fragments.SiteListFragment
-import com.kuzmin.tm_4.model.AppState
-import com.kuzmin.tm_4.model.AuthState
 import com.kuzmin.tm_4.model.ScreenMode.*
-import com.kuzmin.tm_4.model.ToolbarState
+import com.kuzmin.tm_4.model.sealed.AppState
+import com.kuzmin.tm_4.model.sealed.AppState.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity :
     AppCompatActivity(),
+    FeatureIsActiveListener,
     LoginFragment.OnLoginActionListener,
     SiteListFragment.OnItemClickListener,
-    SiteFilterFragment.OnFilterSubmitListener
-{
+    SiteFilterFragment.OnFilterSubmitListener {
     private lateinit var _binding: ActivityMainBinding
 
     private val viewModel: MainActivityViewModel by viewModels()
@@ -65,7 +66,6 @@ class MainActivity :
         setupToolbar()
 
         val navView = _binding.navView
-        //navView.isActivated = false
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 sites_nav_graph,
@@ -84,7 +84,6 @@ class MainActivity :
 
         with(viewModel) {
             observeAppState(this@MainActivity, ::renderUi)
-            observeToolbarState(this@MainActivity, ::renderUiToolbar)
         }
     }
 
@@ -94,95 +93,96 @@ class MainActivity :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            android.R.id.home -> {
-                Log.d("Navigation", "Home pressed in menu")
-                //navController.popBackStack()
-                //viewModel.handleScreenMode(HOME)
-            }
-            R.id.mm_authorization -> {
-                launchAuthFragment()
-            }
-            R.id.mm_new -> {
-                viewModel.handleNew()
-            }
-            R.id.mm_load_local -> {
-                launchSiteFilterFragment(STORAGE_LOCAL)
-            }
-            R.id.mm_load_server -> {
-                Log.d(TAG, "OnOptionsItemSelected: ${item.itemId}")
-                launchSiteFilterFragment(STORAGE_REMOTE)
-            }
-            R.id.mm_sync -> {
+        with(viewModel) {
+            when (item.itemId) {
+                R.id.mm_authorization -> {
+                    initAuthorization()
+                }
 
-            }
-            R.id.mm_quit -> {
+                R.id.mm_new -> {
+                    initNew()
+                }
 
+                R.id.mm_load_local -> {
+                    initSiteList(STORAGE_LOCAL)
+                }
+
+                R.id.mm_load_server -> {
+                    initSiteList(STORAGE_REMOTE)
+                }
+
+                R.id.mm_sync -> {
+
+                }
+
+                R.id.mm_quit -> {
+
+                }
             }
         }
         return true
     }
 
+    private fun renderUi(appState: AppState) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        when (appState) {
+            is ToolbarState -> {
+                renderUiToolbar(appState)
+            }
+
+            is LoginState -> {
+                launchAuthFragment()
+            }
+
+            is SiteListSate -> {
+                with(appState) {
+                    if (isFilterSet) {
+                        when (storage) {
+                            STORAGE_REMOTE -> launchSiteListRemoteFragment(isFilterSet)
+                            STORAGE_LOCAL -> launchSiteListLocalFragment(isFilterSet)
+                        }
+                    } else launchSiteFilterFragment(storage)
+                }
+            }
+
+            is SingleSiteState -> {
+
+            }
+
+            is SiteCreationState -> {
+                launchSiteCreationFragment(appState.sUuid)
+            }
+
+            else -> {
+
+            }
+        }
+    }
+
     private fun renderUiToolbar(toolbarState: ToolbarState) {
         val imageView = _binding.toolbar.getChildAt(3) as ImageView
         imageView.setImageDrawable(
-            if (toolbarState.isAuthorized) {
-                ContextCompat.getDrawable(this, R.drawable.light_bulb_on)
-            }
-            else ContextCompat.getDrawable(this, R.drawable.light_bulb_off)
+            if (toolbarState.isLoginCompleted) {
+                getDrawable(this, R.drawable.light_bulb_on)
+            } else getDrawable(this, R.drawable.light_bulb_off)
         )
 
-        //_binding.toolbar.title = getString(R.string)
-    }
-
-    private fun renderUi(appState: AppState) {
-        Log.d("MainActivity", "RENDER UI")
-
-        when (appState.mode) {
-            AUTHORIZATION -> {
-                Log.d("Navigation", "mode = ${appState.mode.name}")
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                switchBottombarState(false)
-                launchAuthFragment()
-            }
-            HOME -> {
-                Log.d("navigation", "mode = ${appState.mode.name}")
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                switchBottombarState(true)
-                //binding.navView.visibility = View.VISIBLE
-            }
-            SHOW_ON_SERVER -> {
-                Log.d("Navigation", "mode = ${appState.mode.name}")
-                /*supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                supportActionBar?.setDisplayShowHomeEnabled(true)*/
-                //launchSiteFilterFragment()
-                launchSitesRemoteFragment()
-            }
-            SHOW_ON_LOCAL -> {
-                launchSitesLocalFragment()
-            }
-            SITE_SELECTED -> {
-                Log.d("Navigation", "mode = ${appState.mode.name}")
-                //searchView.visibility = View.GONE
-                _binding.toolbar.collapseActionView()
-            }
-            SITE_CREATION -> {
-                //TODO change title to Creation
-                switchBottombarState(false)
-                launchSiteCreationFragment(appState.currentSiteUuid)
-            }
-            else -> {
-                //supportActionBar?.setDisplayShowHomeEnabled(true)
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            }
+        val title = _binding.toolbar.getChildAt(0) as TextView
+        if (toolbarState.appTitle.isNullOrEmpty()) {
+            title.setText(getString(R.string.app_name))
+        } else {
+            title.setText(toolbarState.appTitle)
         }
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setupToolbar() {
         setSupportActionBar(_binding.toolbar)
+        supportActionBar?.setDefaultDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        val logo = if (_binding.toolbar.childCount > 1) _binding.toolbar.getChildAt(1) as ImageView else null
+        val logo =
+            if (_binding.toolbar.childCount > 1) _binding.toolbar.getChildAt(1) as ImageView else null
         logo?.scaleType = ImageView.ScaleType.CENTER_CROP
 
         val lp = logo?.layoutParams as? Toolbar.LayoutParams
@@ -194,7 +194,8 @@ class MainActivity :
         }
 
         val title = _binding.toolbar.getChildAt(0) as TextView
-        val titleTypeFace: Typeface = Typeface.createFromAsset(assets, "fonts/gost_clan_gradient.ttf")
+        val titleTypeFace: Typeface =
+            Typeface.createFromAsset(assets, "fonts/gost_clan_gradient.ttf")
 
         with(title) {
             typeface = titleTypeFace
@@ -205,18 +206,20 @@ class MainActivity :
 
     private fun setBottomNavListeners(navView: BottomNavigationView) {
         navView.setOnItemSelectedListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 sites_nav_graph -> {
                     navController.popBackStack(sites_nav_graph, false)
-
                 }
+
                 measurements_nav_graph -> {
                     navController.popBackStack(measurements_nav_graph, true)
                     navController.navigate(measurements_nav_graph)
                 }
+
                 report_nav_graph -> {
                     navController.navigate(report_nav_graph)
                 }
+
                 else -> throw RuntimeException("Wrong MenuItem's Id!")
             }
             true
@@ -236,13 +239,23 @@ class MainActivity :
         )
     }
 
-    private fun launchSitesRemoteFragment() {
+    private fun launchSiteListRemoteFragment(isFilterSet: Boolean) {
         //navController.navigate(R.id.sites_nav_graph, bundleOf(TOKEN to token))
-        navController.navigate(sites_nav_graph)
+        navController.navigate(
+            sites_nav_graph,
+            bundleOf(
+                getString(filter) to isFilterSet
+            )
+        )
     }
 
-    private fun launchSitesLocalFragment() {
-        navController.navigate(sites_local_nav_graph)
+    private fun launchSiteListLocalFragment(isFilterSet: Boolean) {
+        navController.navigate(
+            sites_local_nav_graph,
+            bundleOf(
+                getString(filter) to isFilterSet
+            )
+        )
     }
 
     private fun launchSiteCreationFragment(siteUuid: String?) {
@@ -256,9 +269,9 @@ class MainActivity :
     }
 
     private fun switchBottombarState(isActive: Boolean) {
-       // _binding.navView.menu.setGroupEnabled(0, isActive)
+        // _binding.navView.menu.setGroupEnabled(0, isActive)
 
-       // _binding.navView.menu.setGroupVisible(0, false)
+        // _binding.navView.menu.setGroupVisible(0, false)
         if (isActive) {
             _binding.navView.visibility = View.VISIBLE
         } else {
@@ -266,37 +279,45 @@ class MainActivity :
         }
     }
 
-    /*private fun checkChildConsistent(clazz: Class<out View>): Int {
-        Log.d(TAG, "checkChild: $clazz")
-        var titleChildNumber = 0
-        while (titleChildNumber <= _binding.toolbar.childCount) {
-            Log.d(TAG, "title number: $titleChildNumber, ${_binding.toolbar.getChildAt(titleChildNumber)}")
-            if (_binding.toolbar.getChildAt(titleChildNumber).javaClass != clazz) {
-                titleChildNumber++
-            } else return titleChildNumber
-        }
-       throw RuntimeException("Wrong child number!")
-    }*/
-
-    override fun onAuthorizationCompleted(isClosed: Boolean) {
+    override fun onAuthorizationCompleted(isAuthOk: Boolean) {
         switchBottombarState(true)
-        viewModel.handleAuthResult(
-            if (isClosed) AuthState.AUTHORIZED else AuthState.CANCELED
-        )
+        /*viewModel.handleAuthResult(
+            if (isOk) AuthState.AUTHORIZED else AuthState.CANCELED
+        )*/
+        viewModel.handleLogin(isAuthOk)
     }
 
     @SuppressLint("RestrictedApi")
     override fun onFilterSearchSubmit(isFilterSet: Boolean, storage: Int) {
         navController.popBackStack(home_nav_graph, true)
-        navController.currentBackStack.value.forEach {
+        navController.currentBackStack.value.forEach {//TODO delete all of this
             Log.d("Filter", "Entry: ${it.id}")
         }
-        viewModel.handleSearchFilterSubmit(isFilterSet, storage)
+        viewModel.handleFilter(isFilterSet, storage)
     }
 
-    override fun onItemSiteClick(name: String) {
-        viewModel.handleSiteSelected(name)
+    override fun onSiteSelected(siteName: String?) {
+        viewModel.handleSiteSelected(siteName)
     }
+
+    override fun onFeatureIsActive(fragmentId: Int) {
+        Log.d("Test navview", "Fragment ID: $fragmentId")
+        Log.d("Test navview", "R id : ${com.kuzmin.tm_4.common.R.id.site_nav_graph}")
+        when(fragmentId) {
+            com.kuzmin.tm_4.common.R.id.site_nav_graph -> {
+                Log.d("Test navview", "Selected SITE NAV GRAPH: $fragmentId")
+                _binding.navView.menu
+                    .findItem(com.kuzmin.tm_4.common.R.id.sites_nav_graph)
+                    .setChecked(true)
+            }
+        }
+    }
+
+    /*override fun onResume() {
+        super.onResume()
+        Log.d("remove arrow", "on resume activity")
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }*/
 
     companion object {
         const val TAG = "MainActivity"
