@@ -5,22 +5,24 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.kuzmin.tm_4.common.util.CommonConstants.NO_DATE
-import com.kuzmin.tm_4.common.util.CommonConstants.NO_ID
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_EMAIL
 import com.kuzmin.tm_4.common.util.CommonConstants.NO_NAME
 import com.kuzmin.tm_4.common.util.CommonConstants.NO_PASSWORD
-import com.kuzmin.tm_4.common.util.CommonConstants.NO_TOKEN
-import com.kuzmin.tm_4.common.util.CommonConstants.NO_USERNAME
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_POSITION
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_TEAM_ID
+import com.kuzmin.tm_4.common.util.CommonConstants.NO_UID
+import com.kuzmin.tm_4.data.local.datastore.UserScheme.DATA_VISIBILITY
+import com.kuzmin.tm_4.data.local.datastore.UserScheme.EMAIL
 import com.kuzmin.tm_4.data.local.datastore.UserScheme.FIRST_NAME
+import com.kuzmin.tm_4.data.local.datastore.UserScheme.IS_ADMIN
 import com.kuzmin.tm_4.data.local.datastore.UserScheme.LAST_NAME
 import com.kuzmin.tm_4.data.local.datastore.UserScheme.PASSWORD
-import com.kuzmin.tm_4.data.local.datastore.UserScheme.REMOTE_ID
-import com.kuzmin.tm_4.data.local.datastore.UserScheme.TOKEN
-import com.kuzmin.tm_4.data.local.datastore.UserScheme.TOKEN_DATE
-import com.kuzmin.tm_4.data.local.datastore.UserScheme.USERNAME
+import com.kuzmin.tm_4.data.local.datastore.UserScheme.POSITION
+import com.kuzmin.tm_4.data.local.datastore.UserScheme.TEAM_ID
+import com.kuzmin.tm_4.data.local.datastore.UserScheme.USER_ID
+import com.kuzmin.tm_4.feature.api.domain.model.user.AuthUser
+import com.kuzmin.tm_4.feature.api.domain.model.user.User
 import com.kuzmin.tm_4.feature.login.api.PrefManager
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
-import com.kuzmin.tm_4.feature.login.domain.model.User
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -33,72 +35,63 @@ class PrefManagerImpl @Inject constructor(
 ) : PrefManager {
     val dataStore = appContext.dataStore
 
-    /*suspend fun writeData(
-        username: String,
-        password: String,
-        token: String,
-        dateToken: Long,
-        remoteId: Long,
-        firstName: String,
-        lastName: String,
-    ) {
-        dataStore.edit { prefs ->
-            prefs[USERNAME] = username
-            prefs[PASSWORD] = password
-            prefs[TOKEN] = token
-            prefs[TOKEN_DATE] = dateToken
-            prefs[REMOTE_ID] = remoteId
-            prefs[FIRST_NAME] = firstName
-            prefs[LAST_NAME] = lastName
-        }
-    }*/
-
     override suspend fun writeData(authUser: AuthUser) {
         with(authUser) {
             dataStore.edit { prefs ->
-                prefs[USERNAME] = username
-                prefs[PASSWORD] = password   //h98dGDJx
-                prefs[TOKEN] = token
-                prefs[TOKEN_DATE] = dateToken
-                prefs[REMOTE_ID] = remoteId
+                prefs[USER_ID] = uid
+                prefs[EMAIL] = email
+                prefs[PASSWORD] = password
+                prefs[POSITION] = position
+                prefs[TEAM_ID] = teamId
                 prefs[FIRST_NAME] = firstName
                 prefs[LAST_NAME] = lastName
+                prefs[IS_ADMIN] = isAdmin
+                prefs[DATA_VISIBILITY] = dataVisibility
             }
         }
     }
     override suspend fun readData(): AuthUser {
         with(UserScheme) {
             return dataStore.data.map { prefs ->
-                val username = prefs[USERNAME] ?: NO_USERNAME
+                val uid = prefs[USER_ID] ?: NO_UID
+                val email = prefs[EMAIL] ?: NO_EMAIL
                 val password = prefs[PASSWORD] ?: NO_PASSWORD
-                val token = prefs[TOKEN] ?: NO_TOKEN
-                val dateToken = prefs[TOKEN_DATE] ?: NO_DATE
-                val remoteId = prefs[REMOTE_ID] ?: NO_ID
+                val position = prefs[POSITION] ?: NO_POSITION
+                val teamId = prefs[TEAM_ID] ?: NO_TEAM_ID
                 val firstName = prefs[FIRST_NAME] ?: NO_NAME
                 val lastName = prefs[LAST_NAME] ?: NO_NAME
+                val isAdmin = prefs[IS_ADMIN] ?: false
+                val dataVisibility = prefs[DATA_VISIBILITY] ?: false
 
-                AuthUser(username, password, token, dateToken, remoteId, firstName, lastName)
+                AuthUser(
+                    uid = uid,
+                    teamId = teamId,
+                    isAdmin = isAdmin,
+                    email = email,
+                    password = password,
+                    position = position,
+                    firstName = firstName,
+                    lastName = lastName,
+                    dataVisibility = dataVisibility
+                )
             }.first()
         }
-        //return runBlocking(Dispatchers.IO) { flowValue.first() }
     }
 
     override suspend fun readUserData(): User {
         with(UserScheme) {
             return dataStore.data.map { prefs ->
-                val username = prefs[USERNAME] ?: NO_USERNAME
+                val email = prefs[EMAIL] ?: NO_EMAIL
                 val password = prefs[PASSWORD] ?: NO_PASSWORD
-                //val password =  NO_PASSWORD
 
-                User(username, password)
+                User(email, password)
             }.first()
         }
     }
 
     override suspend fun clearAuthData() {
         dataStore.edit { prefs ->
-            prefs[TOKEN] = NO_TOKEN
-            prefs[TOKEN_DATE] = NO_DATE
+            prefs.clear()
         }
     }
 }

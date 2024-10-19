@@ -11,10 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kuzmin.tm_4.common.R
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentNavMeasurementsBinding
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Error
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.Loading
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.SuccessMcFullList
 import com.kuzmin.tm_4.feature.measurements.ui.adapters.MeasurementConstructionsAdapter
 import com.kuzmin.tm_4.feature.measurements.ui.model.McParent
 import com.kuzmin.tm_4.feature.measurements.ui.viewmodels.NavMeasurementsViewModel
@@ -59,10 +57,10 @@ class NavMeasurementsFragment : Fragment() {
 
         navMeasurementsViewModel.getAndSaveFullSiteToDbAsTemp()
 
-        navMeasurementsViewModel.mcAndCResult.observe(viewLifecycleOwner) {
+        navMeasurementsViewModel.siteActionResult.observe(viewLifecycleOwner) {
             when(it) {
-                is Loading -> TODO()
-                is SuccessMcFullList -> {
+                is SiteActionResult.Loading -> TODO()
+                is SiteActionResult.SuccessMcFullList -> {
                     with(it) {
                         if (!mcFullList.isNullOrEmpty()) {
                             adapter.submitList(
@@ -79,7 +77,7 @@ class NavMeasurementsFragment : Fragment() {
                         }
                     }
                 }
-                is Error -> {
+                is SiteActionResult.Error -> {
                     Log.d("MC", "ERROR: ${it.throwable}")
                     //appContext.showShortMessage(getString(string.error_loading_list))
                 }

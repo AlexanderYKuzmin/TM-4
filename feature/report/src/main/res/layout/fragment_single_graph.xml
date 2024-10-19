@@ -6,7 +6,7 @@
     android:id="@id/cl_chart"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.ItemGraphFragment">
+    tools:context=".ui.fragments.ItemGraphFragment">
 
     <com.github.mikephil.charting.charts.CombinedChart
         android:id="@id/combined_chart"

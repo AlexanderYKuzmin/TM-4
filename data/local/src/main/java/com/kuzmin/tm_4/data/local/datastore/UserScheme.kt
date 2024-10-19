@@ -1,14 +1,17 @@
 package com.kuzmin.tm_4.data.local.datastore
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 object UserScheme {
-    val USERNAME = stringPreferencesKey("username")
+    val EMAIL = stringPreferencesKey("email")
     val PASSWORD = stringPreferencesKey("password")
-    val TOKEN = stringPreferencesKey("token")
-    val TOKEN_DATE = longPreferencesKey("token_date")
-    val REMOTE_ID = longPreferencesKey("remote_id")
+    val POSITION = stringPreferencesKey("position")
     val FIRST_NAME = stringPreferencesKey("first_name")
     val LAST_NAME = stringPreferencesKey("last_name")
+    val IS_ADMIN = booleanPreferencesKey("is_admin")
+    val USER_ID = stringPreferencesKey("uid")
+    val TEAM_ID = stringPreferencesKey("team_id")
+    val DATA_VISIBILITY = booleanPreferencesKey("data_visibility")
 }

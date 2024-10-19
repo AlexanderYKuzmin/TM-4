@@ -30,9 +30,9 @@ import com.kuzmin.tm_4.common.util.CommonConstants.MAST
 import com.kuzmin.tm_4.common.util.CommonConstants.POLE
 import com.kuzmin.tm_4.common.util.CommonConstants.TOWER
 import com.kuzmin.tm_4.common.util.Generator
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
-import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
-import com.kuzmin.tm_4.feature.api.domain.model.site.Section
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.ConstructionAndSections
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Construction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Section
 import com.kuzmin.tm_4.feature.api.extension.clearEditTextFields
 import com.kuzmin.tm_4.feature.site_creation.R
 import com.kuzmin.tm_4.feature.site_creation.R.array.construction_configs

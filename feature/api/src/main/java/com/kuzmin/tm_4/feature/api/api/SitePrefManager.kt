@@ -1,6 +1,6 @@
 package com.kuzmin.tm_4.feature.api.api
 
-import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.SiteTinyData
 
 interface SitePrefManager {
     suspend fun readSiteData(): SiteTinyData

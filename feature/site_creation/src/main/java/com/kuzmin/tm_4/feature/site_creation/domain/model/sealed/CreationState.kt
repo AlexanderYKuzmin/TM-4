@@ -1,6 +1,6 @@
 package com.kuzmin.tm_4.feature.site_creation.domain.model.sealed
 
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 import com.kuzmin.tm_4.feature.site_creation.domain.model.ErrorInfo
 
 sealed class CreationState {

@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
-import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.SiteTinyData
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -17,7 +17,9 @@ abstract class SiteListViewModel(
     private val sitePrefManager: SitePrefManager
 ) : ViewModel() {
 
-    protected abstract val storageLocation: Int
+    abstract val storageLocation: Int
+
+    protected abstract var isFiltered: Boolean
 
     protected val _siteResult = MutableLiveData<SiteResult>()
     val siteResult: LiveData<SiteResult> get() = _siteResult

@@ -46,6 +46,8 @@ dependencies {
     implementation(platform(FireBase.firebase_platform))
     implementation(FireBase.firebase_firestore)
     implementation(FireBase.firebase_storage)
+    implementation(FireBase.firebase_auth)
+    implementation(FireBase.firebase_auth_ktx)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

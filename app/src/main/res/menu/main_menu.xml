@@ -5,25 +5,27 @@
 
     <item
         android:id="@+id/mm_authorization"
+        android:title="@string/authorization"
         app:showAsAction="never"
-        android:title="@string/authorization"/>
+        />
 
     <item
         android:id="@+id/mm_new"
         android:icon="@drawable/add_site"
+        android:title="@string/main_menu_new"
         app:showAsAction="never"
-        android:title="@string/main_menu_new"/>
+        />
 
     <item
         android:id="@+id/mm_load_local"
         android:title="@string/main_menu_load_local"
-        android:actionLayout="@layout/layout_search"/>
+        android:actionLayout="@layout/layout_search"
+        />
 
     <item
         android:id="@+id/mm_load_server"
-        android:icon="@drawable/ic_launcher"
         android:title="@string/main_menu_load_server"
-        app:showAsAction="never|collapseActionView"
+        app:showAsAction="never"
          />
 
     <!--<item
@@ -36,13 +38,16 @@
 
     <item
         android:id="@+id/mm_pref"
-        android:title="@string/main_menu_preferences"/>
+        android:title="@string/main_menu_preferences"
+        />
 
     <item
         android:id="@+id/mm_sync"
-        android:title="@string/main_menu_sync"/>
+        android:title="@string/main_menu_sync"
+        />
 
     <item
         android:id="@+id/mm_quit"
-        android:title="@string/main_menu_quit"/>
+        android:title="@string/main_menu_quit"
+        />
 </menu>

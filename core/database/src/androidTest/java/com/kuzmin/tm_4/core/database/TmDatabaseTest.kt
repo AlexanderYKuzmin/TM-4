@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kuzmin.tm_4.core.database.model.delivery.SiteDb
 import com.kuzmin.tm_4.core.database.util.TmDatabaseTestUtil
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -64,6 +65,22 @@ class TmDatabaseTest {
     @Test
     fun getAllSiteSample() = runTest {
         TODO()
+    }
+
+    @Test
+    fun deleteAllTempSites() = runTest {
+        val allSites = TmDatabaseTestUtil.createTestSiteDbList()
+
+        val expected = listOf(
+            TmDatabaseTestUtil.createTestSite(0)
+        )
+
+        tmDao.addSites(allSites)
+        tmDao.deleteAllTempSites()
+
+        val actual = tmDao.getAllSiteSimple()
+
+        assertEquals(expected, actual)
     }
 
     @After

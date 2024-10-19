@@ -1,7 +1,7 @@
 package com.kuzmin.tm_4.feature.measurements.ui.model
 
 import android.content.Context
-import com.kuzmin.tm_4.feature.api.domain.model.site.McLevelInfo
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.McLevelInfo
 import com.kuzmin.tm_4.feature.measurements.R
 import java.util.Date
 

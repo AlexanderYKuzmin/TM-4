@@ -28,5 +28,6 @@
         <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
 
         <!--item name="android:itemTextAppearance">@style/CustomTextItems</item-->
+        <item name="android:colorButtonNormal">@color/menage_btn_color</item>
     </style>
 </resources>

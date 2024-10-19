@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":feature:login"))
     implementation(project(":feature:site_filter"))
     implementation(project(":feature:site_creation"))
+    implementation(project(":feature:home"))
 
     implementation(Deps.core)
     implementation(Deps.appCompat)
@@ -71,6 +72,7 @@ dependencies {
     implementation(platform(FireBase.firebase_platform))
     implementation(FireBase.firebase_firestore)
     implementation(FireBase.firebase_storage)
+    implementation(FireBase.firebase_auth)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

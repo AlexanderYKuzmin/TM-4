@@ -6,8 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,8 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.tm_4.common.R
 import com.kuzmin.tm_4.common.extension.toast
 import com.kuzmin.tm_4.common.util.CommonConstants
-import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
-import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
+import com.kuzmin.tm_4.common.util.CommonConstants.FRAGMENT_IN_PROGRESS
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE
+import com.kuzmin.tm_4.feature.api.api.FeatureIsActiveListener
+import com.kuzmin.tm_4.feature.api.api.HomeButtonRemovable
+import com.kuzmin.tm_4.feature.api.api.activity.OnFragmentActionListener
+import com.kuzmin.tm_4.feature.api.domain.model.FragmentAction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.SiteTinyData
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.SiteSample
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentNavSitesBinding
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.ui.adapters.SiteListAdapter
@@ -25,7 +29,11 @@ import com.kuzmin.tm_4.feature.sites.ui.viewmodels.SiteListViewModel
 
 abstract class SiteListFragment : Fragment() {
 
-    var onItemClickListener: OnItemClickListener? = null
+    //private var homeButtonRemovable: HomeButtonRemovable? = null
+
+    private var onFragmentActionListener: OnFragmentActionListener? = null
+
+    private var onItemClickListener: OnItemClickListener? = null
 
     private var _binding: FragmentNavSitesBinding? = null
     protected val binding get() = _binding!!
@@ -39,8 +47,6 @@ abstract class SiteListFragment : Fragment() {
     protected val navController by lazy {
         findNavController()
     }
-
-    private var removeActionbarBackArrow: (() -> Unit)? = null
 
     protected abstract val siteListAdapter: SiteListAdapter
 
@@ -63,14 +69,12 @@ abstract class SiteListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is AppCompatActivity) removeActionbarBackArrow = {
-            context.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        }
+        /*if (context is HomeButtonRemovable) {
+            homeButtonRemovable = context
+        }*/
         if (context is OnItemClickListener) {
             onItemClickListener = context
-        } else {
-            throw RuntimeException("Activity must implement OnDeviceItemClickListener")
-        }
+        } else throw RuntimeException("Activity must implement OnDeviceItemClickListener")
     }
 
     protected fun setAdapterItemClickAction(adapter: SiteListAdapter) {
@@ -147,7 +151,13 @@ abstract class SiteListFragment : Fragment() {
     }
 
     override fun onResume() {
-        removeActionbarBackArrow?.invoke()
+        //homeButtonRemovable?.remove()
+        onFragmentActionListener?.onFragmentAction(
+            FragmentAction.SiteListAction(
+                action = FRAGMENT_IN_PROGRESS,
+                data = bundleOf(STORAGE to viewModel.storageLocation)
+            )
+        )
         super.onResume()
     }
 

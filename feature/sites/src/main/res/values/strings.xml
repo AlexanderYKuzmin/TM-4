@@ -29,6 +29,12 @@
     <string name="measure_satisfied_yes">Удовлетворительно</string>
     <string name="measure_satisfied_no">Неудовлетворительно</string>
 
+    <string-array name="construction_configs">
+        <item>Четырехгранная</item>
+        <item>Трехгранная</item>
+        <item>Круг</item>
+    </string-array>
+
     <!--status-->
     <string name="unsatisfactory">Аварийное</string>
     <string name="satisfactory">Удовлетворительно</string>

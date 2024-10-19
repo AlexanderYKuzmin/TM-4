@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
-import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetRemoteSiteByIdNoSectionsUseCase
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetSitePhotosUseCase

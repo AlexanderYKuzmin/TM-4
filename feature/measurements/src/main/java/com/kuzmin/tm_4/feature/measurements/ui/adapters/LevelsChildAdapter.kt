@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.tm_4.common.R.*
-import com.kuzmin.tm_4.feature.api.domain.model.site.McLevelInfo
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.McLevelInfo
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.ItemChildLevelDataBinding
 

@@ -2,7 +2,7 @@ package com.kuzmin.tm_4.feature.report.ui.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult
 import com.kuzmin.tm_4.feature.api.ui.FeatureViewModel
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetMcAndConstructionUseCase
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +16,8 @@ open class ReportFeatureViewModel (
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             Log.d("TAbles", "ReportFeatureViewModel")
             val mcAndC = getMcAndConstructionUseCase(mcUuid) ?: throw RuntimeException("Wrong cUuid, there is no such construction in db.")
-            _mcResult.postValue(
-                McAndCResult.SuccessMcAndC(mcAndC)
+            _siteActionResult.postValue(
+                SiteActionResult.SuccessMcAndC(mcAndC)
             )
         }
     }

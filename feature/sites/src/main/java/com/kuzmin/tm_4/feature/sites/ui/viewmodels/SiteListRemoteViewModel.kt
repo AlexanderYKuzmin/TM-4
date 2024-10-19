@@ -6,7 +6,7 @@ import com.kuzmin.tm_4.common.util.CommonConstants.SAMPLE_PHOTO_NAME_SUFFIX_SERV
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
 import com.kuzmin.tm_4.feature.api.api.SearchFilterPrefManager
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetAllPhotoSamplesRemoteUseCase
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetAllSiteSamplesRemoteUseCase
@@ -24,6 +24,8 @@ class SiteListRemoteViewModel @Inject constructor(
     private val searchFilterPrefManager: SearchFilterPrefManager,
     sitePrefManager: SitePrefManager
     ) : SiteListViewModel(sitePrefManager) {
+
+    override var isFiltered: Boolean = false
 
     override val storageLocation: Int
         get() = STORAGE_REMOTE

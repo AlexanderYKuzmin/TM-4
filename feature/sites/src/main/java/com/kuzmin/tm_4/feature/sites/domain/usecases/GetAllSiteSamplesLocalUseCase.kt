@@ -2,7 +2,7 @@ package com.kuzmin.tm_4.feature.sites.domain.usecases
 
 import android.util.Log
 import com.kuzmin.tm_4.feature.api.api.LocalRepository
-import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.SiteSample
 import javax.inject.Inject
 
 class GetAllSiteSamplesLocalUseCase @Inject constructor(

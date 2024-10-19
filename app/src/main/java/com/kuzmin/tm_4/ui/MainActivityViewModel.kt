@@ -1,18 +1,28 @@
 package com.kuzmin.tm_4.ui
 
+import android.content.res.Resources
+import android.os.Bundle
 import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
-import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
-import com.kuzmin.tm_4.feature.login.domain.AuthManager
+import com.kuzmin.tm_4.R
+import com.kuzmin.tm_4.common.R.id.home_nav_graph
+import com.kuzmin.tm_4.common.R.id.site_nav_graph
+import com.kuzmin.tm_4.common.util.CommonConstants.AUTHORIZATION_FAILED
+import com.kuzmin.tm_4.common.util.CommonConstants.AUTHORIZATION_STARTED
+import com.kuzmin.tm_4.common.util.CommonConstants.AUTHORIZED
+import com.kuzmin.tm_4.common.util.CommonConstants.FRAGMENT_ON_START
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE
+import com.kuzmin.tm_4.domain.model.ToolbarState
+import com.kuzmin.tm_4.domain.model.sealed.AppState
+import com.kuzmin.tm_4.domain.usecases.AppStateProcessorUseCase
+import com.kuzmin.tm_4.feature.api.domain.model.FragmentAction
+import com.kuzmin.tm_4.feature.home.domain.usecases.DeleteAllTempSitesUseCase
 import com.kuzmin.tm_4.feature.login.domain.usecases.ReadAuthUserDatastoreUseCase
-import com.kuzmin.tm_4.feature.sites.domain.model.SearchQuerySharedContainer
-import com.kuzmin.tm_4.model.ScreenMode
-import com.kuzmin.tm_4.model.sealed.AppState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -23,22 +33,23 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val readAuthUserDatastoreUseCase: ReadAuthUserDatastoreUseCase,
-    private val authManager: AuthManager
+    private val deleteAllTempSitesUseCase: DeleteAllTempSitesUseCase,
+    private val appStateProcessorUseCase: AppStateProcessorUseCase
 ) : ViewModel() {
 
     private val authExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.d("MainActivity", "Exception handler throwable: $throwable")
     }
 
-    private var _toolbarState: AppState.ToolbarState? = null
-    private val toolbarState: AppState.ToolbarState get() = _toolbarState!!
+    private var _toolbarState = ToolbarState(false, null)
+    val toolbarState: ToolbarState get() = _toolbarState
 
     private val _appState = MutableLiveData<AppState>()
     private val appState: LiveData<AppState> = _appState
 
-    init {
+    /*init {
         checkAuthorization()
-    }
+    }*/
 
     fun observeAppState(lifecycleOwner: LifecycleOwner, action: (AppState) -> Unit) {
         appState.observe(lifecycleOwner) {
@@ -46,14 +57,29 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun initHome() {
+        handleFragmentAction(FragmentAction.HomeAction)
+    }
+
     fun initAuthorization() {
-        _appState.value = AppState.LoginState
+        handleFragmentAction(FragmentAction.LoginAction(AUTHORIZATION_STARTED))
+    }
+
+    fun initFilter(storage: Int) {
+        handleFragmentAction(
+            FragmentAction.FilterAction(
+                FRAGMENT_ON_START,
+                bundleOf(STORAGE to storage)
+            )
+        )
     }
 
     fun initSiteList(storage: Int) {
-        _appState.value = AppState.SiteListSate(
-            storage,
-            false
+        handleFragmentAction(
+            FragmentAction.SiteListAction(
+                FRAGMENT_ON_START,
+                bundleOf(STORAGE to storage)
+            )
         )
     }
 
@@ -61,38 +87,56 @@ class MainActivityViewModel @Inject constructor(
         _appState.value = AppState.SiteCreationState(null)
     }
 
-    fun initSearchFilter() {
-        _appState.value
-    }
-
-    private fun checkAuthorization() {
+    /*private fun checkAuthorization() {
         viewModelScope.launch(Dispatchers.IO + authExceptionHandler) {
-            Log.d("MainActivity", "Launch check authorization ${this.coroutineContext}")
             val isAuth = authManager.isUserAuthorized()
             withContext(Dispatchers.Main) {
-                if (isFirstStart()) _appState.value = AppState.LoginState
-                else handleLogin(isAuth)
+                handleFragmentAction(
+                    FragmentAction.LoginAction(
+                        if (!isAuth) AUTHORIZATION_FAILED else AUTHORIZED
+                    )
+                )
             }
         }
+    }*/
+
+    fun deleteAllTempSites() {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteAllTempSitesUseCase()
+        }
     }
 
-    fun handleLogin(isAuthOk: Boolean) {
-        _toolbarState = if (_toolbarState == null) {
-            AppState.ToolbarState(false, null)
-        }
-        else {
-            toolbarState.copy(isLoginCompleted = isAuthOk)
-        }
-
-        _appState.value = toolbarState
-    }
-
-    fun handleFilter(isFilterSet: Boolean, storage: Int) {
-        _appState.value = AppState.SiteListSate(storage, isFilterSet)
+    fun handleFragmentAction(fragmentAction: FragmentAction) {
+        val pairState = appStateProcessorUseCase(
+            toolbarState,
+            fragmentAction
+        )
+        _toolbarState = pairState.second
+        _appState.value = pairState.first ?: AppState.HomeState
     }
 
     fun handleSiteSelected(name: String?) {
-        _appState.value = toolbarState.copy(appTitle = name)
+        changeAppState(site_nav_graph, bundle = bundleOf(APP_TITLE to name))
+    }
+
+    fun changeAppState(fragmentId: Int, resources: Resources? = null, bundle: Bundle? = null) {
+        when (fragmentId) {
+            home_nav_graph -> {
+                _toolbarState =
+                    toolbarState.copy(
+                        appTitle = resources?.getString(R.string.app_name),
+                        isLogoVisible = true
+                    )
+                _appState.value = AppState.HomeState
+            }
+
+            site_nav_graph -> {
+                if (bundle != null) {
+                    _toolbarState = toolbarState.copy(appTitle = bundle.getString(APP_TITLE))
+                    _appState.value = AppState.SingleSiteState(bundle.getString(APP_TITLE))
+                }
+            }
+        }
     }
 
     fun handleNew() {
@@ -103,7 +147,9 @@ class MainActivityViewModel @Inject constructor(
             )*/
     }
 
-    private fun isFirstStart(): Boolean {
-        return _toolbarState == null
+    companion object {
+        const val APP_TITLE = "app_title"
+
+        const val IS_LOGO_VISIBLE = "is_logo_visible"
     }
 }

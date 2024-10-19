@@ -1,9 +1,6 @@
 package com.kuzmin.tm_4.feature.login.util
 
 
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUser
-import java.util.*
-
 object AuthValidation {
     /*fun isAuthUserValid(authUser: AuthUser?): Boolean {
         authUser?.let {

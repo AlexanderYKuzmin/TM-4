@@ -3,7 +3,7 @@ package com.kuzmin.tm_4.feature.site_creation.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.ConstructionAndSections
 import com.kuzmin.tm_4.feature.api.domain.usecases.SaveConstructionAndSectionsToDbUseCase
 import com.kuzmin.tm_4.feature.site_creation.domain.model.sealed.CreationState
 import com.kuzmin.tm_4.feature.site_creation.domain.validators_api.StructureValidator

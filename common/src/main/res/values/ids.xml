@@ -4,6 +4,7 @@
     <!--Navigation graphs-->
     <item name="home_nav_graph" type="id"/>
     <item name="login_nav_graph" type="id"/>
+    <item name="register_nav_graph" type="id"/>
     <item name="site_filter_nav_graph" type="id"/>
     <item name="site_creation_nav_graph" type="id"/>
     <item name="site_construction_creation_nav_graph" type="id"/>
@@ -49,4 +50,9 @@
 
     <item name="action_site_creation_nav_graph_to_site_construction_creation_nav_graph" type="id"/>
 
+    <item name="action_login_nav_graph_to_register_nav_graph" type="id"/>
+
+    <!-- views -->
+    <item name="btn_ok_login" type="id"/>
+    <item name="btn_cancel_login" type="id"/>
 </resources>

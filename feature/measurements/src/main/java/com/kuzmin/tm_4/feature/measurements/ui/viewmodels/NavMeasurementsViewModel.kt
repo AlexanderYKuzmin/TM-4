@@ -7,13 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.util.CommonConstants
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
-import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
-import com.kuzmin.tm_4.feature.api.domain.usecases.GetSiteByIdFullUseCase
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.SiteTinyData
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetAllMcFullFromDbUseCase
-import com.kuzmin.tm_4.feature.measurements.domain.usecases.GetMeasurementConstructionsBySiteIdUseCase
+import com.kuzmin.tm_4.feature.api.domain.usecases.GetSiteByIdFullUseCase
 import com.kuzmin.tm_4.feature.api.domain.usecases.SaveSiteToDbUseCase
+import com.kuzmin.tm_4.feature.measurements.domain.usecases.GetMeasurementConstructionsBySiteIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -34,11 +33,11 @@ class NavMeasurementsViewModel @Inject constructor(
 
     private var siteTinyData: SiteTinyData? = null
 
-    private val _McAndCResult = MutableLiveData<McAndCResult>()
-    val mcAndCResult: LiveData<McAndCResult> get() = _McAndCResult
+    private val _siteActionResult = MutableLiveData<SiteActionResult>()
+    val siteActionResult: LiveData<SiteActionResult> get() = _siteActionResult
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _McAndCResult.value = Error(throwable)
+        _siteActionResult.value = SiteActionResult.Error(throwable)
     }
 
     private val getAndSaveFullSiteExceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -63,22 +62,19 @@ class NavMeasurementsViewModel @Inject constructor(
                 }
             }.await()
 
-            Log.d("mc", "Nav meas view model. mcList:")
             mcList?.forEach { Log.d("mc", "${it.levelsInfo} :: ${it.results}") }
             withContext(Dispatchers.Main) {
-                _McAndCResult.value = SuccessMcFullList(mcList)
+                _siteActionResult.value = SiteActionResult.SuccessMcFullList(mcList)
             }
         }
     }
 
      fun getAndSaveFullSiteToDbAsTemp() {
-         Log.d("MC", "Measurement View model. Get full site from firestore and save site to db.")
          viewModelScope.launch(Dispatchers.IO + getAndSaveFullSiteExceptionHandler) {
              val site = async {
                 getSiteByIdUseCase.invoke(siteTinyData!!.sUuid)
              }.await()
 
-             Log.d("MC", "Get site. Site: $site")
             saveSiteToDbUseCase(site, CommonConstants.TEMP)
          }
     }

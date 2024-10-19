@@ -3,28 +3,35 @@ package com.kuzmin.tm_4.feature.login.ui
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnPreDrawListener
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.kuzmin.tm_4.common.R.*
+import com.kuzmin.tm_4.common.R.id.btn_cancel_login
+import com.kuzmin.tm_4.common.R.id.btn_ok_login
+import com.kuzmin.tm_4.common.extension.toast
+import com.kuzmin.tm_4.common.util.CommonConstants.AUTHORIZATION_CANCELLED
+import com.kuzmin.tm_4.common.util.messages.LoginMessage
+import com.kuzmin.tm_4.feature.api.api.activity.OnFragmentActionListener
+import com.kuzmin.tm_4.feature.api.domain.model.FragmentAction
+import com.kuzmin.tm_4.feature.api.domain.model.user.AuthUser
 import com.kuzmin.tm_4.feature.login.R
 import com.kuzmin.tm_4.feature.login.databinding.FragmentLoginBinding
-import com.kuzmin.tm_4.feature.login.domain.model.AuthUserResult.*
-import com.kuzmin.tm_4.feature.login.domain.model.User
+import com.kuzmin.tm_4.feature.login.domain.model.LoginRegResult.*
+import com.kuzmin.tm_4.feature.api.domain.model.user.User
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-
-const val AUTH_USER = "auth_user"
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(), OnClickListener {
@@ -33,9 +40,7 @@ class LoginFragment : Fragment(), OnClickListener {
     @ApplicationContext
     lateinit var appContext: Context
 
-    private var removeActionbarBackArrow: (() -> Unit)? = null
-
-    private var onLoginActionListener: OnLoginActionListener? = null
+    private var onFragmentActionListener: OnFragmentActionListener? = null
 
     lateinit var usernameOnPreDrawListener: OnPreDrawListener
     lateinit var passwordOnPreDrawListener: OnPreDrawListener
@@ -50,6 +55,9 @@ class LoginFragment : Fragment(), OnClickListener {
     //private lateinit var savedStateHandle: SavedStateHandle
 
     private val navController by lazy { findNavController() }
+
+    private lateinit var btnOkLogin: Button
+    private lateinit var btnCancelLogin: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,22 +80,18 @@ class LoginFragment : Fragment(), OnClickListener {
                 .also {
                     if (tilUsername.height > 0) {
                         tilUsername.viewTreeObserver.removeOnPreDrawListener(it)
+                    }
                 }
-            }
-                    /*ViewTreeObserver.OnPreDrawListener {
-                if (tilUsername.height > 0) {
-                    tilUsername.viewTreeObserver.removeOnPreDrawListener(usernameOnPreDrawListener)
-                    updateHintPosition(
-                        etUsername.hasFocus(),
-                        !etUsername.text.isNullOrEmpty(),
-                        false,
-                        USERNAME
-                    )
-                    return@OnPreDrawListener false
-                }
-                true
-            }*/
             tilUsername.viewTreeObserver.addOnPreDrawListener(usernameOnPreDrawListener)
+
+            //Рассмотреть EditTextBackEventListener
+            etUsername.setOnEditorActionListener { _, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE || event?.keyCode == KeyEvent.KEYCODE_BACK) {
+                    binding.chbRem.visibility = View.VISIBLE
+                    binding.tvRegister.visibility = View.VISIBLE
+                }
+                false
+            }
 
             passwordOnPreDrawListener = createOnPreDrawListener(tilPassword, etPassword, PASSWORD)
                 .also {
@@ -95,73 +99,58 @@ class LoginFragment : Fragment(), OnClickListener {
                         tilPassword.viewTreeObserver.removeOnPreDrawListener(it)
                     }
                 }
-                    /*ViewTreeObserver.OnPreDrawListener {
-                if (tilPassword.height > 0) {
-                    tilPassword.viewTreeObserver.removeOnPreDrawListener(passwordOnPreDrawListener)
-                    updateHintPosition(
-                        etPassword.hasFocus(),
-                        !etPassword.text.isNullOrEmpty(),
-                        false,
-                        PASSWORD
-                    )
-                    return@OnPreDrawListener false
-                }
-                true
-            }*/
             tilPassword.viewTreeObserver.addOnPreDrawListener(passwordOnPreDrawListener)
 
             etUsername.setOnFocusChangeListener { _, hasFocus ->
-                updateHintPosition(hasFocus, !etUsername.text.isNullOrEmpty(), false, USERNAME)
+                updateHintPosition(hasFocus, !etUsername.text.isNullOrEmpty(), USERNAME)
+                binding.chbRem.visibility = View.GONE
+                binding.tvRegister.visibility = View.GONE
             }
 
             etPassword.setOnFocusChangeListener { _, hasFocus ->
-                updateHintPosition(hasFocus, !etPassword.text.isNullOrEmpty(), false, PASSWORD)
+                updateHintPosition(hasFocus, !etPassword.text.isNullOrEmpty(), PASSWORD)
             }
 
-            btnLogin.setOnClickListener(this@LoginFragment)
-            btnLoginCancel.setOnClickListener(this@LoginFragment)
-        }
+            btnOkLogin =
+                llBtnsLogin.findViewById<Button>(btn_ok_login).apply {
+                    setOnClickListener(this@LoginFragment)
+                }
+            btnCancelLogin =
+                llBtnsLogin.findViewById<Button>(btn_cancel_login).apply {
+                    setOnClickListener(this@LoginFragment)
+                }
 
-        loginViewModel.userdata.observe(viewLifecycleOwner) {
-            showAuthUserForm(it)
+            tvRegister.setOnClickListener(this@LoginFragment)
         }
 
         with(loginViewModel) {
-            authUserResult.observe(viewLifecycleOwner) {
+            loginRegResult.observe(viewLifecycleOwner) {
                 when(it) {
-                    is Success<*> -> {
-                        Toast.makeText(appContext, getString(R.string.authorization_success), Toast.LENGTH_SHORT).show()
-                        close(true)
-                        //TODO MESSENGER OR NOTIFICATION
+                    is LocalUserCheck -> {
+                        if (it.authUser != null) fillFields(it.authUser)
                     }
-                    is Error<*> -> {
-                        Toast.makeText(
-                            appContext,
-                            getString(R.string.authorization_error) + " " + it.throwable.toString(),
-                            Toast.LENGTH_SHORT).show()
-                        Log.d("LoginFragment", "error: ${it.throwable.toString()}")
-                        showAuthUserForm(it.user)
+                    is Success -> {
+                        TODO()
                     }
-                    /*is Default<*> -> {
-                        showAuthUserForm(it)
-                    }*/
-                    else -> throw RuntimeException("Unexpected statement.")
+                    is Failure -> {
+                        if (it.authFbInfo.hasError) {
+                            appContext.toast(it.authFbInfo.message!!)
+                        } else {
+                            throw RuntimeException("Authorization info must contain message")
+                        }
+                    }
+                    else -> throw RuntimeException("Unexpected login statement.")
                 }
             }
         }
-
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnLoginActionListener) {
-            onLoginActionListener = context
+        if (context is OnFragmentActionListener) {
+            onFragmentActionListener = context
         } else {
-            throw RuntimeException("Activity must implement OnDeviceItemClickListener")
-        }
-
-        if (context is AppCompatActivity) removeActionbarBackArrow = {
-            context.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            throw RuntimeException("Activity must implement OnFragmentActionListener")
         }
     }
 
@@ -169,41 +158,41 @@ class LoginFragment : Fragment(), OnClickListener {
         Log.d("MainActivity", "Login Fragment onClick")
         with(binding) {
             when(v) {
-                btnLogin -> authenticate()
-                btnLoginCancel -> {
-                    Toast.makeText(appContext, getString(R.string.authorization_canceled), Toast.LENGTH_SHORT).show()
-                    loginViewModel.cancelAuthentication()
-                    close(false)
+                btnOkLogin -> loginViewModel.signIn(
+                    User(
+                        etUsername.text.toString(),
+                        etPassword.text.toString()
+                    ),
+                    chbRem.isChecked
+                )
+                btnCancelLogin -> {
+                    appContext.toast(LoginMessage.AUTHORIZATION_CANCELED)
+                    close(AUTHORIZATION_CANCELLED)
+                }
+                tvRegister -> {
+                    launchRegisterFragment()
                 }
                 else -> {throw RuntimeException("Unknown case")}
             }
         }
     }
 
-    private fun showAuthUserForm(user: User) {
-        Log.d("Login", "auth is not succeed")
-        with(binding) {
-            etUsername.setText(user.username)
-            etPassword.setText(user.password) // "h98dGDJx"
-        }
-    }
-
-    private fun authenticate() {
-        Log.d("MainActivity", "Login Fragment authenticate()")
-        with(binding) {
-            //loginViewModel.authenticate(User(etUsername.text.toString(), etPassword.text.toString()))
-            loginViewModel.authenticate(User(etUsername.text.toString(), "h98dGDJx"))
+    private fun fillFields(authUser: AuthUser) {
+        if (authUser.dataVisibility) {
+            with(binding) {
+                etUsername.setText(authUser.email)
+                etPassword.setText(authUser.password)
+            }
         }
     }
 
     private fun createOnPreDrawListener(til: TextInputLayout, et: TextInputEditText, name: String): OnPreDrawListener {
-        return ViewTreeObserver.OnPreDrawListener {
+        return OnPreDrawListener {
             if (til.height > 0) {
                 removeListener(name)
                 updateHintPosition(
                     et.hasFocus(),
                     !et.text.isNullOrEmpty(),
-                    false,
                     name
                 )
                 return@OnPreDrawListener false
@@ -212,17 +201,16 @@ class LoginFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun updateHintPosition(hasFocus: Boolean, hasText: Boolean, isAnimated: Boolean, name: String) {
-        /*if (isAnimated) {
-            //TransitionManager.beginDelayedTransition(textInputLayout)
-            binding.tilUsername.animate()
-        }*/
+    private fun updateHintPosition(hasFocus: Boolean, hasText: Boolean, name: String) {
         if (hasFocus || hasText) {
             if (name == USERNAME) binding.tilUsername.hint = appContext.getString(R.string.username_hint_small)
             else binding.tilPassword.hint = appContext.getString(R.string.password_hint_small)
+
         } else {
             if (name == USERNAME) binding.tilUsername.hint = appContext.getString(R.string.username_hint)
             else binding.tilPassword.hint = appContext.getString(R.string.password_hint)
+            binding.chbRem.visibility = View.VISIBLE
+            binding.tvRegister.visibility = View.VISIBLE
         }
     }
 
@@ -237,14 +225,15 @@ class LoginFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun close(isOk: Boolean) {
-        onLoginActionListener?.onAuthorizationCompleted(isOk)
-        navController.popBackStack()
+    private fun launchRegisterFragment() {
+        navController.navigate(com.kuzmin.tm_4.common.R.id.action_login_nav_graph_to_register_nav_graph)
     }
 
-    override fun onResume() {
-        removeActionbarBackArrow?.invoke()
-        super.onResume()
+    private fun close(action: String) {
+        onFragmentActionListener?.onFragmentAction(
+            FragmentAction.LoginAction(action)
+        )
+        navController.popBackStack()
     }
 
     override fun onDestroyView() {
@@ -255,9 +244,5 @@ class LoginFragment : Fragment(), OnClickListener {
     companion object {
         const val USERNAME = "username"
         const val PASSWORD = "password"
-    }
-
-    interface OnLoginActionListener {
-        fun onAuthorizationCompleted(isOk: Boolean)
     }
 }

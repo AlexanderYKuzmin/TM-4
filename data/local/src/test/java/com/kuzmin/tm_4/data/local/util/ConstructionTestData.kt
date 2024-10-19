@@ -11,8 +11,8 @@ import com.kuzmin.tm_4.data.local.util.Constants.C_DATE
 import com.kuzmin.tm_4.data.local.util.Constants.HEIGHT
 import com.kuzmin.tm_4.data.local.util.Constants.NUM_OF_SECTION
 import com.kuzmin.tm_4.data.local.util.Constants.SITE_PREFIX
-import com.kuzmin.tm_4.feature.api.domain.model.sample.ConstructionSample
-import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.ConstructionSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Construction
 import java.util.Date
 
 object ConstructionTestData {

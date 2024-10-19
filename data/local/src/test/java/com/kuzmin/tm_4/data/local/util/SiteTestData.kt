@@ -6,9 +6,9 @@ import com.kuzmin.tm_4.core.database.model.site.LevelDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
 import com.kuzmin.tm_4.core.database.model.site.ResultDb
 import com.kuzmin.tm_4.data.local.util.Constants.SITE_PREFIX
-import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
-import com.kuzmin.tm_4.feature.api.domain.model.site.Group
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Group
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 
 object SiteTestData {
 

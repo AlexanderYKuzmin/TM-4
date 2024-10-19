@@ -40,6 +40,7 @@ android {
 dependencies {
 
     implementation(project(":common"))
+    implementation(project(":feature:api"))
 
     implementation(Deps.core)
     implementation(Deps.appCompat)

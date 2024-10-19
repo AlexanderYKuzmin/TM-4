@@ -17,38 +17,12 @@ import com.kuzmin.tm_4.core.database.model.site.SiteParamsDb
 import com.kuzmin.tm_4.core.database.model.site.TenantDb
 
 object TmDatabaseTestUtil {
-
-    const val SINGLE_SITE_UUID_TEST = "4758c533-70d3-4429-8c6e-000000000001"
-
-    const val SINGLE_CONSTRUCTION_UUID_TEST = "adff1f64-09bc-4d11-be88-000000000001"
-
-    const val SITE_BASE_UUID_TEST = "4758c533-70d3-4429-8c6e-"
-
-    const val TENANT_BASE_UUID_TEST = "3462ab26-8b23-4021-afd1-"
-
-    const val CONSTRUCTION_BASE_UUID_TEST = "adff1f64-09bc-4d11-be88-"
-
-    const val SECTION_BASE_UUID_TEST = "09e1e378-d030-4fb9-931c-"
-
-    //UUID formats:
-    // SITE: siteA
-    // CONSTRUCTION: siteA-constructionB
-    // SECTION: siteA-constructionB-sectionC
-    // TENANT: siteA-tenantB
-    // ADDRESS: siteA-addressB
-
-    /*val siteUuidList = listOf<String>(
-        "site" + "0",
-        "site" + "1",
-    )
-
-    val constructionUuidList = listOf<String>(
-        CONSTRUCTION_BASE_UUID_TEST + "0" + "0",
-        CONSTRUCTION_BASE_UUID_TEST + "0" + "1",
-        CONSTRUCTION_BASE_UUID_TEST + "1" + "0",
-        CONSTRUCTION_BASE_UUID_TEST + "1" + "1"
-    )*/
-
+    /*fun createTestPhotoDbList(): List<PhotoDb> {
+        return listOf(
+            createPhotoDb(0),
+            createPhotoDb(1)
+        )
+    }*/
 
     fun createTestSiteDbList(): List<SiteDb> {
         return listOf(
@@ -110,7 +84,7 @@ object TmDatabaseTestUtil {
             longitude = 100.5555,
             siteType = 11,
             siteTypeDescription = "TEST",
-            durability = CommonConstants.CONST
+            durability = if (index < 1) CommonConstants.CONST else CommonConstants.TEMP
         )
     }
 

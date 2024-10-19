@@ -4,12 +4,28 @@
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/color_accent_dark</item>
     </style>
-    <style name="EditTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="TextInputLogin" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
         <item name="android:layout_marginStart">12dp</item>
         <item name="android:layout_marginEnd">12dp</item>
-        <item name="android:layout_marginTop">16dp</item>
+
         <item name="android:textColorHint">@color/color_gray</item>
         <item name="errorTextAppearance">@style/ErrorText</item>
+    </style>
+    <style name="TextInputEditTextLogin" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/naga</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="MenageButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/naga</item>
+        <item name="android:layout_weight">1</item>
+        <item name="backgroundTint">#C4C4C4</item>
     </style>
 </resources>
 

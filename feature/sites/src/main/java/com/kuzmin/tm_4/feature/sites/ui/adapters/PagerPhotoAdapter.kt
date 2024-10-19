@@ -2,7 +2,7 @@ package com.kuzmin.tm_4.feature.sites.ui.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Photo
 import com.kuzmin.tm_4.feature.sites.ui.fragments.ItemPagerFragment
 
 class PagerPhotoAdapter(

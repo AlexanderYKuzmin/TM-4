@@ -4,7 +4,7 @@ import com.kuzmin.tm_4.core.database.model.site.SectionDb
 import com.kuzmin.tm_4.data.local.util.Constants.CONSTRUCTION_PREFIX
 import com.kuzmin.tm_4.data.local.util.Constants.SECTION_PREFIX
 import com.kuzmin.tm_4.data.local.util.Constants.SITE_PREFIX
-import com.kuzmin.tm_4.feature.api.domain.model.site.Section
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Section
 
 object SectionTestData {
 

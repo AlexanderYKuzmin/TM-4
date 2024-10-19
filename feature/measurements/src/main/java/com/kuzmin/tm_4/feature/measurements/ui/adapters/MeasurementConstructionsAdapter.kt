@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.tm_4.common.extension.formatToDateString
-import com.kuzmin.tm_4.feature.api.domain.model.site.McLevelInfo
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.McLevelInfo
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.ItemMeasurementConstructionBinding
 import com.kuzmin.tm_4.feature.measurements.ui.model.McParent

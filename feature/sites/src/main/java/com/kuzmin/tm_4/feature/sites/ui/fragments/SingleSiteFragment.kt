@@ -13,10 +13,22 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kuzmin.tm_4.common.R
 import com.kuzmin.tm_4.common.extension.formatToDateString
+import com.kuzmin.tm_4.common.util.CommonConstants
+import com.kuzmin.tm_4.common.util.CommonConstants.FOUR_EDGE
+import com.kuzmin.tm_4.common.util.CommonConstants.MAST
+import com.kuzmin.tm_4.common.util.CommonConstants.POLE
+import com.kuzmin.tm_4.common.util.CommonConstants.THREE_EDGE
+import com.kuzmin.tm_4.common.util.CommonConstants.TOWER
+import com.kuzmin.tm_4.common.util.CommonConstants.ZERO_EDGE
 import com.kuzmin.tm_4.feature.api.api.FeatureIsActiveListener
-import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
-import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.api.HomeButtonRemovable
+import com.kuzmin.tm_4.feature.api.api.activity.OnFragmentActionListener
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Construction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
+import com.kuzmin.tm_4.feature.sites.R.array.construction_configs
+import com.kuzmin.tm_4.feature.sites.R.string.measure_satisfied_no
+import com.kuzmin.tm_4.feature.sites.R.string.measure_satisfied_yes
 import com.kuzmin.tm_4.feature.sites.databinding.FragmentSiteBinding
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.ui.adapters.PagerPhotoAdapter
@@ -28,9 +40,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SingleSiteFragment : Fragment() {
 
-    private var featureIsActiveListener: FeatureIsActiveListener? = null
+    private var onFragmentActionListener: OnFragmentActionListener? = null
 
-    private var removeActionbarBackArrow: (() -> Unit)? = null
+    private var homeButtonRemovable: HomeButtonRemovable? = null
 
     private var _binding: FragmentSiteBinding? = null
     private val binding get() = _binding!!
@@ -54,14 +66,12 @@ class SingleSiteFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is FeatureIsActiveListener) {
-            featureIsActiveListener = context
+        if (context is OnFragmentActionListener) {
+            onFragmentActionListener = context
         } else {
-            throw RuntimeException("Activity must implement FeatureIsActiveListener")
+            throw RuntimeException("Activity must implement OnFragmentActionListener")
         }
-        if (context is AppCompatActivity) removeActionbarBackArrow = {
-            context.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        }
+        if (context is HomeButtonRemovable) homeButtonRemovable = context
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +95,6 @@ class SingleSiteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         val adapter = PagerPhotoAdapter(this)
         binding.vpSitePhotos.adapter = adapter
@@ -147,8 +156,20 @@ class SingleSiteFragment : Fragment() {
             with(currentConstruction!!) {
                 tvConstrVersion.text = version.toString()
                 tvSiteConstrDesc.text = description
-                tvSiteConstrType.text = constructionType
-                tvSiteConstrConfig.text = config
+                tvSiteConstrType.text =
+                    when (constructionType) {
+                        TOWER -> getString(R.string.tower_ru)
+                        MAST -> getString(R.string.mast_ru)
+                        POLE -> getString(R.string.pole_ru)
+                        else -> throw RuntimeException("Wrong construction type.")
+                    }
+                tvSiteConstrConfig.text =
+                    when (config) {
+                        FOUR_EDGE -> resources.getStringArray(construction_configs)[0]
+                        THREE_EDGE -> resources.getStringArray(construction_configs)[1]
+                        ZERO_EDGE -> resources.getStringArray(construction_configs)[2]
+                        else -> throw RuntimeException("Wrong construction config.")
+                    }
                 tvSiteConstrHeight.text = height.toString()
                 tvSiteConstrSections.text = numOfSections.toString()
             }
@@ -161,14 +182,15 @@ class SingleSiteFragment : Fragment() {
             with(currentConstructionMeasurement!!) {
                 tvSiteConstrEmployee.text = employeeName
                 tvSiteConstrMeasureDate.text = completedDate?.formatToDateString() ?: ""
-                tvSiteConstrConclusion.text = isCompleted.toString() // TODO satisfactory
+                tvSiteConstrConclusion.text =
+                    if (isServiceable) getString(measure_satisfied_yes)
+                    else getString(measure_satisfied_no)
             }
         }
     }
 
     override fun onResume() {
-        removeActionbarBackArrow?.invoke()
-        featureIsActiveListener?.onFeatureIsActive(R.id.site_nav_graph)
+        homeButtonRemovable?.remove()
         super.onResume()
     }
 

@@ -10,9 +10,9 @@ import com.kuzmin.tm_4.common.util.CommonConstants.MAX_HEIGHT_MM
 import com.kuzmin.tm_4.common.util.CommonConstants.MAX_SECTION_NUMBER
 import com.kuzmin.tm_4.common.util.CommonConstants.MIN_HEIGHT_MM
 import com.kuzmin.tm_4.common.util.CommonConstants.MIN_SECTION_NUMBER
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
-import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
-import com.kuzmin.tm_4.feature.api.domain.model.site.Section
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.ConstructionAndSections
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Construction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Section
 import com.kuzmin.tm_4.feature.site_creation.R
 import java.util.Date
 import javax.inject.Inject

@@ -3,7 +3,7 @@ package com.kuzmin.tm_4.data.local.mapper.fromModelToDb
 import com.kuzmin.tm_4.core.database.model.delivery.ConstructionAndSectionsDb
 import com.kuzmin.tm_4.data.local.util.ConstructionTestData
 import com.kuzmin.tm_4.data.local.util.SectionTestData
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.ConstructionAndSections
 import org.junit.Assert.*
 
 import org.junit.Before

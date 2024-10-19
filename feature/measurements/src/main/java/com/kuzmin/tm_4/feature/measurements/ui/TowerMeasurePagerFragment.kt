@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult.*
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult.*
 import com.kuzmin.tm_4.feature.measurements.R
 import com.kuzmin.tm_4.feature.measurements.databinding.FragmentTowerMeasurePagerBinding
 import com.kuzmin.tm_4.feature.measurements.ui.NavMeasurementsFragment.Companion.MC_UUID

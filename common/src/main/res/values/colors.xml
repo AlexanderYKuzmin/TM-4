@@ -2,7 +2,8 @@
 <resources>
     <color name="color_primary_dark">#BF8730</color>
     <color name="color_primary">#FFB440</color>
-    <color name="color_on_primary">#A66400</color>
+    <!--<color name="color_on_primary">#A66400</color>-->
+    <color name="color_on_primary">#5C3904</color>
 
     <color name="color_accent">#7B72D8</color>
     <!--<color name="color_accent_dark">#68BCFF</color>-->
@@ -25,7 +26,7 @@
     <color name="pop_up_background">#FADEB3</color>
 
     <!--List buildings item colors-->
-    <color name="color_item_building">#9F97F5</color>
+    <color name="color_item_site_bgd">#9F97F5</color>
     <color name="color_shadow">#D9000000</color>
     <color name="color_on_item_building">#372F85</color>
     <color name="color_well_done">#2E7D32</color>
@@ -46,4 +47,9 @@
     <!--Background buttons colors-->
     <color name="save_btn_color">#81C784</color>
     <color name="delete_btn_color">#E57373</color>
+
+    <!--Menage button colors-->
+    <color name="menage_btn_color">#C4C4C4</color>
+    <color name="menage_btn__stroke_color">#EEEEEE</color>
+
 </resources>

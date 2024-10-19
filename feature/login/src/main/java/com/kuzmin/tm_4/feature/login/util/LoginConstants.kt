@@ -15,4 +15,5 @@ object LoginConstants {
 
     const val IS_AUTH_USER_DATA_CHANGED_ARG = "is_auth_user_data_changed"
     const val USERNAME_ARG = "username"*/
+
 }

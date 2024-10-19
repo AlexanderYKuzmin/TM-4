@@ -10,13 +10,13 @@
             android:layout_height="0dp"
             motion:layout_constraintVertical_weight="3"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toTopOf="@id/tl_site_parameters"
+            motion:layout_constraintBottom_toTopOf="@id/ll_site_parameters"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             />
 
         <Constraint
-            android:id="@id/tl_site_parameters"
+            android:id="@id/ll_site_parameters"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:minHeight="56dp"
@@ -34,12 +34,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toTopOf="@id/tl_site_parameters"
+            motion:layout_constraintBottom_toTopOf="@id/ll_site_parameters"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
-            android:id="@id/tl_site_parameters"
+            android:id="@id/ll_site_parameters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
 
         <OnSwipe
             motion:dragDirection="dragDown"
-            motion:touchAnchorId="@+id/tl_site_parameters"
+            motion:touchAnchorId="@+id/ll_site_parameters"
             motion:touchAnchorSide="top" />
 
     </Transition>

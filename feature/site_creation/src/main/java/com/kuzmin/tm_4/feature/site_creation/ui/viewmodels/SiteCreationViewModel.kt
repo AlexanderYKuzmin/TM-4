@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetSiteByIdFullUseCase
 import com.kuzmin.tm_4.feature.api.domain.usecases.SaveSiteToDbUseCase
 import com.kuzmin.tm_4.feature.site_creation.domain.model.SiteCreationStateData

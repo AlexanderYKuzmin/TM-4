@@ -21,7 +21,8 @@
     <style name="MainMenuStyle" parent="Theme.MaterialComponents.Light">
         <item name="popupMenuBackground">@color/color_primary</item>
         <item name="android:textColor">@color/color_on_surface</item>
-        <!--<item name="fontFamily">@font/calculator</item>-->
+        <item name="android:textStyle">italic</item>
+        <!--<item name="fontFamily">@font/local_titles</item>-->
     </style>
 
     <style name="BottomNavigation" parent="Theme.MaterialComponents.DayNight.NoActionBar">

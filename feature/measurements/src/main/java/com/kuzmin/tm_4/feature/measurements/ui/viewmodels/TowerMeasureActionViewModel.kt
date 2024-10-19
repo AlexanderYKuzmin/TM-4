@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetConstructionFullFromDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,11 +18,11 @@ class TowerMeasureActionViewModel @Inject constructor(
     private val getConstructionFullFromDbUseCase: GetConstructionFullFromDbUseCase
 ) : ViewModel() {
 
-    private val _constructionResult = MutableLiveData<McAndCResult>()
-    val constructionResult: LiveData<McAndCResult> get() = _constructionResult
+    private val _constructionResult = MutableLiveData<SiteActionResult>()
+    val constructionResult: LiveData<SiteActionResult> get() = _constructionResult
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _constructionResult.postValue(McAndCResult.Error(throwable))
+        _constructionResult.postValue(SiteActionResult.Error(throwable))
     }
 
     fun getConstructionFullFromDb(cUuid: String) {
@@ -31,7 +31,7 @@ class TowerMeasureActionViewModel @Inject constructor(
 
             if (constr != null) {
                 _constructionResult.postValue(
-                    McAndCResult.SuccessC(constr)
+                    SiteActionResult.SuccessC(constr)
                 )
             } else {
                 throw IllegalStateException("Error fetching construction from DB")

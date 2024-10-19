@@ -3,10 +3,11 @@ package com.kuzmin.tm_4.feature.sites.ui.viewmodels
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.tm_4.common.util.CommonConstants
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_LOCAL
 import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE_REMOTE
 import com.kuzmin.tm_4.feature.api.api.SearchFilterPrefManager
 import com.kuzmin.tm_4.feature.api.api.SitePrefManager
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 import com.kuzmin.tm_4.feature.sites.domain.model.sealed.SiteResult
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetAllPhotoSamplesLocalUseCase
 import com.kuzmin.tm_4.feature.sites.domain.usecases.GetAllSiteSamplesLocalUseCase
@@ -25,8 +26,10 @@ class SiteListLocalViewModel @Inject constructor(
     sitePrefManager: SitePrefManager
 ) : SiteListViewModel(sitePrefManager){
 
+    override var isFiltered: Boolean = false
+
     override val storageLocation: Int
-        get() = STORAGE_REMOTE
+        get() = STORAGE_LOCAL
 
     override fun loadSiteList() {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {

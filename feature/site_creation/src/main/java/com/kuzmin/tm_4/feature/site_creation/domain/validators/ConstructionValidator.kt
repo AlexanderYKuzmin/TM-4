@@ -1,7 +1,7 @@
 package com.kuzmin.tm_4.feature.site_creation.domain.validators
 
 import android.util.Log
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.ConstructionAndSections
 import com.kuzmin.tm_4.feature.site_creation.R
 import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition
 import com.kuzmin.tm_4.feature.site_creation.domain.model.Condition.DATE

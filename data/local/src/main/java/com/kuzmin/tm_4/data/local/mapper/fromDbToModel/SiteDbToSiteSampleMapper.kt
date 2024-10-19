@@ -6,9 +6,9 @@ import com.kuzmin.tm_4.core.database.model.site.AddressDb
 import com.kuzmin.tm_4.core.database.model.site.ConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementConstructionDb
 import com.kuzmin.tm_4.core.database.model.site.MeasurementDb
-import com.kuzmin.tm_4.feature.api.domain.model.sample.AddressSample
-import com.kuzmin.tm_4.feature.api.domain.model.sample.ConstructionSample
-import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.AddressSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.ConstructionSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.SiteSample
 import javax.inject.Inject
 
 class SiteDbToSiteSampleMapper @Inject constructor(

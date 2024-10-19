@@ -79,8 +79,4 @@
     <string name="geo_wrong_value_latitude">0..90</string>
     <string name="geo_wrong_value_longitude">0..180</string>
 
-
-
-    <!-- Comment for toasts -->
-
 </resources>

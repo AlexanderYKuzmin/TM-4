@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult
 import com.kuzmin.tm_4.feature.api.domain.usecases.GetMeasurementConstructionFromDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,18 +17,18 @@ class TmPagerViewModel @Inject constructor(
     private val getMeasurementConstructionFromDbUseCase: GetMeasurementConstructionFromDbUseCase
 ) : ViewModel(){
 
-    private val _mcResult = MutableLiveData<McAndCResult>()
-    val mcResult: LiveData<McAndCResult> get() = _mcResult
+    private val _mcResult = MutableLiveData<SiteActionResult>()
+    val mcResult: LiveData<SiteActionResult> get() = _mcResult
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _mcResult.postValue(McAndCResult.Error(throwable))
+        _mcResult.postValue(SiteActionResult.Error(throwable))
     }
 
 
     fun getMeasurementConstructionFromDb(mcUuid: String) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val mc = getMeasurementConstructionFromDbUseCase(mcUuid) ?: throw RuntimeException("Wrong mcUuid, there is no such mc in db.")
-            _mcResult.postValue(McAndCResult.SuccessMc(mc))
+            _mcResult.postValue(SiteActionResult.SuccessMc(mc))
         }
     }
 }

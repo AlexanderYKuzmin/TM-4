@@ -1,15 +1,15 @@
 package com.kuzmin.tm_4.feature.api.api
 
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionAndSections
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.ConstructionFull
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.GroupFull
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McAndConstruction
-import com.kuzmin.tm_4.feature.api.domain.model.model_complex.McFull
-import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
-import com.kuzmin.tm_4.feature.api.domain.model.site.Construction
-import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
-import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.ConstructionAndSections
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.ConstructionFull
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.GroupFull
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.McAndConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.model_complex.McFull
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Construction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 
 interface LocalRepository {
     suspend fun addSiteToDb(site: Site, durability: String)
@@ -37,4 +37,6 @@ interface LocalRepository {
     suspend fun getMcFull(mcUuid: String): McFull?
 
     suspend fun getGroupFull(groupMum: Int, mcUuid: String): GroupFull?
+
+    suspend fun deleteAllTempSites()
 }

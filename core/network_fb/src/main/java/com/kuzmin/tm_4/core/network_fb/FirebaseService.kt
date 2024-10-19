@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
-import com.kuzmin.tm_4.core.network_fb.model.SiteDataFbDtoObj
+import com.kuzmin.tm_4.core.network_fb.model.site.SiteDataFbDtoObj
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -18,6 +18,7 @@ class FirebaseService @Inject constructor(
     suspend fun getAllSites(): Map<DocumentSnapshot, List<DocumentSnapshot>> {
         val siteMap = mutableMapOf<DocumentSnapshot, List<DocumentSnapshot>>()
 
+        //by GroupID. Where Group uuid == groupUuid
         firestore.collection(SITES_COLLECTION).get().await()
             .documents.forEach {
                 siteMap[it] = it.reference.collection(CONSTRUCTIONS_COLLECTION)

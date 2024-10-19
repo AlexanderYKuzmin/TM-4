@@ -2,7 +2,7 @@ package com.kuzmin.tm_4.data.local.mapper.fromDbToModel
 
 import com.kuzmin.tm_4.core.database.model.delivery.SiteDb
 import com.kuzmin.tm_4.data.local.util.SiteTestData
-import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.SiteSample
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

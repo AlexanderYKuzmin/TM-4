@@ -19,4 +19,13 @@
     <string name="construction_uuid">c_uuid</string>
     <string name="title">title</string>
     <string name="filter">is filter set</string>
+
+    <!--site type ru strings-->
+    <string name="tower_ru">Башня</string>
+    <string name="mast_ru">Мачта</string>
+    <string name="pole_ru">Столб</string>
+
+    <!--Handle Button block -->
+    <string name="btn_ok">Сохранить</string>
+    <string name="btn_cancel">Отмена</string>
 </resources>

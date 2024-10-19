@@ -91,6 +91,8 @@ object FireBase {
     const val firebase_firestore = "com.google.firebase:firebase-firestore"
     const val firebase_analytics = "com.google.firebase:firebase-analytics"
     const val firebase_storage = "com.google.firebase:firebase-storage"
+    const val firebase_auth = "com.google.firebase:firebase-auth"
+    const val firebase_auth_ktx = "com.google.firebase:firebase-auth-ktx"
 }
 
 object Retrofit {

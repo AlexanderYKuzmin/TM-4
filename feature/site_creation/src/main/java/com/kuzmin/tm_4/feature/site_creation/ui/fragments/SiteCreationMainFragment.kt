@@ -2,8 +2,6 @@ package com.kuzmin.tm_4.feature.site_creation.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,20 +11,19 @@ import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.kuzmin.tm_4.common.R.id.site_construction_creation_nav_graph
-import com.kuzmin.tm_4.common.R.id.site_creation_nav_graph
 import com.kuzmin.tm_4.common.R.id.sites_nav_graph
 import com.kuzmin.tm_4.common.R.string.error
 import com.kuzmin.tm_4.common.extension.toIntOrZero
 import com.kuzmin.tm_4.common.extension.toast
 import com.kuzmin.tm_4.common.util.Generator
-import com.kuzmin.tm_4.feature.api.domain.model.Tenant
-import com.kuzmin.tm_4.feature.api.domain.model.site.Address
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
-import com.kuzmin.tm_4.feature.api.domain.model.site.SiteParams
+import com.kuzmin.tm_4.feature.api.api.HomeButtonRemovable
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Tenant
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Address
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.SiteParams
 import com.kuzmin.tm_4.feature.api.extension.clearEditTextFields
 import com.kuzmin.tm_4.feature.site_creation.R
 import com.kuzmin.tm_4.feature.site_creation.databinding.FragmentSiteCreationMainBinding
@@ -61,6 +58,15 @@ class SiteCreationMainFragment : Fragment() {
     @ApplicationContext
     lateinit var appContext: Context
 
+    private var removeActionbarBackArrow: HomeButtonRemovable? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeButtonRemovable) {
+            removeActionbarBackArrow = context
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         /*if (savedInstanceState == null && isFragmentInBackStack(site_creation_nav_graph)) {
             navController.popBackStack(site_creation_nav_graph, false)
@@ -76,6 +82,7 @@ class SiteCreationMainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentSiteCreationMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -265,6 +272,17 @@ class SiteCreationMainFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         siteCreationViewModel.setToDefaultState()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        removeActionbarBackArrow?.remove()
+        super.onResume()
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

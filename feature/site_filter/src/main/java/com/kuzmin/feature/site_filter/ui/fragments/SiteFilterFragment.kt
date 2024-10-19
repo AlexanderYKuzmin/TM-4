@@ -17,7 +17,13 @@ import com.kuzmin.feature.site_filter.ui.viewmodels.SearchFilterViewModel
 import com.kuzmin.tm_4.common.R.string.storage_type
 import com.kuzmin.tm_4.common.extension.formatToDateString
 import com.kuzmin.tm_4.common.extension.toDate
+import com.kuzmin.tm_4.common.util.CommonConstants
+import com.kuzmin.tm_4.common.util.CommonConstants.FRAGMENT_ON_FINISH
+import com.kuzmin.tm_4.common.util.CommonConstants.IS_FILTER_SET
 import com.kuzmin.tm_4.common.util.CommonConstants.START_DATE_MILLIS_DEFAULT
+import com.kuzmin.tm_4.common.util.CommonConstants.STORAGE
+import com.kuzmin.tm_4.feature.api.api.activity.OnFragmentActionListener
+import com.kuzmin.tm_4.feature.api.domain.model.FragmentAction
 import com.kuzmin.tm_4.feature.api.domain.model.search_filter.SearchFilterData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,14 +34,12 @@ class SiteFilterFragment : Fragment(), OnClickListener {
 
     private var storage: Int = -1
 
-    private var onFilterSubmitListener: OnFilterSubmitListener? = null
+    private var onFragmentActionListener: OnFragmentActionListener? = null
 
     private lateinit var _binding: FragmentSiteFilterBinding
     private val binding: FragmentSiteFilterBinding get() = _binding
 
     private val searchFilterViewModel: SearchFilterViewModel by viewModels()
-
-    private val navController by lazy { findNavController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,24 +113,24 @@ class SiteFilterFragment : Fragment(), OnClickListener {
     }
 
     private fun close(isFilterSet: Boolean) {
-        onFilterSubmitListener?.onFilterSearchSubmit(isFilterSet, storage)
+        //onFilterSubmitListener?.onFilterSearchSubmit(isFilterSet, storage)
+        onFragmentActionListener?.onFragmentAction(
+            FragmentAction.FilterAction(
+                action = FRAGMENT_ON_FINISH,
+                data = Bundle().apply {
+                    putBoolean(IS_FILTER_SET, isFilterSet)
+                    putInt(STORAGE, storage)
+                }
+            )
+        )
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFilterSubmitListener) {
-            onFilterSubmitListener = context
+        if (context is OnFragmentActionListener) {
+            onFragmentActionListener = context
         } else {
-            throw RuntimeException("Activity must implement OnFilterSearchSubmitListener")
+            throw RuntimeException("$context must implement OnFragmentActionListener")
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = SiteFilterFragment()
-    }
-
-    interface OnFilterSubmitListener {
-        fun onFilterSearchSubmit(isFilterSet: Boolean, storage: Int)
     }
 }

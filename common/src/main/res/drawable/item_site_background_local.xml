@@ -9,8 +9,12 @@
     <item android:bottom="3dp" android:right="1dp">
         <shape android:shape="rectangle">
             <corners android:radius="4dp"/>
-            <solid android:color="#64B464"/>
+            <solid android:color="#BFFBBF"/>
         </shape>
     </item>
 
 </layer-list>
+
+
+<!--
+<solid android:color="#64B464"/>-->

@@ -10,7 +10,7 @@ import com.kuzmin.tm_4.data.local.datastore.SiteScheme.CONSTRUCTION_UUID
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.MEASUREMENT_CONSTRUCTION_UUID
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_NAME
 import com.kuzmin.tm_4.data.local.datastore.SiteScheme.SITE_UUID
-import com.kuzmin.tm_4.feature.api.domain.model.SiteTinyData
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.SiteTinyData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

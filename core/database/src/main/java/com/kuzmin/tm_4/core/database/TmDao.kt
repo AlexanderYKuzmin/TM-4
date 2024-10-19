@@ -2,6 +2,7 @@ package com.kuzmin.tm_4.core.database
 
 import android.util.Log
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -27,20 +28,6 @@ import com.kuzmin.tm_4.core.database.model.site.TenantDb
 
 @Dao
 interface TmDao {
-
-    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addSite(
-        siteParamsDb: SiteParamsDb,
-        tenantDb: TenantDb,
-        addressDb: AddressDb,
-        siteEquipment: SiteEquipmentDb,
-        photos: List<PhotoDb>,
-        constructions: List<ConstructionDb>,
-        measurementsConstructions: List<MeasurementConstructionDb>,
-        groups: List<GroupDb>,
-        measurements: List<MeasurementDb>,
-        results: List<ResultDb>
-    ): Long*/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSiteParams(siteParamsDb: SiteParamsDb)
@@ -78,14 +65,10 @@ interface TmDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLevelsInfo(levels: List<LevelDb>)
 
-    /*@Transaction
-    @Insert
-    abstract suspend fun addMeasurementsConstructionsComplex(
-        measurementsConstructions: List<MeasurementConstructionDb>,
-        groups: List<GroupDb>,
-        measurements: List<MeasurementDb>,
-        results: List<ResultDb>
-    )*/
+    @Transaction
+    suspend fun addSites(sitesDb: List<SiteDb>) {
+        sitesDb.forEach { addSite(it) }
+    }
 
     @Transaction
     suspend fun addSite(siteDb: SiteDb) {
@@ -113,13 +96,22 @@ interface TmDao {
         addSections(constructionAndSectionsDb.sections)
     }
 
+
+    //Get
     @Query(
         "SELECT  *, *, *, * FROM site_params " +
         "JOIN addresses ON sp_site_uuid = addr_site_uuid " +
         "JOIN tenants ON sp_site_uuid = ten_site_uuid " //+
-        //"JOIN measurements_constructions ON sp_site_uuid = mc_site_uuid"
     )
     fun getAllSiteSimple(): List<SiteDb>
+
+    @Query(
+        "SELECT  *, *, * FROM site_params " +
+                "JOIN addresses ON sp_site_uuid = addr_site_uuid " +
+                "JOIN tenants ON sp_site_uuid = ten_site_uuid " +
+                "WHERE sp_durability = 'TEMP'" //+
+    )
+    fun getAllSiteSimpleTemp(): List<SiteDb>
 
     @Transaction
     @Query(
@@ -152,7 +144,6 @@ interface TmDao {
     @Transaction
     suspend fun getMcAndConstructionByMcUuid(mcUuid: String): ConstructionAndMcFullSingle {
         val mc = getMcFull(mcUuid)
-        Log.d("report"," MC in tm dao: MC = $mc")
         val construction = getConstruction(mc.mcDb.constructionUuid)
         return ConstructionAndMcFullSingle(construction, mc)
     }
@@ -170,13 +161,71 @@ interface TmDao {
     @Query("SELECT * FROM measurements_constructions WHERE mc_uuid = :mcUuid")
     suspend fun getMcFull(mcUuid: String): McDbFull
 
-    /*@Transaction
-    @Query("SELECT * FROM measurements_constructions WHERE mc_constr_uuid = :cUuid")
-    suspend fun getAllMcFullByConstruction(cUuid: String): List<McDbFull>*/
-
     @Query("SELECT * FROM measurements_constructions WHERE mc_uuid = :mcUuid" )
     suspend fun getMc(mcUuid: String): MeasurementConstructionDb
 
     @Query("SELECT * FROM groups WHERE gr_meas_constr_uuid = :mcUuid AND gr_num = :groupNum")
     suspend fun getGroupFull(groupNum: Int, mcUuid: String): GroupFullDb
-}
+
+    @Query("SELECT sp_site_uuid FROM site_params WHERE sp_durability = 'temp'")
+    suspend fun getAllTempSiteUuids(): List<String>
+
+    //Delete
+
+    @Transaction
+    suspend fun deleteAllTempSites() {
+        Log.d("Delete", " Start delete tmDao")
+        getAllTempSiteUuids().forEach {
+            Log.d("Delete", "delete: $it")
+            deleteSiteParams(it)
+            deleteAddress(it)
+            deleteTenant(it)
+            deleteSiteEquipment(it)
+            deletePhoto(it)
+            deleteConstruction(it)
+            deleteSection(it)
+            deleteMc(it)
+            deleteGroup(it)
+            deleteMeasurement(it)
+            deleteResult(it)
+            deleteLevel(it)
+        }
+    }
+
+    @Query("DELETE FROM site_params WHERE sp_site_uuid = :sUuid")
+    suspend fun deleteSiteParams(sUuid: String)
+
+    @Query("DELETE FROM addresses WHERE addr_site_uuid = :sUuid")
+    suspend fun deleteAddress(sUuid: String)
+
+    @Query("DELETE FROM tenants WHERE ten_site_uuid = :sUuid")
+    suspend fun deleteTenant(sUuid: String)
+
+    @Query("DELETE FROM site_equipments WHERE seq_site_uuid = :sUuid")
+    suspend fun deleteSiteEquipment(sUuid: String)
+
+    @Query("DELETE FROM photos WHERE ph_site_uuid = :sUuid")
+    suspend fun deletePhoto(sUuid: String)
+
+    @Query("DELETE FROM constructions WHERE constr_site_uuid = :sUuid")
+    suspend fun deleteConstruction(sUuid: String)
+
+    @Query("DELETE FROM sections WHERE s_uuid = :sUuid")
+    suspend fun deleteSection(sUuid: String)
+
+    @Query("DELETE FROM measurements_constructions WHERE mc_site_uuid = :sUuid")
+    suspend fun deleteMc(sUuid: String)
+
+    @Query("DELETE FROM groups WHERE gr_site_uuid = :sUuid")
+    suspend fun deleteGroup(sUuid: String)
+
+    @Query("DELETE FROM measurements WHERE m_site_uuid = :sUuid")
+    suspend fun deleteMeasurement(sUuid: String)
+
+    @Query("DELETE FROM results WHERE r_site_uuid = :sUuid")
+    suspend fun deleteResult(sUuid: String)
+
+    @Query("DELETE FROM levels WHERE l_site_uuid = :sUuid")
+    suspend fun deleteLevel(sUuid: String)
+
+} // CHECK IT

@@ -12,6 +12,10 @@ object CommonConstants {
     const val MAST = "mast"
     const val POLE = "pole"
 
+    const val FOUR_EDGE = "4"
+    const val THREE_EDGE = "3"
+    const val ZERO_EDGE = "0"
+
     const val STATUS_ACTUAL = "actual"
 
     //Login constants
@@ -19,8 +23,12 @@ object CommonConstants {
     const val NO_TOKEN = ""
     const val NO_USERNAME = ""
     const val NO_PASSWORD = ""
-    const val NO_ID = 0L
     const val NO_NAME = "No name"
+    const val NO_POSITION = "No position"
+    const val NO_TEAM = "No team"
+    const val NO_TEAM_ID = "No team id"
+    const val NO_EMAIL = "No email"
+    const val NO_UID = "No uid"
 
     const val SEARCH_ALL = ""
 
@@ -28,10 +36,6 @@ object CommonConstants {
     const val TOKEN_LIFE_TIME = 86_400_000L
     const val DEVIATION_TOKEN_LIFE_TIME = 20_000L
 
-
-    /*//Fragment arguments keys
-    const val SITE_ID = "site_id"
-    const val STORAGE_POS_FLAG = "storage_position"*/
 
     const val STORAGE_LOCAL = 5000
     const val STORAGE_REMOTE = 5001
@@ -63,4 +67,29 @@ object CommonConstants {
     const val MIN_HEIGHT_MM = 10000
     const val MIN_SECTION_NUMBER = 1
     const val MAX_SECTION_NUMBER = 30
+
+    //fragment action keys
+    const val AUTHORIZATION_COMPLETED = "authorization_completed"
+    const val AUTHORIZATION_FAILED = "authorization_failed"
+    const val AUTHORIZATION_CANCELLED = "authorization_cancelled"
+    const val AUTHORIZATION_STARTED = "authorization_started"
+    const val AUTHORIZATION_REGISTER_REQUEST = "authorization_register_request"
+    const val AUTHORIZED = "authorized"
+
+    const val FRAGMENT_IN_PROGRESS = "fragment_in_progress"
+    const val FRAGMENT_ON_FINISH = "fragment_on_finish"
+    const val FRAGMENT_ON_START = "fragment_on_start"
+
+    const val PASS_ON_FILTER = "pass_on_filter"
+    const val PASS_ON_SINGLE_SITE = "pass_on_single_site"
+    // End of action keys
+
+    //common var names
+    const val IS_FILTER_SET = "is_filter_set"
+    const val STORAGE = "storage"
+
+    //validated names
+    const val PASSWORD = "password"
+    const val EMAIL = "email"
+
 }

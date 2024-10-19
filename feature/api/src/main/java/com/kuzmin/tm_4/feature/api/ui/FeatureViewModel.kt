@@ -3,16 +3,16 @@ package com.kuzmin.tm_4.feature.api.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kuzmin.tm_4.feature.api.domain.model.sealed.McAndCResult
+import com.kuzmin.tm_4.feature.api.domain.model.sealed.SiteActionResult
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 abstract class FeatureViewModel (
 ) : ViewModel() {
-    val _mcResult = MutableLiveData<McAndCResult>()
-    val mcResult: LiveData<McAndCResult> get() = _mcResult
+    val _siteActionResult = MutableLiveData<SiteActionResult>()
+    val siteActionResult: LiveData<SiteActionResult> get() = _siteActionResult
 
     val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _mcResult.postValue(McAndCResult.Error(throwable))
+        _siteActionResult.postValue(SiteActionResult.Error(throwable))
     }
 
 

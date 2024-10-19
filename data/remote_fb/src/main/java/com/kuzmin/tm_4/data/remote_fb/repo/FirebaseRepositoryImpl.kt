@@ -2,22 +2,22 @@ package com.kuzmin.tm_4.data.remote_fb.repo
 
 import android.util.Log
 import com.kuzmin.tm_4.core.network_fb.FirebaseService
-import com.kuzmin.tm_4.core.network_fb.model.ConstructionFbDto
-import com.kuzmin.tm_4.core.network_fb.model.GroupFbDto
-import com.kuzmin.tm_4.core.network_fb.model.MeasurementConstructionFbDto
-import com.kuzmin.tm_4.core.network_fb.model.MeasurementFbDto
-import com.kuzmin.tm_4.core.network_fb.model.ResultFbDto
-import com.kuzmin.tm_4.core.network_fb.model.SectionFbDto
-import com.kuzmin.tm_4.core.network_fb.model.SiteFbDto
-import com.kuzmin.tm_4.data.remote_fb.mapper.PhotoMapper
-import com.kuzmin.tm_4.data.remote_fb.mapper.SiteDataFbDtoToSiteModelMapper
-import com.kuzmin.tm_4.data.remote_fb.mapper.SiteFbDtoToSiteSampleMapper
-import com.kuzmin.tm_4.data.remote_fb.model_fb.SiteDataFbDto
+import com.kuzmin.tm_4.core.network_fb.model.site.ConstructionFbDto
+import com.kuzmin.tm_4.core.network_fb.model.site.GroupFbDto
+import com.kuzmin.tm_4.core.network_fb.model.site.MeasurementConstructionFbDto
+import com.kuzmin.tm_4.core.network_fb.model.site.MeasurementFbDto
+import com.kuzmin.tm_4.core.network_fb.model.site.ResultFbDto
+import com.kuzmin.tm_4.core.network_fb.model.site.SectionFbDto
+import com.kuzmin.tm_4.core.network_fb.model.site.SiteFbDto
+import com.kuzmin.tm_4.data.remote_fb.mapper.site.PhotoMapper
+import com.kuzmin.tm_4.data.remote_fb.mapper.site.SiteDataFbDtoToSiteModelMapper
+import com.kuzmin.tm_4.data.remote_fb.mapper.site.SiteFbDtoToSiteSampleMapper
+import com.kuzmin.tm_4.data.remote_fb.model_fb.site.SiteDataFbDto
 import com.kuzmin.tm_4.feature.api.api.FirebaseRepository
-import com.kuzmin.tm_4.feature.api.domain.model.sample.SiteSample
-import com.kuzmin.tm_4.feature.api.domain.model.site.MeasurementConstruction
-import com.kuzmin.tm_4.feature.api.domain.model.site.Photo
-import com.kuzmin.tm_4.feature.api.domain.model.site.Site
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.SiteSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.MeasurementConstruction
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Photo
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Site
 import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(

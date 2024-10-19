@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="3"
+        app:layout_constraintBottom_toTopOf="@id/ll_site_parameters"
         />
 
     <!--<androidx.core.widget.NestedScrollView
@@ -23,11 +24,17 @@
         android:layout_weight="2"
         android:background="@drawable/site_background"
         android:layout_gravity="top">-->
-
+    <LinearLayout
+        android:id="@+id/ll_site_parameters"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="bottom"
+        app:layout_constraintTop_toBottomOf="@id/vp_site_photos"
+        >
         <TableLayout
             android:id="@+id/tl_site_parameters"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:shrinkColumns="1"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
@@ -237,6 +244,7 @@
             <TableRow
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp"
+
                 >
                 <TextView
                     style="@style/SiteParamsTextView"
@@ -245,146 +253,17 @@
                 <TextView
                     android:id="@+id/tv_site_constr_conclusion"
                     style="@style/SiteParamsTextViewValues"
-                    android:layout_span="2"
+                    android:layout_span="3"
                     android:textColor="@color/color_danger"
                     android:textStyle="italic"
                     android:text="@string/none"
                     tools:text="@string/measure_satisfied_no"
+                    android:maxLines="1"
                     />
             </TableRow>
         </TableLayout>
+    </LinearLayout>
+
 
    <!-- </androidx.core.widget.NestedScrollView>-->
-
-
-
-    <!--<TableLayout
-        android:id="@+id/card_construction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/constr_background"
-        android:layout_margin="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tl_site_parameters"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
-
-        &lt;!&ndash;<TableRow>
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/construction_version"
-                />
-            <TextView
-                android:id="@+id/tv_constr_version"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_span="3"
-                tools:text="2"
-                />
-        </TableRow>&ndash;&gt;
-
-        &lt;!&ndash;<TableRow>&lt;!&ndash;
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/construction_description"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_desc"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_span="3"
-                tools:text="Башня возле дороги 90м"
-                />
-        </TableRow>&ndash;&gt;
-
-        &lt;!&ndash;<TableRow>
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/construction_type"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_type"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_weight="3"
-                tools:text="Башня"
-                />
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/construction_config"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_config"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_weight="2"
-                android:gravity="center"
-                tools:text="4"
-                />
-
-        </TableRow>&ndash;&gt;
-
-        &lt;!&ndash;<TableRow>
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/construction_height"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_height"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_weight="3"
-                tools:text="60м"
-                />
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/construction_sections"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_sections"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_weight="2"
-                android:gravity="center"
-                tools:text="4"
-                />
-        </TableRow>&ndash;&gt;
-        &lt;!&ndash;<TableRow>
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/measure_employee_name"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_employee"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_weight="3"
-                android:text="-"
-                tools:text="Петров"
-                />
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/measure_date"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_measure_date"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_weight="2"
-                android:text="-"
-                android:paddingEnd="8dp"
-                tools:text="2323-23-23"
-                />
-        </TableRow>&ndash;&gt;
-
-        &lt;!&ndash;<TableRow>
-            <TextView
-                style="@style/ConstructionParamsTextView"
-                android:text="@string/measure_conclusion"
-                />
-            <TextView
-                android:id="@+id/tv_site_constr_conclusion"
-                style="@style/ConstructionParamsTextViewValues"
-                android:layout_span="2"
-                android:textColor="@color/color_danger"
-                android:text="@string/none"
-                tools:text="@string/measure_satisfied_no"
-
-                />
-        </TableRow>&ndash;&gt;
-    </TableLayout>-->
-
-
-
 </androidx.constraintlayout.motion.widget.MotionLayout>

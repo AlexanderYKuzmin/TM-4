@@ -11,8 +11,8 @@ import com.kuzmin.tm_4.data.local.util.Constants.REGION_CODE
 import com.kuzmin.tm_4.data.local.util.Constants.SITE_PREFIX
 import com.kuzmin.tm_4.data.local.util.Constants.STREET
 import com.kuzmin.tm_4.data.local.util.Constants.SUB_REGION
-import com.kuzmin.tm_4.feature.api.domain.model.sample.AddressSample
-import com.kuzmin.tm_4.feature.api.domain.model.site.Address
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.sample.AddressSample
+import com.kuzmin.tm_4.feature.api.domain.model.site_related_model.site.Address
 
 object AddressTestData {
     fun createTestAddress(sIndex: Int): Address {
